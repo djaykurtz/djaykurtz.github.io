@@ -1,0 +1,71 @@
+# David Kurtz's portfolio
+
+A dependency-free static homepage for **David Kurtz / [djaykurtz](https://github.com/djaykurtz)**, intended for **https://djaykurtz.github.io/**.
+
+## Contents
+
+- `site/index.html`: six navigable movements, project context, native expandable inspection panels, repository links, and demo links.
+- `site/styles.css`: responsive layout, authored capstone visual vocabulary, keyboard focus, reduced-motion support, and print styles.
+- `site/favicon.svg`: locally served favicon.
+- `site/assets/ans-choco-architecture.png`: source-grounded ANS-CHOCO architecture screenshot.
+- `site/assets/cohort-tasks.png`: OFFLINE / SYNTHETIC ZeroBrain task dashboard screenshot.
+- `site/assets/azure-local-architecture.png`: static Azure Local platform capstone screenshot.
+- `.github/workflows/pages.yml`: official GitHub Pages Actions workflow; uploads **only `site`**.
+
+There is no JavaScript, build step, runtime dependency, external font, CDN, analytics, form submission, or backend connection.
+
+## Design identity
+
+The homepage deliberately adapts David's authored Azure Local capstone movement design: warm charcoal shell (`#16161b`), panel (`#1b1b21`), warm ink (`#ece8e1`), soft and dim text, fine white-alpha dividers, UI sans-serif and Cascadia/SF monospace stacks, compact labels, a movement rail, and progressive disclosure.
+
+Unlike the capstone's fixed presentation canvas, this page reflows into a scrolling mobile layout. Native links and `details` keep navigation and inspection functional without JavaScript. The five connection-kind tokens retain their capstone semantics; they are not assigned as project or health colors. Only the orange work-pathway marker is used in the text-only overview. There are no ambient particles, auto-advancing scenes, or decorative status indicators.
+
+Primary reading text uses an 18px target with 1.65 leading at the browser's default 16px base. Essential labels, controls, and inspection headings are at least 16px; only incidental badges and footer metadata use 14px. Text columns are bounded, and the layout reflows instead of scaling or reducing text on narrower screens. Scope caveats and screenshot explanations are reading content, not fine print.
+
+## Local preview
+
+From this repository's root:
+
+```powershell
+python -m http.server 8080 --bind 127.0.0.1 --directory .\site
+```
+
+Open `http://127.0.0.1:8080/`. Relative asset paths also allow opening `site\index.html` directly.
+
+## Static hosting
+
+The Pages workflow publishes only `site/`. Supporting repository documentation and workflow files are not part of the deployed website.
+
+Before release, verify the project Pages destinations and deploy this homepage before publishing the profile's screenshot references. Intended demo destinations do not indicate a completed release.
+
+The personal repository is `djaykurtz/djaykurtz.github.io`, with `main` as its publication branch and **GitHub Actions** as the GitHub Pages source. If the chosen branch differs, update the workflow's branch filter before publishing. The upload job uses `contents: read` and `pages: read` to retrieve Pages configuration; only the deploy job receives `pages: write` and `id-token: write`. Deployments use the `github-pages` environment and serialized `pages` concurrency.
+
+The project URLs are intended publication destinations. Verify they are available before launch:
+
+| Project | Repository | Public presentation |
+| --- | --- | --- |
+| COHORT | https://github.com/djaykurtz/COHORT | https://djaykurtz.github.io/COHORT/ |
+| ANS-CHOCO | https://github.com/djaykurtz/ANS-CHOCO | https://djaykurtz.github.io/ANS-CHOCO/ |
+| Azure Local POC | https://github.com/djaykurtz/AZLOCAL-POC | https://djaykurtz.github.io/AZLOCAL-POC/ |
+
+COHORT's project story is at the overview URL above; its functional disconnected sample is at https://djaykurtz.github.io/COHORT/demo/.
+
+The homepage distinguishes implementation context from public presentation. COHORT preserves actual dashboard/frontend material and rebuild-grade architecture/contracts alongside a disconnected synthetic adapter. Original task/node/review renderers are reused; the public demo offers five fixture-driven layers, drilldowns, in-memory status/owner simulation and reset, and deadline/health-state exploration. It includes no coordinator backend, live agents, API calls, credentials, or persistent changes. Azure Local's capstone is an interactive architecture walkthrough, not a management console. ANS-CHOCO presents policy-driven software alignment and evidence, not a completed autonomous patching/cloud platform. Its inspection panel distinguishes implemented inventory/build/deploy/reporting workflows from standalone package-operation stubs, incomplete system patching, and unintegrated cloud credential loading, according to the project owner's final report.
+
+All three hosted showcases are independent static or synthetic experiences. ANS-CHOCO's operational implementation requires user-provided control node, authorized targets, inventory, package sources, and credentials; optional Azure Arc integration also requires user-provided cloud setup and the external pull script. Actual Azure Local provisioning requires user-provided tenant/subscription, permissions, prepared hardware, directory services, networking, and credentials. None of those operational dependencies is needed to view the hosted showcases. Azure Local's retained records describe a functional four-node lab POC, not production certification or a newly connected cloud session.
+
+## Project visuals
+
+The ANS-CHOCO architecture overview is at `site/assets/ans-choco-architecture.png`. Its homepage caption and project details distinguish static presentation, implemented workflows, and incomplete or stub components.
+
+The COHORT task screenshot is at `site/assets/cohort-tasks.png`. Its figure and profile alt text explicitly say OFFLINE / SYNTHETIC and make no production-count or outcome claims. One representative task image was selected rather than crowding the homepage with every layer. The project story reflects tooling built to organize David's own projects and tasks, not enterprise adoption or complete feature parity with Copilot.
+
+The Azure Local platform screenshot is at `site/assets/azure-local-architecture.png`. It depicts a static capstone state explaining recorded lab work, not a connected Azure session or newly executed test.
+
+The three image files are unchanged copies of their corresponding public project captures. Each homepage figure has meaningful alt text, explicit dimensions, responsive sizing, and an adjacent scope caption. The profile references these same personal Pages assets instead of duplicating binaries.
+
+Each homepage figure offers an explicit full-resolution image link. Profile images also link to their full-resolution assets. The screenshot's tiny interface text is not a substitute for the readable project explanation and implementation boundaries.
+
+The separate profile candidate is in the sibling `djaykurtz` folder. Its root `README.md` belongs in `djaykurtz/djaykurtz`; it requires no workflow.
+
+No license has been selected or added.
