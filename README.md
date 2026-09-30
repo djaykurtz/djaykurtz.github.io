@@ -6,6 +6,7 @@ A dependency-free static homepage for **David Kurtz / [djaykurtz](https://github
 
 - `site/index.html`: six navigable movements, project context, native expandable inspection panels, repository links, and demo links.
 - `site/styles.css`: responsive layout, authored capstone visual vocabulary, keyboard focus, reduced-motion support, and print styles.
+- `site/capstone.js`: progressive enhancement for the Azure Local guided lightbox.
 - `site/favicon.svg`: locally served favicon.
 - `site/assets/ans-choco-architecture.png`: source-grounded ANS-CHOCO architecture screenshot.
 - `site/assets/cohort-governance.png`: OFFLINE / SYNTHETIC research/decisions inspector screenshot.
@@ -13,13 +14,13 @@ A dependency-free static homepage for **David Kurtz / [djaykurtz](https://github
 - `site/assets/azure-local-architecture.png`: static Azure Local platform capstone screenshot.
 - `.github/workflows/pages.yml`: official GitHub Pages Actions workflow; uploads **only `site`**.
 
-There is no JavaScript, build step, runtime dependency, external font, CDN, analytics, form submission, or backend connection.
+There is no build step, runtime dependency, external font, CDN, analytics, form submission, or backend connection. The small local script enhances the Azure presentation link; the portfolio and direct-viewer links remain usable without it.
 
 ## Design identity
 
 The homepage deliberately adapts David's authored Azure Local capstone movement design: warm charcoal shell (`#16161b`), panel (`#1b1b21`), warm ink (`#ece8e1`), soft and dim text, fine white-alpha dividers, UI sans-serif and Cascadia/SF monospace stacks, compact labels, a movement rail, and progressive disclosure.
 
-Unlike the capstone's fixed presentation canvas, this page reflows into a scrolling mobile layout. Native links and `details` keep navigation and inspection functional without JavaScript. The five connection-kind tokens retain their capstone semantics; they are not assigned as project or health colors. Only the orange work-pathway marker is used in the text-only overview. There are no ambient particles, auto-advancing scenes, or decorative status indicators.
+Unlike the capstone's fixed presentation canvas, this page reflows into a scrolling mobile layout. Native links and `details` keep navigation and inspection functional without JavaScript. The five connection-kind tokens retain their capstone semantics; they are not assigned as project or health colors. Only the orange work-pathway marker is used in the text-only overview. There are no ambient particles, auto-advancing scenes, or decorative status indicators on the homepage.
 
 Primary reading text uses an 18px target with 1.65 leading at the browser's default 16px base. Essential labels, controls, and inspection headings are at least 16px; only incidental badges and footer metadata use 14px. Text columns are bounded, and the layout reflows instead of scaling or reducing text on narrower screens. Scope caveats and screenshot explanations are reading content, not fine print.
 
@@ -68,6 +69,14 @@ The Azure Local platform screenshot is at `site/assets/azure-local-architecture.
 The image files are unchanged copies of their corresponding public project captures. Each of the three homepage figures has meaningful alt text, explicit dimensions, responsive sizing, and an adjacent scope caption. The profile references these same personal Pages assets instead of duplicating binaries.
 
 Each homepage figure offers an explicit full-resolution image link. Profile images also link to their full-resolution assets. The screenshot's tiny interface text is not a substitute for the readable project explanation and implementation boundaries.
+
+## Guided Azure viewing
+
+The Azure action and preview open an in-place native-dialog lightbox over the dimmed portfolio. The child route `https://djaykurtz.github.io/AZLOCAL-POC/viewer/?embed=1` owns presentation instructions; the host provides an obvious Exit view and separate Full view fallback. Closing restores the triggering link and the previous portfolio scroll position. The embedded frame is removed on exit and restarts on the next open.
+
+Host Escape forwards the fixed escape message so the child closes BUILT evidence first, then requests exit. Exit messages are accepted only from the active iframe at the same origin and with the exact allowed payload. Visibility messages contain only a typed boolean; no arbitrary commands, wildcard origins, or evaluation are used.
+
+Without JavaScript or native dialog support, the links open `https://djaykurtz.github.io/AZLOCAL-POC/viewer/` directly. The original standalone/presenter route remains linked in project details and the profile. The lightbox has no decorative border or scaling of text; its short opacity entrance is disabled for reduced motion.
 
 The separate profile candidate is in the sibling `djaykurtz` folder. Its root `README.md` belongs in `djaykurtz/djaykurtz`; it requires no workflow.
 
