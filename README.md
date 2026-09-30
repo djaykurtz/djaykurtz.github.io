@@ -8,7 +8,8 @@ A dependency-free static homepage for **David Kurtz / [djaykurtz](https://github
 - `site/styles.css`: responsive layout, authored capstone visual vocabulary, keyboard focus, reduced-motion support, and print styles.
 - `site/favicon.svg`: locally served favicon.
 - `site/assets/ans-choco-architecture.png`: source-grounded ANS-CHOCO architecture screenshot.
-- `site/assets/cohort-tasks.png`: OFFLINE / SYNTHETIC ZeroBrain task dashboard screenshot.
+- `site/assets/cohort-governance.png`: OFFLINE / SYNTHETIC research/decisions inspector screenshot.
+- `site/assets/cohort-tasks.png`: earlier task screenshot retained for existing image-link compatibility.
 - `site/assets/azure-local-architecture.png`: static Azure Local platform capstone screenshot.
 - `.github/workflows/pages.yml`: official GitHub Pages Actions workflow; uploads **only `site`**.
 
@@ -50,7 +51,9 @@ The project URLs are intended publication destinations. Verify they are availabl
 
 COHORT's project story is at the overview URL above; its functional disconnected sample is at https://djaykurtz.github.io/COHORT/demo/.
 
-The homepage distinguishes implementation context from public presentation. COHORT preserves actual dashboard/frontend material and rebuild-grade architecture/contracts alongside a disconnected synthetic adapter. Original task/node/review renderers are reused; the public demo offers five fixture-driven layers, drilldowns, in-memory status/owner simulation and reset, and deadline/health-state exploration. It includes no coordinator backend, live agents, API calls, credentials, or persistent changes. Azure Local's capstone is an interactive architecture walkthrough, not a management console. ANS-CHOCO presents policy-driven software alignment and evidence, not a completed autonomous patching/cloud platform. Its inspection panel distinguishes implemented inventory/build/deploy/reporting workflows from standalone package-operation stubs, incomplete system patching, and unintegrated cloud credential loading, according to the project owner's final report.
+Its source-linked system atlas is at https://djaykurtz.github.io/COHORT/systems/, and the research/decisions inspector opens at https://djaykurtz.github.io/COHORT/demo/?view=governance. The atlas maps documented/exported boundaries and runtime availability, not a complete coordinator/database reconstruction. Waves are deliberation, votes are audit evidence, and backend ratification/authority enforcement is not bundled.
+
+The homepage distinguishes implementation context from public presentation. COHORT preserves actual dashboard/frontend material and rebuild-grade architecture/contracts alongside a disconnected synthetic adapter. Original task/node/review renderers are reused; the public demo offers fixture-driven layers, research/decisions inspection, drilldowns, in-memory status/owner simulation and reset, and deadline/health-state exploration. It includes no coordinator backend, live agents, API calls, credentials, or persistent changes. Azure Local's capstone is an interactive architecture walkthrough, not a management console. ANS-CHOCO presents policy-driven software alignment and evidence, not a completed autonomous patching/cloud platform. Its inspection panel distinguishes implemented inventory/build/deploy/reporting workflows from standalone package-operation stubs, incomplete system patching, and unintegrated cloud credential loading, according to the project owner's final report.
 
 All three hosted showcases are independent static or synthetic experiences. ANS-CHOCO's operational implementation requires user-provided control node, authorized targets, inventory, package sources, and credentials; optional Azure Arc integration also requires user-provided cloud setup and the external pull script. Actual Azure Local provisioning requires user-provided tenant/subscription, permissions, prepared hardware, directory services, networking, and credentials. None of those operational dependencies is needed to view the hosted showcases. Azure Local's retained records describe a functional four-node lab POC, not production certification or a newly connected cloud session.
 
@@ -58,11 +61,11 @@ All three hosted showcases are independent static or synthetic experiences. ANS-
 
 The ANS-CHOCO architecture overview is at `site/assets/ans-choco-architecture.png`. Its homepage caption and project details distinguish static presentation, implemented workflows, and incomplete or stub components.
 
-The COHORT task screenshot is at `site/assets/cohort-tasks.png`. Its figure and profile alt text explicitly say OFFLINE / SYNTHETIC and make no production-count or outcome claims. One representative task image was selected rather than crowding the homepage with every layer. The project story reflects tooling built to organize David's own projects and tasks, not enterprise adoption or complete feature parity with Copilot.
+The representative COHORT research/decisions screenshot is at `site/assets/cohort-governance.png`. Its figure and profile alt text explicitly say OFFLINE / SYNTHETIC and make no production-count or outcome claims. The earlier `site/assets/cohort-tasks.png` remains available for existing links, not as a second figure. The project story reflects tooling built to organize David's own projects and tasks, not enterprise adoption or complete feature parity with Copilot.
 
 The Azure Local platform screenshot is at `site/assets/azure-local-architecture.png`. It depicts a static capstone state explaining recorded lab work, not a connected Azure session or newly executed test.
 
-The three image files are unchanged copies of their corresponding public project captures. Each homepage figure has meaningful alt text, explicit dimensions, responsive sizing, and an adjacent scope caption. The profile references these same personal Pages assets instead of duplicating binaries.
+The image files are unchanged copies of their corresponding public project captures. Each of the three homepage figures has meaningful alt text, explicit dimensions, responsive sizing, and an adjacent scope caption. The profile references these same personal Pages assets instead of duplicating binaries.
 
 Each homepage figure offers an explicit full-resolution image link. Profile images also link to their full-resolution assets. The screenshot's tiny interface text is not a substitute for the readable project explanation and implementation boundaries.
 

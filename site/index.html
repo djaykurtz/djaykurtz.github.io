@@ -84,6 +84,7 @@
           </div>
           <p class="project-intro">I built COHORT's agent-coordination functions to organize my own projects and tasks, connecting research and decisions with work ownership. ZeroBrain / superdashv2 makes that work visible.</p>
           <p class="project-story"><strong>Reliability, not bureaucracy.</strong> The goal is a personal engineering team: distinct role perspectives connected by shared goals and workflows, explicit ownership, review of exact artifacts, and durable context across handoffs. Unknowns and failures stay visible so reliability can be assessed, not assumed.</p>
+          <p class="project-atlas">The atlas maps 37 documented/exported systems and boundaries: roles, inputs and outputs, authority, handoffs, runtime availability, and source evidence. It is a map of the exported design, not 37 bundled services or a reconstruction of the omitted database.</p>
           <div class="project-body">
             <div class="project-overview">
               <p class="cap">The system</p>
@@ -93,7 +94,9 @@
                 <li><span class="node-label">Surface</span><span>Functional ZeroBrain dashboard/frontend.</span></li>
               </ul>
               <div class="link-row">
-                <a class="button" href="https://djaykurtz.github.io/COHORT/demo/">Explore synthetic demo <span aria-hidden="true">&nearr;</span></a>
+                <a class="button" href="https://djaykurtz.github.io/COHORT/systems/">Explore system atlas <span aria-hidden="true">&nearr;</span></a>
+                <a class="text-link" href="https://djaykurtz.github.io/COHORT/demo/?view=governance">Try research and decisions <span aria-hidden="true">&nearr;</span></a>
+                <a class="text-link" href="https://djaykurtz.github.io/COHORT/demo/">Offline dashboard <span aria-hidden="true">&nearr;</span></a>
                 <a class="text-link" href="https://github.com/djaykurtz/COHORT">Repository <span aria-hidden="true">&nearr;</span></a>
               </div>
             </div>
@@ -108,7 +111,9 @@
                   <h3>Functional surfaces, disconnected data</h3>
                   <p>The public project preserves actual dashboard/frontend material and rebuild-grade architecture/contracts alongside a disconnected synthetic adapter. Original task, node, and review renderers are reused; no coordinator backend or live agents are bundled.</p>
                   <dl>
-                    <div><dt>Explore</dt><dd>Task, node, review, design, and knowledge layers, with filters and drilldowns.</dd></div>
+                    <div><dt>Explore</dt><dd>Task, node, review, design, and knowledge views, plus the synthetic research/decisions inspector, with filters and drilldowns.</dd></div>
+                    <div><dt>Decide</dt><dd>Waves are deliberation, not delivery. Votes are audit evidence, not a numeric ratification threshold. A latest closed wave with non-empty PM synthesis supports one of five legal bases; backend authority and enforcement are not bundled.</dd></div>
+                    <div><dt>Separate</dt><dd>RFC council-vessel recusal and independent work/artifact review are different boundaries, not interchangeable approval gates.</dd></div>
                     <div><dt>Simulate</dt><dd>In-memory status and owner changes, reset, deadlines, and health states. Reload or reset discards sample changes.</dd></div>
                     <div><dt>Discuss</dt><dd>Work ownership, artifact-bound review, durable-context architecture, and visible failure without implying a connected fleet.</dd></div>
                   </dl>
@@ -118,10 +123,10 @@
           </div>
           <figure class="project-figure">
             <a href="https://djaykurtz.github.io/COHORT/" class="project-preview">
-              <img src="assets/cohort-tasks.png" width="1600" height="1000" loading="lazy" decoding="async" alt="OFFLINE / SYNTHETIC ZeroBrain dashboard showing sample task ownership, review states, role drilldowns, and local simulation controls.">
+              <img src="assets/cohort-governance.png" width="1440" height="900" loading="lazy" decoding="async" alt="OFFLINE / SYNTHETIC research and decisions inspector showing illustrative votes and deliberation requirements, with no backend or real agent decisions.">
             </a>
-            <figcaption>OFFLINE / SYNTHETIC. A functional task and ownership surface using invented fixtures. Sample counts, activity, deadlines, and health states are simulations, not production results; no real work is dispatched.</figcaption>
-            <p class="figure-tools"><a class="text-link" href="assets/cohort-tasks.png">View full-resolution COHORT image <span aria-hidden="true">&nearr;</span></a></p>
+            <figcaption>OFFLINE / SYNTHETIC. Research, deliberation, and decision evidence in an invented local workflow. Votes are audit evidence, not a numeric ratification gate; no real votes, agents, or backend are connected.</figcaption>
+            <p class="figure-tools"><a class="text-link" href="assets/cohort-governance.png">View full-resolution COHORT image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
           <a class="next-movement" href="#ans-choco"><span>Next movement</span><strong>02 / Application patching <span aria-hidden="true">&darr;</span></strong></a>
         </section>

@@ -76,7 +76,7 @@ h1 { margin-block: 1rem 1.5rem; font-size: clamp(2.5rem, 4vw, 3.65rem); font-wei
 h2 { font-size: clamp(1.85rem, 3vw, 2.5rem); font-weight: 600; letter-spacing: -.04em; }
 .project-subtitle { margin-top: .55rem; font-size: var(--reading); color: var(--ink-soft); }
 .scope-label { max-width: 100%; padding-block: .3rem; border-block: 1px dashed var(--line-strong); color: var(--ink-dim); font-family: var(--mono); font-size: var(--label); letter-spacing: .04em; text-transform: uppercase; }
-.project-intro, .project-story { max-width: 64ch; margin-top: 1.5rem; color: var(--ink-soft); font-size: var(--reading); }
+.project-intro, .project-story, .project-atlas { max-width: 64ch; margin-top: 1.5rem; color: var(--ink-soft); font-size: var(--reading); }
 .project-story strong { color: var(--ink); font-weight: 600; }
 .project-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 2.5rem; margin-top: 2.5rem; }
 .system-list { margin: .75rem 0 0; padding: 0; list-style: none; }
