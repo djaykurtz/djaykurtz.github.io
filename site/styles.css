@@ -30,6 +30,7 @@ a { color: inherit; text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: .25em; }
 a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; border-radius: 2px; }
 h1, h2, h3, p { margin: 0; }
+p { text-wrap: pretty; }
 h1, h2, h3 { line-height: 1.15; }
 p + p { margin-top: 1rem; }
 .skip-link { position: absolute; z-index: 5; top: 1rem; left: 1rem; padding: .8rem 1.2rem; background: var(--ink); color: var(--shell); transform: translateY(-180%); font-weight: 700; }
@@ -59,8 +60,9 @@ p + p { margin-top: 1rem; }
 .hero-body { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: center; gap: 3rem; }
 .hero-kicker { color: var(--ink-soft); font-family: var(--mono); font-size: var(--label); letter-spacing: .05em; text-transform: uppercase; }
 h1 { margin-block: 1rem 1.5rem; font-size: clamp(2.5rem, 4vw, 3.65rem); font-weight: 600; letter-spacing: -.055em; line-height: 1.08; }
-.hero-intro { max-width: 64ch; font-size: var(--reading); line-height: 1.65; }
-.hero-detail { max-width: 64ch; color: var(--ink-soft); font-size: var(--reading); }
+/* Balanced wrap: Segoe UI sets wider than San Francisco, so these short lines wrap on Windows. */
+.hero-intro { max-width: 64ch; font-size: var(--reading); line-height: 1.65; text-wrap: balance; }
+.hero-detail { max-width: 64ch; color: var(--ink-soft); font-size: var(--reading); text-wrap: balance; }
 .link-row { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.5rem; margin-top: 1.75rem; }
 .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; max-width: 100%; min-height: 44px; padding: .75rem 1rem; border: 1px solid var(--line-strong); border-radius: 2px; background: rgba(255, 255, 255, .03); font-family: var(--mono); font-size: var(--label); line-height: 1.5; transition: background 160ms ease, border-color 160ms ease; }
 .button:hover { background: rgba(255, 255, 255, .07); border-color: var(--ink-soft); text-decoration: none; }
