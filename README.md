@@ -32,7 +32,7 @@ From this repository's root:
 python -m http.server 8080 --bind 127.0.0.1 --directory .\site
 ```
 
-Open `http://127.0.0.1:8080/`. Relative asset paths also allow opening `site\index.html` directly.
+Open `http://127.0.0.1:8080/`. Relative asset paths also allow opening `site\index.html` directly. In local HTTP or file previews, the Azure action opens the canonical hosted guided viewer; the preview server does not host the separate Azure project. The in-place portfolio lightbox is enabled only at `https://djaykurtz.github.io/`, where its same-origin viewer contract is available.
 
 ## Static hosting
 
@@ -72,11 +72,11 @@ Each homepage figure offers an explicit full-resolution image link. Profile imag
 
 ## Guided Azure viewing
 
-The Azure action and preview open an in-place native-dialog lightbox over the dimmed portfolio. The child route `https://djaykurtz.github.io/AZLOCAL-POC/viewer/?embed=1` owns presentation instructions; the host provides an obvious Exit view and separate Full view fallback. Closing restores the triggering link and the previous portfolio scroll position. The embedded frame is removed on exit and restarts on the next open.
+On the canonical hosted portfolio, the Azure action and preview open an in-place native-dialog lightbox over the dimmed page. The child route `https://djaykurtz.github.io/AZLOCAL-POC/viewer/?embed=1` owns presentation instructions; the host provides an obvious Exit view and separate Full view fallback. Loading is reported visibly until the actual presentation controls are ready; missing or slow content shows a direct-view fallback rather than leaving an unexplained empty frame. Closing restores the triggering link and the previous portfolio scroll position. The embedded frame is removed on exit and restarts on the next open.
 
 Host Escape forwards the fixed escape message so the child closes BUILT evidence first, then requests exit. Exit messages are accepted only from the active iframe at the same origin and with the exact allowed payload. Visibility messages contain only a typed boolean; no arbitrary commands, wildcard origins, or evaluation are used.
 
-Without JavaScript or native dialog support, the links open `https://djaykurtz.github.io/AZLOCAL-POC/viewer/` directly. The original standalone/presenter route remains linked in project details and the profile. The lightbox has no decorative border or scaling of text; its short opacity entrance is disabled for reduced motion.
+Without JavaScript or native dialog support, or from a file/noncanonical HTTP preview, the links open `https://djaykurtz.github.io/AZLOCAL-POC/viewer/` directly. The original standalone/presenter route remains linked in project details and the profile. The lightbox has no decorative border or scaling of text; its short opacity entrance is disabled for reduced motion.
 
 The separate profile candidate is in the sibling `djaykurtz` folder. Its root `README.md` belongs in `djaykurtz/djaykurtz`; it requires no workflow.
 

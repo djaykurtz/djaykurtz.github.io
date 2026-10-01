@@ -8,13 +8,14 @@
   const triggers = document.querySelectorAll("[data-capstone-open]");
   if (!dialog || !mount || !exit || !status) throw new Error("Capstone portal markup is incomplete.");
   if (typeof dialog.showModal !== "function") return;
-  if (!["http:", "https:"].includes(window.location.protocol)) return;
+  if (window.location.origin !== "https://djaykurtz.github.io") return;
 
   const origin = window.location.origin;
   const viewer = new URL("/AZLOCAL-POC/viewer/?embed=1", origin);
   let frame = null;
   let loaded = false;
   let returnTo = null;
+  let loadTimeout = null;
   let boundDocuments = new WeakSet();
   let boundFrames = new WeakSet();
   const cleanups = [];
@@ -78,6 +79,8 @@
   function finishClose() {
     if (dialog.open || (!frame && !returnTo)) return;
     send({ type: "capstone-viewer:visibility", visible: false });
+    window.clearTimeout(loadTimeout);
+    loadTimeout = null;
     mount.replaceChildren();
     for (const cleanup of cleanups.splice(0)) cleanup();
     boundDocuments = new WeakSet();
@@ -96,25 +99,64 @@
     if (dialog.open) return;
     returnTo = { trigger, x: window.scrollX, y: window.scrollY };
     loaded = false;
-    status.hidden = true;
+    status.textContent = "Loading the guided presentation. Full view opens it on its own page.";
+    status.hidden = false;
     frame = document.createElement("iframe");
     frame.title = "Azure Local static presentation with readable viewing guidance";
     frame.allow = "fullscreen";
     frame.src = viewer.href;
     const openedFrame = frame;
+    function fail(message) {
+      if (frame !== openedFrame) return;
+      window.clearTimeout(loadTimeout);
+      loadTimeout = null;
+      loaded = false;
+      status.textContent = message;
+      status.hidden = false;
+    }
+    function checkPresentation() {
+      if (frame !== openedFrame) return;
+      const doc = openedFrame.contentDocument;
+      const guidance = doc && doc.getElementById("viewer");
+      const presentation = doc && doc.getElementById("presentation");
+      if (!guidance || !presentation) {
+        fail("The guided presentation could not load here. Use Full view, or Exit view to return to the portfolio.");
+        return;
+      }
+      const deck = presentation.contentDocument;
+      if (!deck || deck.readyState !== "complete") return;
+      if (!deck.getElementById("gateGo") || !deck.getElementById("btnNext")) {
+        fail("The presentation did not load. Use Full view to open it directly, or Exit view to return.");
+        return;
+      }
+      if (!guidance.getClientRects().length || !presentation.getClientRects().length) return;
+      window.clearTimeout(loadTimeout);
+      loadTimeout = null;
+      loaded = true;
+      status.hidden = true;
+      bindFrameKeys(doc);
+      send({ type: "capstone-viewer:visibility", visible: dialog.open });
+    }
     frame.addEventListener("load", () => {
       if (frame !== openedFrame) return;
-      loaded = true;
-      bindFrameKeys(frame.contentDocument);
-      send({ type: "capstone-viewer:visibility", visible: dialog.open });
+      const doc = openedFrame.contentDocument;
+      const presentation = doc && doc.getElementById("presentation");
+      if (presentation) {
+        presentation.addEventListener("load", checkPresentation);
+        cleanups.push(() => presentation.removeEventListener("load", checkPresentation));
+      }
+      checkPresentation();
     });
     frame.addEventListener("error", () => {
-      if (frame === openedFrame) status.hidden = false;
+      fail("The presentation could not load. Use Full view to open it directly, or Exit view to return.");
     });
     mount.replaceChildren(frame);
     document.documentElement.classList.add("capstone-open");
     dialog.showModal();
     exit.focus({ preventScroll: true });
+    loadTimeout = window.setTimeout(() => {
+      fail("The presentation is taking too long to load. Use Full view to open it directly, or Exit view to return.");
+    }, 15000);
     send({ type: "capstone-viewer:visibility", visible: true });
   }
 
