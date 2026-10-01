@@ -166,7 +166,7 @@
                     <div><dt>Built</dt><dd>Catalog/floor validation, CSV and AD OU inventory creation, file-vault loading, chocoBuild/chocoDeploy, WinRM/Chocolatey reconciliation, and JSON/HTML/fleet reporting.</dd></div>
                     <div><dt>Stubs</dt><dd>First-party authoring, classification, and standalone signing, verification, extraction, and repacking. The iterate extraction/repacking actions are implemented.</dd></div>
                     <div><dt>Limits</dt><dd>sysPatch is incomplete. Key Vault retrieval exists but is not integrated into fleet credential loading. Semaphore and automatic remediation are not implemented.</dd></div>
-                    <div><dt>Bring</dt><dd>Your own Linux control node, authorized Windows targets, inventory, package sources, and credentials. The optional Azure Arc sample also requires your own cloud setup and external pull script.</dd></div>
+                    <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable rather than tied to one lab. Execution currently uses Ansible and WinRM. Planned, not implemented: Azure Arc delivery through official modules and client-based authentication, intended to reduce reliance on WinRM and carry the pipeline's policy-and-evidence model into other environments.</dd></div>
                   </dl>
                   <p class="operation-note">The static architecture showcase requires no cloud account, fleet connection, or credentials.</p>
                 </div>
