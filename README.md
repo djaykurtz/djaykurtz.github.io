@@ -4,7 +4,7 @@ A dependency-free static homepage for **David Kurtz / [djaykurtz](https://github
 
 ## Contents
 
-- `site/index.html`: six navigable movements, project context, native expandable inspection panels, repository links, and demo links.
+- `site/index.html`: six anchored sections, an "On this page" index, project context, native expandable inspection panels, repository links, and demo links.
 - `site/styles.css`: responsive layout, authored capstone visual vocabulary, keyboard focus, reduced-motion support, and print styles.
 - `site/capstone.js`: progressive enhancement for the Azure Local guided lightbox.
 - `site/favicon.svg`: locally served favicon.
@@ -18,7 +18,7 @@ There is no build step, runtime dependency, external font, CDN, analytics, form 
 
 ## Design identity
 
-The homepage deliberately adapts David's authored Azure Local capstone movement design: warm charcoal shell (`#16161b`), panel (`#1b1b21`), warm ink (`#ece8e1`), soft and dim text, fine white-alpha dividers, UI sans-serif and Cascadia/SF monospace stacks, compact labels, a movement rail, and progressive disclosure.
+The homepage retains visual cues from David's authored Azure Local capstone: warm charcoal shell (`#16161b`), panel (`#1b1b21`), warm ink (`#ece8e1`), soft and dim text, fine white-alpha dividers, UI sans-serif and Cascadia/SF monospace stacks, compact labels, a page index, and progressive disclosure. Its navigation uses neutral section/project labels; the movement metaphor belongs to the Azure capstone itself.
 
 Unlike the capstone's fixed presentation canvas, this page reflows into a scrolling mobile layout. Native links and `details` keep navigation and inspection functional without JavaScript. The five connection-kind tokens retain their capstone semantics; they are not assigned as project or health colors. Only the orange work-pathway marker is used in the text-only overview. There are no ambient particles, auto-advancing scenes, or decorative status indicators on the homepage.
 
