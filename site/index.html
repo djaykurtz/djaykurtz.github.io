@@ -155,18 +155,18 @@
             <div class="project-inspect">
               <div class="boundary">
                 <p class="cap">Public boundary</p>
-                <p>Static architecture showcase, not live fleet operations. Some components remain stubs or incomplete; inspect the scope below. Operational use requires your own targets and credentials.</p>
+                <p>Static architecture walkthrough of the delivered application-alignment pipeline. Configure targets, package sources, and credentials for operational use; the showcase connects to no live fleet.</p>
               </div>
               <details>
                 <summary><span>Inspect the pipeline</span><span class="summary-action" aria-hidden="true"></span></summary>
                 <div class="detail-content">
-                  <h3>Implemented alignment, explicit limits</h3>
-                  <p>Package intent, deployment, and evidence are implemented workflows, not a claim of a completed autonomous patching or cloud platform.</p>
+                  <h3>Delivered scope and operational design</h3>
+                  <p>The pipeline connects reviewed package intent to host alignment and deployment evidence, with separate build and deploy roles and explicit operational policy.</p>
                   <dl>
-                    <div><dt>Built</dt><dd>Catalog/floor validation, CSV and AD OU inventory creation, file-vault loading, chocoBuild/chocoDeploy, WinRM/Chocolatey reconciliation, and JSON/HTML/fleet reporting.</dd></div>
-                    <div><dt>Stubs</dt><dd>First-party authoring, classification, and standalone signing, verification, extraction, and repacking. The iterate extraction/repacking actions are implemented.</dd></div>
-                    <div><dt>Limits</dt><dd>sysPatch is incomplete. Key Vault retrieval exists but is not integrated into fleet credential loading. Semaphore and automatic remediation are not implemented.</dd></div>
-                    <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable rather than tied to one lab. Execution currently uses Ansible and WinRM. Planned, not implemented: Azure Arc delivery through official modules and client-based authentication, intended to reduce reliance on WinRM and carry the pipeline's policy-and-evidence model into other environments.</dd></div>
+                    <div><dt>Delivered</dt><dd>Catalog and version-floor validation, CSV and AD protected-OU inventory preparation, community and wrapper package builds, five application deployment modes, runtime alignment, WinRM/PowerShell/Chocolatey reconciliation, and per-host JSON/HTML plus fleet reporting.</dd></div>
+                    <div><dt>Architecture</dt><dd>Modular build and deploy roles separate package preparation from fleet execution. A shared catalog and version-floor policy connect reviewed intent, package sources, and host alignment.</dd></div>
+                    <div><dt>Operations</dt><dd>Reboots default to never, with explicit operator policy. Per-host outcomes, failed-attempt and retry evidence, and fleet summaries keep maintenance decisions grounded in what happened. See the repository for setup and detailed execution boundaries.</dd></div>
+                    <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable rather than tied to one lab. Execution currently uses Ansible and WinRM. As deployment scale, business scope, and security requirements evolve, future enhancement options include Azure Arc execution through official modules and client-based authentication, with the aim of reducing reliance on WinRM.</dd></div>
                   </dl>
                   <p class="operation-note">The static architecture showcase requires no cloud account, fleet connection, or credentials.</p>
                 </div>
@@ -177,7 +177,7 @@
             <a href="https://djaykurtz.github.io/ANS-CHOCO/" class="project-preview">
               <img src="assets/ans-choco-architecture.png" width="1600" height="1100" loading="lazy" decoding="async" alt="ANS-CHOCO architecture connecting reviewed catalog and inventory to Ansible build/deploy roles, Windows reconciliation, and per-host and fleet evidence.">
             </a>
-            <figcaption>Static, source-grounded architecture overview. Inventory and catalog feed package build/deploy, Windows reconciliation, and reporting. The walkthrough identifies proposed or incomplete components; no live fleet is connected.</figcaption>
+            <figcaption>Static, source-grounded architecture overview: reviewed catalog and inventory flow through package build/deploy, Windows reconciliation, and reporting. Explore the delivered workflow and its operational design; no live fleet is connected.</figcaption>
             <p class="figure-tools"><a class="text-link" href="assets/ans-choco-architecture.png">View full-resolution ANS-CHOCO image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
           <a class="next-movement" href="#azure-local"><span>Next movement</span><strong>03 / Infrastructure <span aria-hidden="true">&darr;</span></strong></a>
