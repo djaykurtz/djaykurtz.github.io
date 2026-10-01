@@ -21,7 +21,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="identity" href="#top" aria-label="David Kurtz, back to introduction">
-        <span class="identity-mark" aria-hidden="true">DK</span>
+        <svg class="identity-mark" viewBox="4 4 26 24" aria-hidden="true" focusable="false"><path d="M7 25V17" stroke="#35e0e8" stroke-width="3"/><path d="M12 25V12" stroke="#a78bfa" stroke-width="3"/><path d="M17 25V7" stroke="#edb200" stroke-width="3"/><path d="M22 25V10" stroke="#00c758" stroke-width="3"/><path d="M27 25V15" stroke="#fe6e00" stroke-width="3"/></svg>
         <span>David Kurtz</span>
       </a>
       <div class="header-meta">
@@ -81,8 +81,8 @@
           <div class="project-heading">
             <div><h2 id="cohort-title">COHORT</h2><p class="project-subtitle">Accountable multi-agent coding.</p></div>
           </div>
-          <p class="project-intro">I built COHORT's agent-coordination functions to organize my own projects and tasks. Its design connects goals, workflow decomposition, distinct role perspectives, research, decisions, and accountable handoffs. ZeroBrain / superdashv2 makes that work visible.</p>
-          <p class="project-story"><strong>Reliability, not bureaucracy.</strong> The goal is a personal engineering team: distinct role perspectives connected by shared goals and workflows, explicit ownership, review of exact artifacts, and durable context across handoffs. Unknowns and failures stay visible so reliability can be assessed, not assumed.</p>
+          <p class="project-intro">Run enough projects at once and context starts slipping between them. I built COHORT's agent-coordination functions to organize my own projects and tasks. Its design connects goals, workflow decomposition, distinct role perspectives, research, decisions, and accountable handoffs. The ZeroBrain dashboard makes that work visible.</p>
+          <p class="project-story"><strong>Reliable by design.</strong> The goal is a personal engineering team: distinct role perspectives connected by shared goals and workflows, explicit ownership, review of exact artifacts, and durable context across handoffs. Unknowns and failures stay visible, so reliability can be checked at any time.</p>
           <p class="project-atlas">The atlas maps 37 documented systems and boundaries: roles, inputs and outputs, authority, handoffs, runtime availability, and source evidence.</p>
           <div class="project-body">
             <div class="project-overview">
@@ -107,7 +107,7 @@
                   <p>Try the workflow and explore the technical architecture and source references in the repository.</p>
                   <dl>
                     <div><dt>Explore</dt><dd>Task, node, review, design, and knowledge views, plus the research/decisions inspector, with filters and drilldowns.</dd></div>
-                    <div><dt>Decide</dt><dd>In the documented workflow, waves are deliberation, not delivery. Votes are audit evidence, not a numeric ratification threshold. A latest closed wave with non-empty PM synthesis supports one of five legal bases.</dd></div>
+                    <div><dt>Decide</dt><dd>In the documented workflow, waves are for deliberation, and delivery follows separately. Votes are recorded as audit evidence. A latest closed wave with non-empty PM synthesis supports one of five legal bases.</dd></div>
                     <div><dt>Separate</dt><dd>RFC council-vessel recusal and independent artifact review serve different review responsibilities.</dd></div>
                     <div><dt>Try</dt><dd>Explore status and owner changes, deadlines, and health states in the sample workflow; reset to start again.</dd></div>
                     <div><dt>Discuss</dt><dd>Work ownership, artifact-bound review, durable-context architecture, and visible failure.</dd></div>
@@ -132,7 +132,7 @@
             <div><h2 id="patching-title">ANS-CHOCO</h2><p class="project-subtitle">Policy-driven software alignment, with evidence.</p></div>
             <span class="scope-label">Architecture / implementation</span>
           </div>
-          <p class="project-intro">Policy-driven Windows software alignment with Ansible and Chocolatey, from reviewed package intent to per-host deployment evidence. Its source-grounded architecture showcase follows catalog validation, inventory, package build and deployment, reconciliation, and reporting.</p>
+          <p class="project-intro">Keeping Windows software current across a fleet usually means manual installs and no record of what landed where. ANS-CHOCO handles policy-driven Windows software alignment with Ansible and Chocolatey, from reviewed package intent to per-host deployment evidence. Its source-grounded architecture showcase follows catalog validation, inventory, package build and deployment, reconciliation, and reporting.</p>
           <div class="project-body">
             <div class="project-overview">
               <p class="cap">The system</p>
@@ -160,7 +160,7 @@
                     <div><dt>Delivered</dt><dd>Catalog and version-floor validation, CSV and AD protected-OU inventory preparation, community and wrapper package builds, five application deployment modes, runtime alignment, WinRM/PowerShell/Chocolatey reconciliation, and per-host JSON/HTML plus fleet reporting.</dd></div>
                     <div><dt>Architecture</dt><dd>Modular build and deploy roles separate package preparation from fleet execution. A shared catalog and version-floor policy connect reviewed intent, package sources, and host alignment.</dd></div>
                     <div><dt>Operations</dt><dd>Reboots default to never, with explicit operator policy. Per-host outcomes, failed-attempt and retry evidence, and fleet summaries keep maintenance decisions grounded in what happened. See the repository for setup and detailed execution boundaries.</dd></div>
-                    <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable rather than tied to one lab. Execution currently uses Ansible and WinRM. As deployment scale, business scope, and security requirements evolve, future enhancement options include Azure Arc execution through official modules and client-based authentication, with the aim of reducing reliance on WinRM.</dd></div>
+                    <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable, so the workflow moves to any lab. Execution currently uses Ansible and WinRM. As deployment scale, business scope, and security requirements evolve, future enhancement options include Azure Arc execution through official modules and client-based authentication, with the aim of reducing reliance on WinRM.</dd></div>
                   </dl>
                   <p class="operation-note">Explore the architecture to see how policy, package preparation, host alignment, and evidence fit into one operational workflow.</p>
                 </div>
@@ -183,7 +183,7 @@
             <div><h2 id="azure-title">Azure Local POC</h2><p class="project-subtitle">Six-node ambition. Resource-aware engineering.</p></div>
             <span class="scope-label">Interactive capstone</span>
           </div>
-          <p class="project-intro">An initial six-node Azure Local cluster goal became a resource-aware design exercise using available lab hardware. The delivered four-node POC connects physical fabric, pooled storage, Arc management, Kubernetes, and workloads, with the capstone showing the engineering choices behind the working platform.</p>
+          <p class="project-intro">Hybrid platforms are hard to understand from the hardware up. An initial six-node Azure Local cluster goal became a resource-aware design exercise using available lab hardware. The delivered four-node POC connects physical fabric, pooled storage, Arc management, Kubernetes, and workloads, with the capstone showing the engineering choices behind the working platform.</p>
           <div class="project-body">
             <div class="project-overview">
               <p class="cap">The system</p>

@@ -35,8 +35,8 @@ p + p { margin-top: 1rem; }
 .skip-link { position: absolute; z-index: 5; top: 1rem; left: 1rem; padding: .8rem 1.2rem; background: var(--ink); color: var(--shell); transform: translateY(-180%); font-weight: 700; }
 .skip-link:focus { transform: translateY(0); }
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-height: 80px; padding: 1rem 2.5rem; border-bottom: 1px solid var(--line); }
-.identity { display: inline-flex; align-items: center; gap: 1rem; font-size: var(--reading); font-weight: 600; }
-.identity-mark { padding: .3rem .45rem; border: 1px solid var(--line-strong); border-radius: 2px; font-family: var(--mono); font-size: var(--badge); letter-spacing: .06em; font-weight: 400; }
+.identity { display: inline-flex; align-items: center; gap: .7rem; font-size: var(--reading); font-weight: 600; }
+.identity-mark { width: 1.6em; height: 1.5em; flex: none; }
 .header-meta { display: flex; align-items: center; gap: 1.5rem; }
 .header-meta a { display: inline-flex; align-items: center; gap: .8rem; min-height: 44px; font-family: var(--mono); font-size: var(--label); color: var(--ink-soft); }
 .chip { display: inline-block; padding: .2rem .5rem; border: 1px solid var(--line); border-radius: 2px; font-family: var(--mono); font-size: var(--badge); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-dim); }
