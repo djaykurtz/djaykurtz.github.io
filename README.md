@@ -62,7 +62,7 @@ All three hosted showcases are independent static or synthetic experiences. ANS-
 
 The ANS-CHOCO architecture overview is at `site/assets/ans-choco-architecture.png`. Its homepage caption and project details explain the delivered workflow and engineering decisions while keeping the static-presentation context explicit.
 
-The representative COHORT research/decisions screenshot is at `site/assets/cohort-governance.png`. Its figure and profile alt text explicitly say OFFLINE / SYNTHETIC and make no production-count or outcome claims. The earlier `site/assets/cohort-tasks.png` remains available for existing links, not as a second figure. The project story reflects tooling built to organize David's own projects and tasks, not enterprise adoption or complete feature parity with Copilot.
+The representative COHORT research/decisions screenshot is at `site/assets/cohort-governance.png`. Its figure and profile caption identify an interactive demo with sample data; descriptive alt text explains the workflow without production-count or outcome claims. Technical source-package availability is documented separately above and in the project repository. The earlier `site/assets/cohort-tasks.png` remains available for existing links, not as a second figure. The project story reflects tooling built to organize David's own projects and tasks, not enterprise adoption or complete feature parity with Copilot.
 
 The Azure Local platform screenshot is at `site/assets/azure-local-architecture.png`. It depicts a static capstone state explaining recorded lab work, not a connected Azure session or newly executed test.
 
@@ -72,7 +72,7 @@ Each homepage figure offers an explicit full-resolution image link. Profile imag
 
 ## Guided Azure viewing
 
-On the canonical hosted portfolio, the Azure action and preview open an in-place native-dialog lightbox over the dimmed page. The child route `https://djaykurtz.github.io/AZLOCAL-POC/viewer/?embed=1` owns presentation instructions; the host provides an obvious Exit view and separate Full view fallback. Loading is reported visibly until the actual presentation controls are ready; missing or slow content shows a direct-view fallback rather than leaving an unexplained empty frame. Closing restores the triggering link and the previous portfolio scroll position. The embedded frame is removed on exit and restarts on the next open.
+On the canonical hosted portfolio, the Azure action and preview open an in-place native-dialog lightbox over the dimmed page. The child route `https://djaykurtz.github.io/AZLOCAL-POC/viewer/?embed=1` owns presentation instructions; the host provides an obvious Exit view and separate Full view fallback that opens the guided viewer in the same tab. Loading is reported visibly until the actual presentation controls are ready; missing or slow content shows a direct-view fallback rather than leaving an unexplained empty frame. Closing restores the triggering link and the previous portfolio scroll position. The embedded frame is removed on exit and restarts on the next open.
 
 Host Escape forwards the fixed escape message so the child closes BUILT evidence first, then requests exit. Exit messages are accepted only from the active iframe at the same origin and with the exact allowed payload. Visibility messages contain only a typed boolean; no arbitrary commands, wildcard origins, or evaluation are used.
 

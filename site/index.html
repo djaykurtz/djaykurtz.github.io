@@ -44,7 +44,6 @@
         <div class="rail-foot">
           <p class="cap">Reading the work</p>
           <p>Read the story, then inspect the implementation.</p>
-          <p class="rail-note">Demos do not control live systems.</p>
         </div>
       </nav>
 
@@ -65,7 +64,7 @@
             <aside class="intro-note" aria-label="How to explore">
               <p class="cap">A guided view</p>
               <p class="note-title">Context first.<br>Depth on demand.</p>
-              <p>Each project introduces a system, defines its public boundary, and opens into the details worth discussing.</p>
+              <p>Each project introduces a system and opens into the engineering details worth discussing.</p>
               <p class="note-meta">Built to read, inspect, and explore.</p>
             </aside>
           </div>
@@ -81,11 +80,10 @@
           <div class="movement-label"><span>Project 01</span><span class="chip">Agent coordination</span></div>
           <div class="project-heading">
             <div><h2 id="cohort-title">COHORT</h2><p class="project-subtitle">Accountable multi-agent coding.</p></div>
-            <span class="scope-label">Disconnected demo</span>
           </div>
-          <p class="project-intro">I built COHORT's agent-coordination functions to organize my own projects and tasks, connecting research and decisions with work ownership. ZeroBrain / superdashv2 makes that work visible.</p>
+          <p class="project-intro">I built COHORT's agent-coordination functions to organize my own projects and tasks. Its design connects goals, workflow decomposition, distinct role perspectives, research, decisions, and accountable handoffs. ZeroBrain / superdashv2 makes that work visible.</p>
           <p class="project-story"><strong>Reliability, not bureaucracy.</strong> The goal is a personal engineering team: distinct role perspectives connected by shared goals and workflows, explicit ownership, review of exact artifacts, and durable context across handoffs. Unknowns and failures stay visible so reliability can be assessed, not assumed.</p>
-          <p class="project-atlas">The atlas maps 37 documented/exported systems and boundaries: roles, inputs and outputs, authority, handoffs, runtime availability, and source evidence. It is a map of the exported design, not 37 bundled services or a reconstruction of the omitted database.</p>
+          <p class="project-atlas">The atlas maps 37 documented systems and boundaries: roles, inputs and outputs, authority, handoffs, runtime availability, and source evidence.</p>
           <div class="project-body">
             <div class="project-overview">
               <p class="cap">The system</p>
@@ -97,26 +95,22 @@
               <div class="link-row">
                 <a class="button" href="https://djaykurtz.github.io/COHORT/systems/">Explore system atlas <span aria-hidden="true">&nearr;</span></a>
                 <a class="text-link" href="https://djaykurtz.github.io/COHORT/demo/?view=governance">Try research and decisions <span aria-hidden="true">&nearr;</span></a>
-                <a class="text-link" href="https://djaykurtz.github.io/COHORT/demo/">Offline dashboard <span aria-hidden="true">&nearr;</span></a>
+                <a class="text-link" href="https://djaykurtz.github.io/COHORT/demo/">Explore dashboard <span aria-hidden="true">&nearr;</span></a>
                 <a class="text-link" href="https://github.com/djaykurtz/COHORT">Repository <span aria-hidden="true">&nearr;</span></a>
               </div>
             </div>
             <div class="project-inspect">
-              <div class="boundary">
-                <p class="cap">Public boundary</p>
-                <p>OFFLINE / SYNTHETIC. Selected dashboard/frontend surfaces and architecture/contracts, not the whole runtime. The coordinator, backend, and database are omitted. Local simulation: no API calls, credentials, or persistent changes.</p>
-              </div>
               <details>
                 <summary><span>Inspect the project</span><span class="summary-action" aria-hidden="true"></span></summary>
                 <div class="detail-content">
-                  <h3>Functional surfaces, disconnected data</h3>
-                  <p>The public project preserves actual dashboard/frontend material and rebuild-grade architecture/contracts alongside a disconnected synthetic adapter. Original task, node, and review renderers are reused; no coordinator backend or live agents are bundled.</p>
+                  <h3>Explore the workflow</h3>
+                  <p>Try the workflow and explore the technical architecture and source references in the repository.</p>
                   <dl>
-                    <div><dt>Explore</dt><dd>Task, node, review, design, and knowledge views, plus the synthetic research/decisions inspector, with filters and drilldowns.</dd></div>
-                    <div><dt>Decide</dt><dd>Waves are deliberation, not delivery. Votes are audit evidence, not a numeric ratification threshold. A latest closed wave with non-empty PM synthesis supports one of five legal bases; backend authority and enforcement are not bundled.</dd></div>
-                    <div><dt>Separate</dt><dd>RFC council-vessel recusal and independent work/artifact review are different boundaries, not interchangeable approval gates.</dd></div>
-                    <div><dt>Simulate</dt><dd>In-memory status and owner changes, reset, deadlines, and health states. Reload or reset discards sample changes.</dd></div>
-                    <div><dt>Discuss</dt><dd>Work ownership, artifact-bound review, durable-context architecture, and visible failure without implying a connected fleet.</dd></div>
+                    <div><dt>Explore</dt><dd>Task, node, review, design, and knowledge views, plus the research/decisions inspector, with filters and drilldowns.</dd></div>
+                    <div><dt>Decide</dt><dd>In the documented workflow, waves are deliberation, not delivery. Votes are audit evidence, not a numeric ratification threshold. A latest closed wave with non-empty PM synthesis supports one of five legal bases.</dd></div>
+                    <div><dt>Separate</dt><dd>RFC council-vessel recusal and independent artifact review serve different review responsibilities.</dd></div>
+                    <div><dt>Try</dt><dd>Explore status and owner changes, deadlines, and health states in the sample workflow; reset to start again.</dd></div>
+                    <div><dt>Discuss</dt><dd>Work ownership, artifact-bound review, durable-context architecture, and visible failure.</dd></div>
                   </dl>
                 </div>
               </details>
@@ -124,9 +118,9 @@
           </div>
           <figure class="project-figure">
             <a href="https://djaykurtz.github.io/COHORT/" class="project-preview">
-              <img src="assets/cohort-governance.png" width="1440" height="900" loading="lazy" decoding="async" alt="OFFLINE / SYNTHETIC research and decisions inspector showing illustrative votes and deliberation requirements, with no backend or real agent decisions.">
+              <img src="assets/cohort-governance.png" width="1440" height="900" loading="lazy" decoding="async" alt="Research and decisions inspector showing sample votes and deliberation evidence.">
             </a>
-            <figcaption>OFFLINE / SYNTHETIC. Research, deliberation, and decision evidence in an invented local workflow. Votes are audit evidence, not a numeric ratification gate; no real votes, agents, or backend are connected.</figcaption>
+            <figcaption>Interactive demo with sample data. Research, deliberation, and decision evidence in an illustrative workflow.</figcaption>
             <p class="figure-tools"><a class="text-link" href="assets/cohort-governance.png">View full-resolution COHORT image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
           <a class="next-movement" href="#ans-choco"><span>Next project</span><strong>02 / Application patching <span aria-hidden="true">&darr;</span></strong></a>
@@ -154,8 +148,8 @@
             </div>
             <div class="project-inspect">
               <div class="boundary">
-                <p class="cap">Public boundary</p>
-                <p>Static architecture walkthrough of the delivered application-alignment pipeline. Configure targets, package sources, and credentials for operational use; the showcase connects to no live fleet.</p>
+                <p class="cap">Workflow in context</p>
+                <p>Follow reviewed policy through package preparation, host alignment, and reporting evidence. Configure targets, package sources, and authentication to apply the workflow in your environment.</p>
               </div>
               <details>
                 <summary><span>Inspect the pipeline</span><span class="summary-action" aria-hidden="true"></span></summary>
@@ -168,7 +162,7 @@
                     <div><dt>Operations</dt><dd>Reboots default to never, with explicit operator policy. Per-host outcomes, failed-attempt and retry evidence, and fleet summaries keep maintenance decisions grounded in what happened. See the repository for setup and detailed execution boundaries.</dd></div>
                     <div><dt>Portability</dt><dd>Package catalogs and policy, inventories, package sources, and authentication are configurable rather than tied to one lab. Execution currently uses Ansible and WinRM. As deployment scale, business scope, and security requirements evolve, future enhancement options include Azure Arc execution through official modules and client-based authentication, with the aim of reducing reliance on WinRM.</dd></div>
                   </dl>
-                  <p class="operation-note">The static architecture showcase requires no cloud account, fleet connection, or credentials.</p>
+                  <p class="operation-note">Explore the architecture to see how policy, package preparation, host alignment, and evidence fit into one operational workflow.</p>
                 </div>
               </details>
             </div>
@@ -177,7 +171,7 @@
             <a href="https://djaykurtz.github.io/ANS-CHOCO/" class="project-preview">
               <img src="assets/ans-choco-architecture.png" width="1600" height="1100" loading="lazy" decoding="async" alt="ANS-CHOCO architecture connecting reviewed catalog and inventory to Ansible build/deploy roles, Windows reconciliation, and per-host and fleet evidence.">
             </a>
-            <figcaption>Static, source-grounded architecture overview: reviewed catalog and inventory flow through package build/deploy, Windows reconciliation, and reporting. Explore the delivered workflow and its operational design; no live fleet is connected.</figcaption>
+            <figcaption>Source-grounded architecture overview: reviewed catalog and inventory flow through package build/deploy, Windows reconciliation, and reporting. Explore the delivered workflow and its operational design.</figcaption>
             <p class="figure-tools"><a class="text-link" href="assets/ans-choco-architecture.png">View full-resolution ANS-CHOCO image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
           <a class="next-movement" href="#azure-local"><span>Next project</span><strong>03 / Infrastructure <span aria-hidden="true">&darr;</span></strong></a>
@@ -206,18 +200,18 @@
             </div>
             <div class="project-inspect">
               <div class="boundary">
-                <p class="cap">Public boundary</p>
-                <p>Static presentation of recorded lab work, not a connected Azure dashboard. Topology, portal-style views, and terminal replays do not query Azure or execute infrastructure changes.</p>
+                <p class="cap">Engineering in view</p>
+                <p>Follow physical fabric, pooled storage, Azure management, and workloads through an interactive walkthrough of recorded lab engineering.</p>
               </div>
               <details>
                 <summary><span>Inspect the design</span><span class="summary-action" aria-hidden="true"></span></summary>
                 <div class="detail-content">
                   <h3>Recorded engineering, explained interactively</h3>
-                  <p>Progressive movements reveal subsystem relationships; evidence cutaways explain the retained engineering records. The capstone does not deploy or run the separate Kubernetes dashboard implementation.</p>
+                  <p>Progressive movements reveal subsystem relationships; evidence cutaways explain the retained engineering records.</p>
                   <dl>
                     <div><dt>Recorded</dt><dd>Four-node cluster and pooled storage, Arc bridge, guest workloads, AKS application behavior, and operator-driven Terraform VM lifecycle.</dd></div>
-                    <div><dt>Limits</dt><dd>A lab POC, not production certification, disaster-recovery proof, or performance-capacity validation. HPA, an external load-balancer VIP, and production delivery pipelines are not claimed completed.</dd></div>
-                    <div><dt>Bring</dt><dd>Your own Azure tenant/subscription, permissions, prepared hardware, directory services, networking, and credentials for actual provisioning. Viewing the static capstone requires none of these.</dd></div>
+                    <div><dt>Design</dt><dd>The four-node lab design makes infrastructure dependencies, memory constraints, and deployment choices visible through recorded evidence.</dd></div>
+                    <div><dt>Apply</dt><dd>Adapt the provisioning examples to your Azure tenant/subscription, permissions, prepared hardware, directory services, networking, and credentials.</dd></div>
                   </dl>
                   <p class="operation-note"><a class="text-link" href="https://djaykurtz.github.io/AZLOCAL-POC/">Standalone / presenter view <span aria-hidden="true">&nearr;</span></a></p>
                 </div>
@@ -228,7 +222,7 @@
             <a href="https://djaykurtz.github.io/AZLOCAL-POC/viewer/" class="project-preview" data-capstone-open>
               <img src="assets/azure-local-architecture.png" width="1536" height="864" loading="lazy" decoding="async" alt="Static Azure Local capstone showing generic fabric nodes connected to Azure Local, Arc bridge, pooled storage, and the platform memory boundary.">
             </a>
-            <figcaption>Open the preview to explore the guided presentation, then exit back to your place. It explains recorded lab work, not a connected Azure dashboard or a newly executed infrastructure test.</figcaption>
+            <figcaption>Open the preview to follow platform relationships and recorded lab evidence in the guided presentation, then exit back to your place.</figcaption>
             <p class="figure-tools"><a class="text-link" href="assets/azure-local-architecture.png">View full-resolution Azure Local image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
           <a class="next-movement" href="#approach"><span>Next section</span><strong>04 / Common thread <span aria-hidden="true">&darr;</span></strong></a>
@@ -254,7 +248,7 @@
         </section>
         <footer class="site-footer">
           <p>David Kurtz / djaykurtz</p>
-          <p>Static portfolio. Clearly scoped demos. No tracking.</p>
+          <p>Systems and automation. No tracking.</p>
           <a href="#top">Back to introduction <span aria-hidden="true">&uarr;</span></a>
         </footer>
       </main>
@@ -262,7 +256,7 @@
     <dialog class="capstone-dialog" id="capstone-dialog" aria-labelledby="capstone-dialog-title">
       <h2 class="visually-hidden" id="capstone-dialog-title">Azure Local guided static presentation</h2>
       <div class="portal-toolbar">
-        <a class="text-link" href="https://djaykurtz.github.io/AZLOCAL-POC/viewer/" target="_blank" rel="noopener">Full view <span aria-hidden="true">&nearr;</span></a>
+        <a class="text-link" href="https://djaykurtz.github.io/AZLOCAL-POC/viewer/">Full view <span aria-hidden="true">&nearr;</span></a>
         <button class="button portal-exit" type="button" data-capstone-exit autofocus>Exit view</button>
       </div>
       <p class="portal-status" role="status" hidden>Loading the guided presentation. Full view opens it on its own page.</p>
