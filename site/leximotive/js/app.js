@@ -140,7 +140,7 @@ function renderTicket() {
   for (const button of modeButtons) button.disabled = actionPending || (chosen !== undefined && +button.dataset.length !== chosen);
   ui.ticketStatus.textContent = chosen
     ? `Ticket booked: ${chosen}-letter journey${context.state.gaveUp ? " \u00b7 ended" : ""}.`
-    : "Choose a journey. Your first move or hint books it.";
+    : "Preview the routes. Your first move or hint locks in today's journey.";
 }
 
 function persist() {

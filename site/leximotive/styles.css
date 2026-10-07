@@ -256,6 +256,7 @@ dialog code { overflow-wrap: anywhere; font-size: 12px; }
   .results-logo { font-size: 46px; }
 }
 @media (max-width: 360px) {
+  #welcomeDialog p:not(.tagline) { font-size: 15px; line-height: 1.4; }
   .page { padding-inline: 8px; }
   .game-ticket { padding-inline: 8px; }
   .board { gap: 4px; }
