@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A word-puzzle solver that grew into Leximotive, a daily game. Play it and see how it works, explained in plain language.">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#16161b">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Something Fun | David Kurtz">
+    <meta property="og:description" content="How a small word-puzzle experiment became Leximotive, a daily game you can play in your browser.">
+    <meta property="og:url" content="https://djaykurtz.github.io/something-fun/">
+    <meta property="og:image" content="https://djaykurtz.github.io/assets/leximotive-game.png">
+    <meta property="og:image:alt" content="Leximotive's railway-themed word game, with letter tiles, a destination and lost-ticket hints.">
+    <link rel="canonical" href="https://djaykurtz.github.io/something-fun/">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../styles.css">
+    <title>Something Fun | David Kurtz</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="identity" href="/" aria-label="David Kurtz, back to portfolio">
+        <svg class="identity-mark" viewBox="4 4 26 24" aria-hidden="true" focusable="false"><path d="M7 25V17" stroke="#35e0e8" stroke-width="3"/><path d="M12 25V12" stroke="#a78bfa" stroke-width="3"/><path d="M17 25V7" stroke="#edb200" stroke-width="3"/><path d="M22 25V10" stroke="#00c758" stroke-width="3"/><path d="M27 25V15" stroke="#fe6e00" stroke-width="3"/></svg>
+        <span>David Kurtz</span>
+      </a>
+      <div class="header-meta">
+        <span class="chip">Something Fun</span>
+        <a href="/">Back to portfolio <span aria-hidden="true">&larr;</span></a>
+      </div>
+    </header>
+
+    <div class="portfolio-shell">
+      <nav class="movement-rail" aria-label="Something Fun navigation">
+        <p class="cap">On this page</p>
+        <ol class="rail-list">
+          <li><a href="#top"><span class="rail-number" aria-hidden="true">00</span><span>Leximotive</span></a></li>
+          <li><a href="#the-start"><span class="rail-number" aria-hidden="true">01</span><span>How it started</span></a></li>
+          <li><a href="#the-game"><span class="rail-number" aria-hidden="true">02</span><span>Becoming a game</span></a></li>
+          <li><a href="#behind-the-screen"><span class="rail-number" aria-hidden="true">03</span><span>How it works</span></a></li>
+        </ol>
+        <div class="rail-detour">
+          <p class="cap">Try it</p>
+          <a class="text-link" href="/leximotive/">Play Leximotive <span aria-hidden="true">&rarr;</span></a>
+          <a class="text-link" href="/">Back to portfolio <span aria-hidden="true">&larr;</span></a>
+        </div>
+      </nav>
+
+      <main id="main" class="workspace">
+        <section class="hero movement" id="top" aria-labelledby="fun-title">
+          <div class="movement-label"><span>Something Fun</span><span class="chip">A side project</span></div>
+          <p class="hero-kicker">Leximotive / The Daily Railword</p>
+          <h1 id="fun-title">A word challenge.<br>A game of its own.</h1>
+          <p class="hero-intro">This started with a puzzle I was playing: change one word into another, one letter at a time, making a real word at every step.</p>
+          <p class="hero-detail">I wanted to understand the possible routes, not just look up an answer. A small Python tool in the terminal became a project of its own: Leximotive, a daily word game you can play in your browser.</p>
+          <div class="link-row">
+            <a class="button" href="/leximotive/">Play Leximotive <span aria-hidden="true">&rarr;</span></a>
+            <a class="text-link" href="#the-start">See how it started <span aria-hidden="true">&darr;</span></a>
+          </div>
+          <figure class="project-figure">
+            <a href="/leximotive/" class="project-preview">
+              <img src="../assets/leximotive-game.png" width="896" height="603" decoding="async" alt="Leximotive's railway-style game board: change one letter at each stop to reach the destination, with optional ticket hints.">
+            </a>
+            <figcaption>The finished game: words become stations, and each accepted change is another stop on the way home.</figcaption>
+            <p class="figure-tools"><a class="text-link" href="../assets/leximotive-game.png">View the game image <span aria-hidden="true">&nearr;</span></a></p>
+          </figure>
+        </section>
+
+        <section class="project movement" id="the-start" aria-labelledby="start-title">
+          <div class="movement-label"><span>The start</span><span class="chip">A terminal experiment</span></div>
+          <h2 id="start-title">First, I just wanted to solve it.</h2>
+          <p class="project-intro">The rule sounds simple: change one letter. The hard part is choosing which letter, and finding a route where every new word is allowed.</p>
+          <p class="project-story">A word that looks closer to the finish can still lead to a dead end. Sometimes you have to go sideways, or change a letter that already matches, to find a way through.</p>
+          <p class="project-story">I wrote a Python program to explore those choices. It could list the next possible words, show exactly which letter changed, and find the fewest moves to the finish. I also wanted clues, so I could get a little help without revealing the whole answer.</p>
+          <figure class="project-figure">
+            <a href="../assets/leximotive-terminal.png" class="project-preview">
+              <img src="../assets/leximotive-terminal.png" width="1161" height="920" loading="lazy" decoding="async" alt="The original terminal solver comparing words reachable from BOLT and BOOT, showing the changed letter, remaining moves and suggested next stops.">
+            </a>
+            <figcaption>The original tool made the choices visible: possible next words, the changed letter, and how many moves remained.</figcaption>
+            <p class="figure-tools"><a class="text-link" href="../assets/leximotive-terminal.png">View the terminal image <span aria-hidden="true">&nearr;</span></a></p>
+          </figure>
+        </section>
+
+        <section class="project movement" id="the-game" aria-labelledby="game-title">
+          <div class="movement-label"><span>The next step</span><span class="chip">A game of its own</span></div>
+          <h2 id="game-title">The same idea, made playable.</h2>
+          <p class="project-intro">Once the route-finding worked, I wanted to turn it into something people could play rather than a tool that simply supplied an answer.</p>
+          <p class="project-story">That became Leximotive. Each word is a train station. Change one letter, make a new word, and take the next stop toward home. The track keeps every stop visible, so you can follow the journey you actually took.</p>
+          <p class="project-story">There are daily four-, five- and six-letter routes. Two hints are available if you get stuck. Each hint is a discarded ticket with part of a destination smudged out: it suggests a stop along a shortest route, but you still have to work out the missing letters and how to get there.</p>
+          <p class="project-story">The railway setting grew around the puzzle: split-flap letter tiles, a little engine, and an optional Coaling Station that can give you one free stop.</p>
+          <div class="link-row">
+            <a class="button" href="/leximotive/">Find your route home <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </section>
+
+        <section class="project movement" id="behind-the-screen" aria-labelledby="behind-title">
+          <div class="movement-label"><span>Behind the screen</span><span class="chip">In plain language</span></div>
+          <h2 id="behind-title">How does it know the way?</h2>
+          <p class="project-intro">Think of the word list as a map. Two words are connected when you can change one letter to get from one to the other.</p>
+          <p class="project-story">To find the fewest moves, the program starts at the destination and works outward: words one move away, then two moves away, and so on. This checks the possible routes instead of guessing that a word which looks closer must be better.</p>
+          <div class="project-body">
+            <div class="project-overview">
+              <p class="cap">While you play</p>
+              <dl>
+                <div><dt>Keep the screen moving</dt><dd>The browser does the route calculations in a separate helper, so that work does not hold up the game's controls.</dd></div>
+                <div><dt>Give a useful clue</dt><dd>The game chooses a shortest route, favouring unvisited stops and familiar words. A ticket reveals most of an unfamiliar stop along that route, not a list of moves.</dd></div>
+                <div><dt>Remember the journey</dt><dd>Progress and used hints stay in your browser. There is no login or shared player account.</dd></div>
+              </dl>
+            </div>
+            <div class="project-overview">
+              <p class="cap">Before you play</p>
+              <dl>
+                <div><dt>Prepare the daily routes</dt><dd>A Python tool picks six months of puzzles ahead of time and checks that every route works. The timetable repeats after those six months.</dd></div>
+                <div><dt>Use the same word list</dt><dd>Moves, clues and the minimum move count all use the same word list. A suggested word must be allowed in the game too.</dd></div>
+                <div><dt>No game backend needed</dt><dd>GitHub Pages serves the files. The game itself runs in your browser, including the word checks and route-finding. There is no game server processing your moves.</dd></div>
+              </dl>
+            </div>
+          </div>
+          <div class="link-row">
+            <a class="button" href="/leximotive/">Play Leximotive <span aria-hidden="true">&rarr;</span></a>
+            <a class="text-link" href="https://github.com/djaykurtz/djaykurtz.github.io/tree/main/site/leximotive">See the game code <span aria-hidden="true">&nearr;</span></a>
+          </div>
+        </section>
+        <footer class="site-footer">
+          <p>David Kurtz / djaykurtz</p>
+          <p>A small experiment, followed a little further.</p>
+          <a href="/">Back to portfolio <span aria-hidden="true">&larr;</span></a>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

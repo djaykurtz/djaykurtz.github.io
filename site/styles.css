@@ -50,6 +50,8 @@ p + p { margin-top: 1rem; }
 .rail-list a > span:last-child { min-width: 0; }
 .rail-list a:hover { color: var(--ink); background: rgba(255, 255, 255, .04); text-decoration: none; }
 .rail-number { font-family: var(--mono); color: var(--ink-dim); font-size: var(--badge); flex-shrink: 0; }
+.rail-detour { margin: 1.5rem .65rem 0; padding-top: 1.4rem; border-top: 1px solid var(--line); }
+.rail-detour .text-link { display: flex; width: fit-content; margin-top: .5rem; }
 .rail-foot { margin: 1.5rem .65rem 0; padding-top: 1.4rem; border-top: 1px solid var(--line); }
 .rail-foot p:not(.cap) { color: var(--ink-soft); font-size: var(--reading); line-height: 1.65; }
 .rail-foot p.rail-note { color: var(--ink-dim); }
@@ -149,6 +151,7 @@ dd { margin: 0; color: var(--ink-soft); font-size: var(--reading); overflow-wrap
   .movement-rail > .cap { padding-inline: 0; }
   .rail-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .2rem .75rem; }
   .rail-list a { padding-inline: 0; }
+  .rail-detour { margin-inline: 0; }
   .rail-foot { display: none; }
   .workspace { padding-inline: 2rem; border-left: 0; }
   .hero { padding-top: 3rem; }

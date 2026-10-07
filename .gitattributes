@@ -1,0 +1,2 @@
+site/leximotive/data/*.txt text eol=lf
+site/leximotive/data/puzzles.json text eol=lf

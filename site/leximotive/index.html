@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#252d29">
+  <meta name="description" content="A daily word railway. Travel from word to word, change one letter at each stop, and try to make par.">
+  <title>Leximotive &mdash; The Daily Railword</title>
+  <link rel="icon" href="./mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module">
+    import("./js/app.js").catch(error => {
+      const message = document.getElementById("message");
+      message.textContent = `The railway could not start: ${error.message}. Reload to try again.`;
+      message.classList.add("error");
+      document.querySelectorAll("[data-length]").forEach(button => { button.disabled = true; });
+      const retry = document.getElementById("retry");
+      retry.hidden = false;
+      retry.textContent = "Reload the railway";
+      retry.onclick = () => location.reload();
+    });
+  </script>
+</head>
+<body>
+  <div class="page">
+    <main>
+      <noscript><p class="notice">Leximotive needs JavaScript enabled to play. It runs entirely in your browser.</p></noscript>
+      <div id="dayNotice" class="notice" hidden>New departures are ready. <button id="newDay" type="button">Open today's puzzles</button></div>
+      <div id="storageWarning" class="notice" hidden><p id="storageNotice" role="status"></p><button id="recoverSave" type="button" hidden>Replace invalid save</button></div>
+      <section class="game-ticket" aria-label="Daily word game">
+        <div class="station-desk">
+          <header class="masthead">
+            <div class="topline"><span>THE DAILY RAILWORD</span><span class="ticket-icon" aria-hidden="true"></span></div>
+            <h1><button id="openWelcome" class="brand-button" type="button" title="Open the welcome screen" aria-label="Leximotive, open the welcome screen">Lexi<span>motive</span></button></h1>
+            <nav class="utility" aria-label="Information">
+              <button type="button" data-dialog="rulesDialog">How to play</button>
+              <span aria-hidden="true">&middot;</span>
+              <button type="button" data-dialog="buildDialog">The Firebox</button>
+            </nav>
+          </header>
+
+          <div class="daily-heading">
+            <div><span class="eyebrow">LEAVING TODAY:</span><p id="dateLabel">Preparing today's departures...</p></div>
+            <div class="mode-picker" role="group" aria-label="Journey complexity">
+              <button type="button" data-length="4" aria-pressed="true" aria-label="Local journey, 4-letter words" title="Local journey: four-letter words">4<span>Local</span></button>
+              <button type="button" data-length="5" aria-pressed="false" aria-label="Regional journey, 5-letter words" title="Regional journey: five-letter words">5<span>Regional</span></button>
+              <button type="button" data-length="6" aria-pressed="false" aria-label="Long-haul journey, 6-letter words" title="Long-haul journey: six-letter words">6<span>Long-haul</span></button>
+            </div>
+          </div>
+          <p id="ticketStatus" class="ticket-status" role="status" title="Your first accepted move, hint request, or Give up books one journey for the day.">Choose a journey to preview.</p>
+
+          <div class="journey">
+            <div><span class="eyebrow">DEPART FROM</span><strong id="startWord">----</strong></div>
+            <span class="route-line" aria-hidden="true"><span>&rarr;</span></span>
+            <div class="destination"><span class="eyebrow">ARRIVE AT</span><strong id="goalWord">----</strong></div>
+          </div>
+          <div class="score-strip" aria-label="Journey statistics">
+            <div><span class="eyebrow">MOVES</span><strong id="moveCount" aria-describedby="moveDetail">0</strong><span id="moveDetail" class="visually-hidden">Accepted transforms</span><span id="coalCredit" class="move-detail" hidden>-1 coal</span></div>
+            <div title="The minimum transforms to reach home, before the Coaling Station discount."><span class="eyebrow">PAR</span><strong id="parCount">&ndash;</strong></div>
+            <div><span class="eyebrow">RESTARTS</span><strong id="restartCount">0</strong></div>
+          </div>
+          <p class="departure-note">New departures at 8 AM Pacific.</p>
+        </div>
+
+        <div class="play-layout">
+          <section class="board-section" aria-label="Your word journey">
+            <div class="board-heading"><span class="eyebrow">YOUR LINE OF TRAVEL</span></div>
+            <div id="routeMap" class="route-map">
+              <svg id="trackLines" class="track-lines" aria-hidden="true"><path id="trackRailPath" class="track-rail" fill="none"/><path id="trackBedPath" class="track-bed" fill="none"/><path id="trackTiesPath" class="track-ties" fill="none"/></svg>
+              <span id="train" class="route-train" aria-hidden="true" hidden><img src="./locomotive.svg" alt=""></span>
+              <ol id="history" class="station-list" aria-label="Previously visited word stations"></ol>
+              <div id="currentStation" class="current-station" aria-current="step">
+                <div class="station-heading"><span class="station-node" aria-hidden="true"></span><span id="currentStopLabel" class="station-sign">BOARDING</span></div>
+                <div class="station-platform">
+                  <p id="boardInstruction" class="move-instruction">Preparing your current word...</p>
+                  <p id="message" class="message" role="status" aria-live="polite">Setting the letters in place...</p>
+                  <form id="moveForm" autocomplete="off" novalidate>
+                    <div id="board" class="board" aria-label="Select a letter to replace"></div>
+                    <p id="preview" class="preview" hidden></p>
+                    <div class="move-controls">
+                      <button id="makeMove" class="primary" type="submit" disabled>Make move <span aria-hidden="true">&rarr;</span></button>
+                      <button id="cancelEdit" class="quiet" type="button" disabled>Cancel</button>
+                      <details id="letterHelp" class="context-help">
+                        <summary aria-label="Explain letter markings" title="Letter markings and editing help">?</summary>
+                        <div class="help-card">
+                          <div id="tileKey" class="legend" aria-label="Letter markings">
+                            <span><i class="exact-key" aria-hidden="true"></i>Solid line: correct position</span>
+                            <span><i class="elsewhere-key" aria-hidden="true"></i>Dots: different position</span>
+                            <span><i class="absent-key" aria-hidden="true"></i>Unmarked: no match</span>
+                          </div>
+                          <p id="boardNote" class="board-note">Marks compare letters with home, not route distance. Underlined letters can still change.</p>
+                          <p>Tap a tile, type one letter, then confirm. Typing only previews a move.</p>
+                        </div>
+                      </details>
+                    </div>
+                  </form>
+                  <button id="retry" class="quiet" type="button" hidden>Try loading again</button>
+                </div>
+              </div>
+              <div id="coalStation" class="destination-station coal-station" hidden>
+                <span class="station-node" aria-hidden="true"></span>
+                <div><span class="station-sign" title="Optional: solve the clue and land on its word for one free transform.">COALING STATION &middot; FREE STOP</span><p id="coalClue" class="coal-clue" aria-describedby="coalStatus"></p><p id="coalStatus" class="visually-hidden"></p></div>
+              </div>
+              <div id="destinationStation" class="destination-station" hidden>
+                <span class="station-node" aria-hidden="true"></span>
+                <div><span class="station-sign">HOME</span><strong id="destinationWord"></strong></div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+        <aside class="letter-rack" aria-label="Optional waypoint tickets">
+          <div class="rack-heading"><span class="ticket-icon" aria-hidden="true"></span><span class="eyebrow">LOST TICKETS</span><details id="hintHelp" class="context-help"><summary aria-label="Explain ticket hints" title="Hint direction and usage">?</summary><div class="help-card"><p id="trackNote">A discarded ticket may reveal an unfamiliar stop along a shortest route home.</p><p>Most letters survive the oil smudge. Work out the destination and how to get there. Pocketed tickets can be reread for free; restarting does not refill hints.</p></div></details></div>
+          <div id="trackLetters" class="track-letters" aria-live="polite"></div>
+          <button id="requestHint" class="primary hint-button" type="button" disabled>Request a hint</button>
+          <p id="hintCount" class="hint-count">2 of 2 hints left</p>
+        </aside>
+
+        <div class="game-footer" aria-describedby="lineLabel"><span id="lineLabel" class="visually-hidden">THE FIRST TIMETABLE</span><button id="giveUp" class="quiet" type="button" disabled>Give up</button><div id="winPanel" class="results-bar" hidden><button id="viewResults" class="primary" type="button">Results &amp; route</button></div><button id="startOver" class="quiet restart-button" type="button" disabled title="Restart after making a move. Your daily choice and used hints stay booked."><svg class="rewind-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 1 1-1 8M4 3v6h6"/></svg>Start over</button></div>
+      </section>
+    </main>
+
+  </div>
+
+  <dialog id="rulesDialog" aria-labelledby="rulesTitle">
+    <button class="dialog-close quiet" type="button" data-close>Close &times;</button>
+    <span class="eyebrow">THE RULES OF THE RAILWAY</span><h2 id="rulesTitle">One letter. One stop.</h2>
+    <p>Travel from the starting word to the visible target. Every move replaces <strong>exactly one letter</strong>, and the result must be in this game's word list.</p>
+    <p>Tap a tile, type one A&ndash;Z letter, then press <strong>Enter</strong> or <strong>Make move</strong>. Typing only previews the change. Cancel or select another tile to discard it.</p>
+    <p>Preview Local (4 letters), Regional (5), and Long-haul (6). Your <strong>first accepted move, hint request, or Give up</strong> locks one journey for the day. Invalid attempts and typing do not book a ticket. A restart keeps your choice and is available only after an accepted transform.</p>
+    <p>Four- and five-letter starts have no correct-position matches with home; six-letter starts have at most one. Matches in other positions are still possible.</p>
+    <p><strong>Par</strong> is the fewest transforms to reach home without a bonus. Invalid attempts are free. Revisits count as moves. The optional <strong>Coaling Station</strong> has a clue instead of a revealed word: land on its word to deduct that landing move once. You may skip it. Counted moves and total transforms are shown separately.</p>
+    <p>Your route stays on the board: each accepted word becomes a station. The engine travels to your new stop, and the changed letter flips into place. Returning to an earlier word adds another stop, not a shortcut through your history.</p>
+    <p><strong>Green with a solid underline</strong> means the letter matches the destination in that position. <strong>Gold with a dotted underline</strong> means it matches in another position. An unmarked dark tile has no remaining match. These marks describe the last accepted word, not an unconfirmed preview or graph distance. Underlined letters are not locked and may need to change again.</p>
+    <p>You have <strong>two ticket hints</strong> per daily journey. A smudged destination reveals most letters of an unfamiliar, unvisited stop on a shortest route from your current word to home. It is a waypoint, not a list of moves. Routes favour fresh stops and familiar vocabulary; necessary backtracking is explained. Pocket a ticket and reopen it without spending another hint.</p>
+    <p>Restarting never refills used hints or a claimed Coaling Station credit. The free landing is available <strong>once per day</strong>; if you have not claimed it, it remains available after a restart. Progress, hint usage, and your daily choice are saved in this browser; refreshing isn't a restart. New departures arrive worldwide at <strong>8 AM Pacific</strong>, with daylight saving handled automatically. A journey in progress is not discarded at rollover.</p>
+    <p><strong>Give up</strong> finishes the chosen journey for the day, even with no moves. After confirmation, the closing screen explains your moves and reveals a minimum route. You cannot make more moves, request hints, or restart that journey. A new day brings a new ticket.</p>
+    <p>The demo timetable has 182 preselected days, with one Local, Regional, and Long-haul choice each day: 546 puzzles altogether. It covers October 6, 2026 through April 5, 2027, then repeats. Point scoring is being refined; this edition focuses on moves, par, free stops, and hint usage.</p>
+  </dialog>
+  <dialog id="buildDialog" aria-labelledby="buildTitle">
+    <button class="dialog-close quiet" type="button" data-close>Close &times;</button>
+    <span class="eyebrow">UNDER THE BRASS &amp; PAPER</span><h2 id="buildTitle">The Firebox</h2>
+    <p>Leximotive began as a Python terminal word-ladder solver, followed by a prototype called TexTumble. This edition is a standalone static game: native JavaScript modules, CSS, and small data files. It can live in a GitHub Pages subdirectory without a server or build step.</p>
+    <h3>Words are a network</h3>
+    <p>Words are nodes, one-letter changes are edges. A breadth-first search backward from the target finds exact minimum distances. A web worker keeps that graph work away from the phone's interface.</p>
+    <p>Dynamic programming counts shortest continuations and chooses a route favouring unvisited stops and familiar words. A found ticket points to the least commonplace unknown word on that route, with one or two letters smudged. It never supplies the intervening moves.</p>
+    <h3>Modern English, a fair par</h3>
+    <p>Accepted moves, hints, and par share the standard American-English SCOWL spelling list, limited to four, five, and six letters. Normal vocabulary and established loanwords such as HONE and TACO are included; this is not an "only very common words" list. Names-only entries, abbreviations, nonwords, accented spellings, and marked nonstandard forms are filtered out. Targeted exceptions exclude STANE, STANES, STANED, and the foreign culinary term RAGOUT.</p>
+    <p>An offline Python tool preselects the entire six-month timetable and verifies each minimum route. The Coaling Station sits on a shortest route, so its discounted route can beat par. Initial correct-position matches are checked separately. Bundled subtitle ranks guide route familiarity and ticket clues; they cannot admit a word. During play there are no online word lookups or newly generated puzzles. Solution paths are calculated after finishing, not published in the timetable.</p>
+    <h3>Credits</h3>
+    <p>Game vocabulary uses Kevin Atkinson's <a href="https://wordlist.aspell.net/" target="_blank" rel="noopener noreferrer">English Speller Database / SCOWL</a>, American English, standard size 60, release <code>2026.02.25</code>, with the game filters described above. Copyright 2000&ndash;2026 Kevin Atkinson. <a href="./data/LICENSE-scowl.txt">Word-list permission notice</a>.</p>
+    <p>Puzzle preparation and bundled hint ranks use <a href="https://github.com/hermitdave/FrequencyWords" target="_blank" rel="noopener noreferrer">Hermit Dave's FrequencyWords</a> / OpenSubtitles2018, revision <code>072bbed</code>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. No third-party frequency service is contacted during play.</p>
+    <p>The typography, locomotive, station map, split-flap tiles, and oil-smudged tickets are original. The smudges are drawn in CSS, with <a href="https://www.vecteezy.com/vector-art/75662809-hand-painted-brush-strokes-collection" target="_blank" rel="noopener noreferrer">this Vecteezy brush-stroke collection</a> as a visual reference, not imported artwork. Motion is cosmetic, never changes a move, and respects reduced-motion preferences. No Hoyle or Poople artwork or application code is used.</p>
+    <p>The timetable is base64-encoded to discourage casual source-view spoilers. This is obfuscation, not security: a determined reader can decode the data or solve the word network.</p>
+    <p>This is a casual client-side diversion, not a tamper-proof competition. Saved progress stays on your device; no analytics, login, or third-party game requests are included.</p>
+  </dialog>
+  <dialog id="restartDialog" aria-labelledby="restartTitle">
+    <span class="eyebrow">BACK TO THE PLATFORM</span><h2 id="restartTitle">Take this journey again?</h2>
+    <p>Your track will clear and your restart count will increase by one. The starting word, target, and par stay the same. Your daily choice, used hints, and any claimed Coaling Station credit stay booked. An unclaimed free stop remains available.</p>
+    <div class="dialog-actions"><button id="confirmRestart" class="primary" type="button">Start over</button><button class="quiet" type="button" data-close autofocus>Keep playing</button></div>
+  </dialog>
+  <dialog id="welcomeDialog" class="splash" aria-labelledby="welcomeTitle">
+    <button class="dialog-close quiet" type="button" data-close>Close &times;</button>
+    <span class="eyebrow">THE DAILY RAILWORD</span>
+    <h2 id="welcomeTitle" class="splash-logo">Lexi<span>motive</span></h2>
+    <p class="tagline">Find your route home.</p>
+    <p>Each word is a train station along your path home. Change one letter, picking a new word and the next stop.</p>
+    <p>Preview Local, Regional, or Long-haul routes.</p>
+    <p>Two hints are available if you need them. You may even find the Coaling station for a free stop.</p>
+    <button class="primary" type="button" data-close>All aboard &rarr;</button>
+  </dialog>
+  <dialog id="hintDialog" class="hint-dialog" aria-labelledby="hintTitle">
+    <button id="closeHint" class="dialog-close quiet" type="button">Close &times;</button>
+    <span class="eyebrow">LEFT BEHIND ON THE PLATFORM</span>
+    <h2 id="hintTitle">Someone else's ticket.</h2>
+    <div id="foundTicket" class="found-ticket">
+      <span class="eyebrow">ONE WAY / AN EARLIER DEPARTURE</span>
+      <span class="ticket-stamp" aria-hidden="true">STAMPED</span>
+      <span class="eyebrow">DESTINATION</span>
+      <strong id="hintDestination" class="smudged-destination" role="img"></strong>
+      <span class="ticket-smallprint">USED TICKET / NOT VALID FOR TRAVEL</span>
+    </div>
+    <p id="hintDirection"></p>
+    <button id="pocketHint" class="primary" type="button">Pocket ticket &darr;</button>
+  </dialog>
+  <dialog id="resultsDialog" class="splash" aria-labelledby="winTitle">
+    <button class="dialog-close quiet" type="button" data-close>Close &times;</button>
+    <p class="splash-logo results-logo" aria-hidden="true">Lexi<span>motive</span></p>
+    <span id="resultStatus" class="eyebrow">DESTINATION REACHED</span>
+    <h2 id="winTitle">You Made it Home!</h2>
+    <p id="winSummary"></p>
+    <h3 id="solutionTitle">An optimal route</h3>
+    <ol id="solution" aria-label="An optimal route from departure to home"></ol>
+    <p id="solutionNote" role="status"></p>
+    <button id="retrySolution" class="quiet" type="button" hidden>Retry route</button>
+    <button class="primary" type="button" data-close>Back to the track</button>
+  </dialog>
+  <dialog id="giveUpDialog" aria-labelledby="giveUpTitle">
+    <span class="eyebrow">END OF THE LINE</span><h2 id="giveUpTitle">Finish this journey?</h2>
+    <p>This books the selected journey for today, reveals an optimal route, and ends your attempts. You won't be able to restart it or choose another length today in this browser.</p>
+    <div class="dialog-actions"><button id="confirmGiveUp" class="primary" type="button">Give up &amp; reveal</button><button class="quiet" type="button" data-close autofocus>Keep playing</button></div>
+  </dialog>
+  <dialog id="recoveryDialog" aria-labelledby="recoveryTitle">
+    <span class="eyebrow">REPAIR THE TICKET</span><h2 id="recoveryTitle">Replace this invalid save?</h2>
+    <p>The unreadable saved ticket will be replaced with the valid journey currently on screen. If you haven't booked a journey, only the invalid record is cleared. This does not spend a move or count as a restart.</p>
+    <div class="dialog-actions"><button id="confirmRecovery" class="primary" type="button">Replace invalid save</button><button class="quiet" type="button" data-close autofocus>Keep in memory</button></div>
+  </dialog>
+</body>
+</html>
