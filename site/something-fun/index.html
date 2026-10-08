@@ -37,7 +37,7 @@
         <ol class="rail-list">
           <li><a href="#top"><span class="rail-number" aria-hidden="true">00</span><span>Leximotive</span></a></li>
           <li><a href="#the-start"><span class="rail-number" aria-hidden="true">01</span><span>How it started</span></a></li>
-          <li><a href="#the-game"><span class="rail-number" aria-hidden="true">02</span><span>Becoming a game</span></a></li>
+          <li><a href="#the-game"><span class="rail-number" aria-hidden="true">02</span><span>Game design</span></a></li>
           <li><a href="#behind-the-screen"><span class="rail-number" aria-hidden="true">03</span><span>How it works</span></a></li>
         </ol>
         <div class="rail-detour">
@@ -53,16 +53,16 @@
           <p class="hero-kicker">Leximotive / The Daily Railword</p>
           <h1 id="fun-title">A word challenge.<br>A game of its own.</h1>
           <p class="hero-intro">This started with a puzzle I was playing: change one word into another, one letter at a time, making a real word at every step.</p>
-          <p class="hero-detail">I wanted to understand the possible routes, not just look up an answer. A small Python tool in the terminal became a project of its own: Leximotive, a daily word game you can play in your browser.</p>
+          <p class="hero-detail">I wanted to understand the possible routes, not just look up an answer. I started with a small Python tool in the terminal, then built Leximotive as a daily word game for the browser.</p>
           <div class="link-row">
             <a class="button" href="/leximotive/">Play Leximotive <span aria-hidden="true">&rarr;</span></a>
             <a class="text-link" href="#the-start">See how it started <span aria-hidden="true">&darr;</span></a>
           </div>
           <figure class="project-figure">
             <a href="/leximotive/" class="project-preview">
-              <img src="../assets/leximotive-game.png" width="896" height="603" decoding="async" alt="Leximotive's railway-style game board: change one letter at each stop to reach the destination, with optional ticket hints.">
+              <img src="../assets/leximotive-game.png" width="896" height="603" decoding="async" alt="Leximotive's railway-style game board with letter tiles, a destination word and optional hint tickets.">
             </a>
-            <figcaption>The finished game: words become stations, and each accepted change is another stop on the way home.</figcaption>
+            <figcaption>Every accepted word becomes another station on the track.</figcaption>
             <p class="figure-tools"><a class="text-link" href="../assets/leximotive-game.png">View the game image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
         </section>
@@ -70,27 +70,27 @@
         <section class="project movement" id="the-start" aria-labelledby="start-title">
           <div class="movement-label"><span>The start</span><span class="chip">A terminal experiment</span></div>
           <h2 id="start-title">First, I just wanted to solve it.</h2>
-          <p class="project-intro">The rule sounds simple: change one letter. The hard part is choosing which letter, and finding a route where every new word is allowed.</p>
+          <p class="project-intro">The challenge is finding a sequence of allowed words that reaches the finish in as few changes as possible.</p>
           <p class="project-story">A word that looks closer to the finish can still lead to a dead end. Sometimes you have to go sideways, or change a letter that already matches, to find a way through.</p>
           <p class="project-story">I wrote a Python program to explore those choices. It could list the next possible words, show exactly which letter changed, and find the fewest moves to the finish. I also wanted clues, so I could get a little help without revealing the whole answer.</p>
           <figure class="project-figure">
             <a href="../assets/leximotive-terminal.png" class="project-preview">
               <img src="../assets/leximotive-terminal.png" width="1161" height="920" loading="lazy" decoding="async" alt="The original terminal solver comparing words reachable from BOLT and BOOT, showing the changed letter, remaining moves and suggested next stops.">
             </a>
-            <figcaption>The original tool made the choices visible: possible next words, the changed letter, and how many moves remained.</figcaption>
+            <figcaption>The terminal tool listed the next possible words and how many moves remained. It also highlighted the letter changed in each option.</figcaption>
             <p class="figure-tools"><a class="text-link" href="../assets/leximotive-terminal.png">View the terminal image <span aria-hidden="true">&nearr;</span></a></p>
           </figure>
         </section>
 
         <section class="project movement" id="the-game" aria-labelledby="game-title">
-          <div class="movement-label"><span>The next step</span><span class="chip">A game of its own</span></div>
-          <h2 id="game-title">The same idea, made playable.</h2>
-          <p class="project-intro">Once the route-finding worked, I wanted to turn it into something people could play rather than a tool that simply supplied an answer.</p>
-          <p class="project-story">That became Leximotive. Each word is a train station. Change one letter, make a new word, and take the next stop toward home. The track keeps every stop visible, so you can follow the journey you actually took.</p>
-          <p class="project-story">There are daily four-, five- and six-letter routes. Two hints are available if you get stuck. Each hint is a discarded ticket with part of a destination smudged out: it suggests a stop along a shortest route, but you still have to work out the missing letters and how to get there.</p>
-          <p class="project-story">The railway setting grew around the puzzle: split-flap letter tiles, a little engine, and an optional Coaling Station that can give you one free stop.</p>
+          <div class="movement-label"><span>Design decisions</span><span class="chip">The browser game</span></div>
+          <h2 id="game-title">Simple wordplay with richer gaming.</h2>
+          <p class="project-intro">I built the route-finding before the interface. It established which words could connect and how to calculate a minimum route. The browser game uses the same dictionary for move validation, hints and par.</p>
+          <p class="project-story">I used the railway theme to organize the interface. Words appear as stations along a vertical track, and the changed letter flips into place. Keeping that sequence visible lets the player review earlier moves without opening another panel.</p>
+          <p class="project-story">Hints give the player a word to work toward without showing every intervening move. Each daily route has two partial-word hints. Local, Regional and Long-haul keep their own progress, so players can try a different word length when they get stuck. Start over clears only the current route; used hints and a claimed station bonus stay used.</p>
+          <p class="project-story">The results show accepted changes, the minimum route length, restarts, hints and the Coaling Station credit separately. A player can compare the route they took with a shortest route. There is no leaderboard or overall score.</p>
           <div class="link-row">
-            <a class="button" href="/leximotive/">Find your route home <span aria-hidden="true">&rarr;</span></a>
+            <a class="button" href="/leximotive/">Play Leximotive <span aria-hidden="true">&rarr;</span></a>
           </div>
         </section>
 
@@ -105,7 +105,7 @@
               <dl>
                 <div><dt>Keep the screen moving</dt><dd>The browser does the route calculations in a separate helper, so that work does not hold up the game's controls.</dd></div>
                 <div><dt>Give a useful clue</dt><dd>The game chooses a shortest route, favouring unvisited stops and familiar words. A ticket reveals most of an unfamiliar stop along that route, not a list of moves.</dd></div>
-                <div><dt>Remember the journey</dt><dd>Progress and used hints stay in your browser. There is no login or shared player account.</dd></div>
+                <div><dt>Remember the journey</dt><dd>Each difficulty's progress and used hints stay in your browser. Start over resets only the route you're playing. There is no login or shared player account.</dd></div>
               </dl>
             </div>
             <div class="project-overview">

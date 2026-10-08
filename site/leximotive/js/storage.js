@@ -42,17 +42,25 @@ export function validateState(state, puzzle, words) {
   return { ...state, gaveUp: state.gaveUp ?? false };
 }
 
-export function loadTicket(storage, key) {
-  const raw = storage.getItem(key);
-  if (raw === null) return null;
-  const ticket = JSON.parse(raw);
-  if (ticket?.version !== 3 || ![4, 5, 6].includes(ticket.length)
-      || typeof ticket.puzzleId !== "string" || !ticket.state) {
+function normalizeTicket(ticket) {
+  if (ticket?.version === 3 && [4, 5, 6].includes(ticket.length)) {
+    ticket = { version: 4, journeys: { [ticket.length]: { puzzleId: ticket.puzzleId, state: ticket.state } } };
+  }
+  const journeys = ticket?.journeys;
+  if (ticket?.version !== 4 || !journeys || typeof journeys !== "object" || Array.isArray(journeys)
+      || !Object.keys(journeys).length || Object.keys(journeys).length > 3
+      || Object.entries(journeys).some(([length, journey]) => !["4", "5", "6"].includes(length)
+        || typeof journey?.puzzleId !== "string" || !journey.puzzleId || journey.state?.version !== 3)) {
     throw new Error("Saved daily ticket is invalid. Start over explicitly to replace it.");
   }
   return ticket;
 }
 
+export function loadTicket(storage, key) {
+  const raw = storage.getItem(key);
+  return raw === null ? null : normalizeTicket(JSON.parse(raw));
+}
+
 export function saveTicket(storage, key, ticket) {
-  storage.setItem(key, JSON.stringify(ticket));
+  storage.setItem(key, JSON.stringify(normalizeTicket(ticket)));
 }

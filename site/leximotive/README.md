@@ -28,10 +28,11 @@ game APIs or analytics; credit links open only when clicked.
 
 ## Gameplay
 
-- **Leaving Today:** preview Local (4-letter words), Regional (5), or Long-haul
-  (6). The first accepted move or successful hint request books one daily
-  ticket. Confirmed Give up also books the chosen journey. Invalid guesses,
-  cancelled Give up, and typing do not lock a choice.
+- **Leaving Today:** choose Local (4-letter words), Regional (5), or Long-haul
+  (6), and switch whenever you like. Each difficulty keeps its own daily
+  progress; coming back restores that route. Accepted moves, successful hints
+  and confirmed Give up save only the current route. Invalid guesses,
+  cancelled Give up and typing spend nothing.
 - Four- and five-letter starts have **zero correct-position matches** with
   home. Six-letter starts have at most one. Elsewhere matches remain possible.
 - Tap a large tile, type one ASCII A-Z letter, then confirm with Enter or
@@ -58,11 +59,12 @@ game APIs or analytics; credit links open only when clicked.
   Marks describe the accepted word, not a pending preview or route distance.
   Matching letters are not locked.
 - Each puzzle has an optional **Coaling Station**, initially shown as a clue
-  rather than a word. Its first landing transform is free once per daily ticket;
+  rather than a word. Its first landing transform is free once per daily route;
   revisiting it does not create another credit. It is never mandatory.
   The count shows the station credit; its description and closing results
   explain the actual transforms separately.
-- **Two requested waypoint tickets** per daily ticket. A shortest route from
+- **Find a Clue** searches for a discarded, smudged ticket. There are
+  **two waypoint tickets per route each day**. A shortest route from
   the current word is chosen to favour unvisited stops and familiar vocabulary;
   its least-common unknown intermediate word becomes an oil-smudged destination.
   One letter is hidden in four-/five-letter words, two in six-letter words.
@@ -72,15 +74,17 @@ game APIs or analytics; credit links open only when clicked.
   Pocketed tickets can be reopened for free, including after a refresh or reset.
   Already visited/revealed waypoints are not sold again. If none remain, the
   request explains why without consuming a hint or booking a preview.
-- Restarts preserve the daily choice, hints already used, known stops and a
+- Restarts affect only the current difficulty, preserving hints already used, known stops and a
   claimed station credit. A restart clears the current track and its credited
   landing marker, increases the restart counter, and does not replenish the
-  daily free stop. An unclaimed free stop remains available. Start over uses a rewind icon
+  route's daily free stop. Switching away and back also does not replenish hints
+  or station credit. An unclaimed free stop remains available. Start over uses a rewind icon
   and does nothing before an accepted transform, including hint-only sessions
   and unconfirmed previews. Refresh is not a restart.
 - **Give up ends that journey for the day.** Confirmation reveals a minimum
   route in the closing splash. Moves, hints, and restarts then stay disabled,
-  including after refresh; there are no more attempts on that ticket.
+  including after refresh; there are no more attempts on that route today.
+  The other difficulties remain available with their own progress.
 - The opening splash is centred over the full game panel, including both
   the track and station desk, rather than the empty centre of the page.
   It stays clamped to the visible screen when resized.
@@ -108,14 +112,19 @@ does not generate new daily puzzles or look up words online.
 
 ## Persistence and the new timetable
 
-One atomic browser-storage ticket stores the daily length, history, restart
-count and requested hints. Other open tabs restore changes to that ticket.
+One atomic browser-storage ticket contains independent records for lengths
+4, 5 and 6, each with its puzzle ID, history, restarts, hints, known stops,
+Give up status and station claim. A tab keeps its selected difficulty; changes
+to another route do not switch it or discard its current edit.
 Storage failures are reported and allow in-memory play. Corrupt tickets are
 not overwritten until an explicit Replace invalid save (or a confirmed
 restart after actual moves). Repairing an untouched save does not book a
-journey or count as a restart. The ticket format is version 3 and preserves
-known stops and the daily station claim across restarts. Its optional `gaveUp`
-field defaults to false when absent.
+journey or count as a restart. The daily envelope is version 4; each journey's
+state remains version 3. Existing single-route version-3 tickets are migrated
+in memory, preserving all progress, and written in the new format only on an
+actual saving action. The edition and storage key are unchanged. Each state's
+optional `gaveUp` field defaults to false when absent. Repairing a corrupt
+journey state preserves other readable route records.
 
 The modern-English vocabulary and six-month bank change routes and pars, so
 the edition is `railword-v5`, with word policy `scowl-american-60-v2`. Previous
@@ -137,10 +146,11 @@ BFS distances and exact shortest-route counts with BigInt, and caches the two
 active targets. `js\graph-worker.js` performs the graph work off the UI thread;
 `js\route-client.js` manages requests and cancellation.
 
-`js\storage.js` validates daily-ticket state. `js\app.js` coordinates booking,
+`js\storage.js` validates and migrates daily-ticket state. `js\app.js` coordinates routes,
 native inputs, requested hints and dialogs. Daily changes are serialized with
-Web Locks and checked against the latest saved ticket before a write;
-stale actions reload the shared journey rather than overwrite it.
+Web Locks and checked against the latest saved route before a write.
+Concurrent writes to different difficulties merge without losing either;
+stale actions on the same difficulty reload that journey rather than overwrite it.
 `js\journey.js` renders the track
 and manages interruptible engine motion and geometry.
 
@@ -206,17 +216,22 @@ initial match limits, dictionary checksums, dialect rejection and the real
 worker. No Node.js is required.
 
 The optional parent `scripts\check_leximotive_browser.py` checks real Edge
-desktop/touch gameplay, daily locking, cross-tab restoration, manual hints,
+desktop/touch gameplay, free difficulty switching, cross-tab restoration, manual hints,
 restarts, motion, corrupt-save recovery, vertical track geometry, sidebar and
 phone fit, old-edition isolation, and nested hosting. Python Playwright
 and Edge are development tools, not published-site dependencies.
 
 `scripts\check_leximotive_edges.py` adds intro geometry and exact-copy checks,
-ticket readability/reopening/motion, daily station claims, synchronized booking
-races, stale-tab Give up protection, rollover pinning, failed-module retry,
+ticket readability/reopening/motion, separate hints and station claims, repeated
+six-letter restarts followed by four-letter play, legacy-save migration and
+scoped recovery, synchronized same-/different-route races, stale-tab Give up
+protection, rollover pinning, failed-module retry,
 same-count corrupted dictionary rejection, and encoded/no-solution timetable checks.
 
 ## Sources
+
+The original word-ladder challenge came from [Poople](https://poople.io/),
+which prompted the terminal solver and, later, this browser game.
 
 Game vocabulary: [English Speller Database / SCOWL](https://wordlist.aspell.net/),
 release `2026.02.25`, default American-English size 60 with the filters above.

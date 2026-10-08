@@ -47,7 +47,7 @@
               <button type="button" data-length="6" aria-pressed="false" aria-label="Long-haul journey, 6-letter words" title="Long-haul journey: six-letter words">6<span>Long-haul</span></button>
             </div>
           </div>
-          <p id="ticketStatus" class="ticket-status" role="status" title="Your first accepted move, a successful hint request, or confirmed Give up locks your route for today.">Preview the routes.</p>
+          <p id="ticketStatus" class="ticket-status" role="status" title="Choose a different length whenever you like. Accepted moves, hints and restarts stay with their route.">Switch routes anytime. Each difficulty keeps its own progress.</p>
 
           <div class="journey">
             <div><span class="eyebrow">DEPART FROM</span><strong id="startWord">----</strong></div>
@@ -110,13 +110,13 @@
 
         </div>
         <aside class="letter-rack" aria-label="Optional waypoint tickets">
-          <div class="rack-heading"><span class="ticket-icon" aria-hidden="true"></span><span class="eyebrow">LOST TICKETS</span><details id="hintHelp" class="context-help"><summary aria-label="Explain ticket hints" title="Hint direction and usage">?</summary><div class="help-card"><p id="trackNote">A discarded ticket may reveal an unfamiliar stop along a shortest route home.</p><p>Most letters survive the oil smudge. Work out the destination and how to get there. Pocketed tickets can be reread for free; restarting does not refill hints.</p></div></details></div>
+          <div class="rack-heading"><span class="ticket-icon" aria-hidden="true"></span><span class="eyebrow">LOST TICKETS</span><details id="hintHelp" class="context-help"><summary aria-label="Explain ticket clues" title="Finding and using ticket clues">?</summary><div class="help-card"><p id="trackNote">Look for a discarded ticket. The readable letters point to an unvisited word on a shortest route home.</p><p>Most letters survive the oil smudge. Work out the destination and how to get there. Pocketed tickets can be reread for free; restarting does not refill hints.</p></div></details></div>
           <div id="trackLetters" class="track-letters" aria-live="polite"></div>
-          <button id="requestHint" class="primary hint-button" type="button" disabled>Request a hint</button>
+          <button id="requestHint" class="primary hint-button" type="button" disabled>Find a Clue</button>
           <p id="hintCount" class="hint-count">2 of 2 hints left</p>
         </aside>
 
-        <div class="game-footer" aria-describedby="lineLabel"><span id="lineLabel" class="visually-hidden">THE FIRST TIMETABLE</span><button id="giveUp" class="quiet" type="button" disabled>Give up</button><div id="winPanel" class="results-bar" hidden><button id="viewResults" class="primary" type="button">Results &amp; route</button></div><button id="startOver" class="quiet restart-button" type="button" disabled title="Restart after making a move. Your daily choice and used hints stay booked."><svg class="rewind-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 1 1-1 8M4 3v6h6"/></svg>Start over</button></div>
+        <div class="game-footer" aria-describedby="lineLabel"><span id="lineLabel" class="visually-hidden">THE FIRST TIMETABLE</span><button id="giveUp" class="quiet" type="button" disabled>Give up</button><div id="winPanel" class="results-bar" hidden><button id="viewResults" class="primary" type="button">Results &amp; route</button></div><button id="startOver" class="quiet restart-button" type="button" disabled title="Restart only this route after making a move. Other difficulties keep their progress."><svg class="rewind-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 1 1-1 8M4 3v6h6"/></svg>Start over</button></div>
       </section>
     </main>
 
@@ -127,36 +127,42 @@
     <span class="eyebrow">THE RULES OF THE RAILWAY</span><h2 id="rulesTitle">One letter. One stop.</h2>
     <p>Travel from the starting word to the visible target. Every move replaces <strong>exactly one letter</strong>, and the result must be in this game's word list.</p>
     <p>Tap a tile, type one A&ndash;Z letter, then press <strong>Enter</strong> or <strong>Make move</strong>. Typing only previews the change. Cancel or select another tile to discard it.</p>
-    <p>Preview Local (4 letters), Regional (5), and Long-haul (6). Your <strong>first accepted move, hint request, or Give up</strong> locks one journey for the day. Invalid attempts and typing do not book a ticket. A restart keeps your choice and is available only after an accepted transform.</p>
+    <p>Choose Local (4 letters), Regional (5), or Long-haul (6). <strong>Switch difficulty whenever you like.</strong> Each route keeps its own progress, hints and restart count, so you can come back later. Accepted moves and successful hints save that route; invalid attempts and typing spend nothing. Start over resets only the current route after an accepted transform.</p>
     <p>Four- and five-letter starts have no correct-position matches with home; six-letter starts have at most one. Matches in other positions are still possible.</p>
     <p><strong>Par</strong> is the fewest transforms to reach home without a bonus. Invalid attempts are free. Revisits count as moves. The optional <strong>Coaling Station</strong> has a clue instead of a revealed word: land on its word to deduct that landing move once. You may skip it. Counted moves and total transforms are shown separately.</p>
     <p>Your route stays on the board: each accepted word becomes a station. The engine travels to your new stop, and the changed letter flips into place. Returning to an earlier word adds another stop, not a shortcut through your history.</p>
     <p><strong>Green with a solid underline</strong> means the letter matches the destination in that position. <strong>Gold with a dotted underline</strong> means it matches in another position. An unmarked dark tile has no remaining match. These marks describe the last accepted word, not an unconfirmed preview or graph distance. Underlined letters are not locked and may need to change again.</p>
-    <p>You have <strong>two ticket hints</strong> per daily journey. A smudged destination reveals most letters of an unfamiliar, unvisited stop on a shortest route from your current word to home. It is a waypoint, not a list of moves. Routes favour fresh stops and familiar vocabulary; necessary backtracking is explained. Pocket a ticket and reopen it without spending another hint.</p>
-    <p>Restarting never refills used hints or a claimed Coaling Station credit. The free landing is available <strong>once per day</strong>; if you have not claimed it, it remains available after a restart. Progress, hint usage, and your daily choice are saved in this browser; refreshing isn't a restart. New departures arrive worldwide at <strong>8 AM Pacific</strong>, with daylight saving handled automatically. A journey in progress is not discarded at rollover.</p>
-    <p><strong>Give up</strong> finishes the chosen journey for the day, even with no moves. After confirmation, the closing screen explains your moves and reveals a minimum route. You cannot make more moves, request hints, or restart that journey. A new day brings a new ticket.</p>
+    <p>You have <strong>two ticket hints per route each day</strong>. A smudged destination reveals most letters of an unfamiliar, unvisited stop on a shortest route from your current word to home. It is a waypoint, not a list of moves. Routes favour fresh stops and familiar vocabulary; necessary backtracking is explained. Pocket a ticket and reopen it without spending another hint.</p>
+    <p>Restarting or switching away and back never refills that route's used hints or claimed Coaling Station credit. The free landing is available <strong>once per route each day</strong>; if you have not claimed it, it remains available after a restart. Local, Regional and Long-haul progress are saved separately in this browser; refreshing isn't a restart. New departures arrive worldwide at <strong>8 AM Pacific</strong>, with daylight saving handled automatically. A journey in progress is not discarded at rollover.</p>
+    <p><strong>Give up</strong> finishes only the current route for the day, even with no moves. After confirmation, the closing screen explains your moves and reveals a minimum route. You cannot make more moves, request hints, or restart that route today, but <strong>the other difficulties remain available</strong>. A new day brings new routes.</p>
     <p>The demo timetable has 182 preselected days, with one Local, Regional, and Long-haul choice each day: 546 puzzles altogether. It covers October 6, 2026 through April 5, 2027, then repeats. Point scoring is being refined; this edition focuses on moves, par, free stops, and hint usage.</p>
   </dialog>
   <dialog id="buildDialog" aria-labelledby="buildTitle">
     <button class="dialog-close quiet" type="button" data-close>Close &times;</button>
-    <span class="eyebrow">UNDER THE BRASS &amp; PAPER</span><h2 id="buildTitle">The Firebox</h2>
-    <p>Leximotive began as a Python terminal word-ladder solver, followed by a prototype called TexTumble. This edition is a standalone static game: native JavaScript modules, CSS, and small data files. It can live in a GitHub Pages subdirectory without a server or build step.</p>
-    <h3>Words are a network</h3>
-    <p>Words are nodes, one-letter changes are edges. A breadth-first search backward from the target finds exact minimum distances. A web worker keeps that graph work away from the phone's interface.</p>
-    <p>Dynamic programming counts shortest continuations and chooses a route favouring unvisited stops and familiar words. A found ticket points to the least commonplace unknown word on that route, with one or two letters smudged. It never supplies the intervening moves.</p>
-    <h3>Modern English, a fair par</h3>
-    <p>Accepted moves, hints, and par share the standard American-English SCOWL spelling list, limited to four, five, and six letters. Normal vocabulary and established loanwords such as HONE and TACO are included; this is not an "only very common words" list. Names-only entries, abbreviations, nonwords, accented spellings, and marked nonstandard forms are filtered out. Targeted exceptions exclude STANE, STANES, STANED, and the foreign culinary term RAGOUT.</p>
-    <p>An offline Python tool preselects the entire six-month timetable and verifies each minimum route. The Coaling Station sits on a shortest route, so its discounted route can beat par. Initial correct-position matches are checked separately. Bundled subtitle ranks guide route familiarity and ticket clues; they cannot admit a word. During play there are no online word lookups or newly generated puzzles. Solution paths are calculated after finishing, not published in the timetable.</p>
+    <span class="eyebrow">Engineering the Engine</span><h2 id="buildTitle">The Firebox</h2>
+    <!--
+      The timetable's base64 encoding deters casual spoilers; it is not a security boundary.
+      Progress is browser-local. There is no account service, analytics, or remote game API.
+    -->
+    <p>The first version was a Python tool for exploring word ladders. In the browser game, the route engine also checks each puzzle's par and chooses words for clue tickets.</p>
+    <h3>Finding the shortest route</h3>
+    <p>Words are connected when they differ in one position. A breadth-first search from the destination finds the fewest changes needed from every reachable word. The game can reuse those distances after each move instead of searching again from the player's new word. Counting matching letters cannot establish par because a legal route may need to change a letter that already matches the target.</p>
+    <h3>Choosing the word list</h3>
+    <p>A common-word-only list removes useful connections. An unrestricted dictionary can send a route through archaic or obscure words. The game uses SCOWL's standard American-English spelling list, with a small set of exclusions. Moves, clues and par all use this accepted list. Frequency estimates help choose between equally short routes; they do not make a word legal.</p>
+    <h3>Checking the daily puzzles</h3>
+    <p>A Python tool prepares 182 days of puzzles, with three word lengths each day. All 546 puzzles are checked against the game dictionary for their minimum move count and a Coaling Station word on at least one shortest route. Generating puzzles during play would require those same checks on each device. Preparing the bank offline allows the whole schedule to be verified before release. It repeats after six months.</p>
+    <h3>Keeping calculations off the main thread</h3>
+    <p>Route calculations run in a web worker. Running them on the main browser thread could delay typing and animation while the word network is being searched. The game is otherwise static HTML, CSS and JavaScript, so GitHub Pages can host it without a separate solver service. A hosted solver would add network calls during play and another service to maintain.</p>
+    <h3>Partial words for clues</h3>
+    <p>A clue ticket reveals most of an unvisited word on a shortest route. One letter is missing in four- and five-letter puzzles, two in six-letter puzzles. Giving the full route would solve the puzzle; a single-letter instruction gives little context for planning ahead. A partial word gives the player a destination to work toward while leaving the moves to them.</p>
     <h3>Credits</h3>
+    <p>The starting concept came from playing <a href="https://poople.io/" target="_blank" rel="noopener noreferrer">Poople</a>, a one-letter-at-a-time word puzzle.</p>
     <p>Game vocabulary uses Kevin Atkinson's <a href="https://wordlist.aspell.net/" target="_blank" rel="noopener noreferrer">English Speller Database / SCOWL</a>, American English, standard size 60, release <code>2026.02.25</code>, with the game filters described above. Copyright 2000&ndash;2026 Kevin Atkinson. <a href="./data/LICENSE-scowl.txt">Word-list permission notice</a>.</p>
-    <p>Puzzle preparation and bundled hint ranks use <a href="https://github.com/hermitdave/FrequencyWords" target="_blank" rel="noopener noreferrer">Hermit Dave's FrequencyWords</a> / OpenSubtitles2018, revision <code>072bbed</code>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. No third-party frequency service is contacted during play.</p>
-    <p>The typography, locomotive, station map, split-flap tiles, and oil-smudged tickets are original. The smudges are drawn in CSS, with <a href="https://www.vecteezy.com/vector-art/75662809-hand-painted-brush-strokes-collection" target="_blank" rel="noopener noreferrer">this Vecteezy brush-stroke collection</a> as a visual reference, not imported artwork. Motion is cosmetic, never changes a move, and respects reduced-motion preferences. No Hoyle or Poople artwork or application code is used.</p>
-    <p>The timetable is base64-encoded to discourage casual source-view spoilers. This is obfuscation, not security: a determined reader can decode the data or solve the word network.</p>
-    <p>This is a casual client-side diversion, not a tamper-proof competition. Saved progress stays on your device; no analytics, login, or third-party game requests are included.</p>
+    <p>Puzzle preparation and bundled word-frequency ranks use <a href="https://github.com/hermitdave/FrequencyWords" target="_blank" rel="noopener noreferrer">Hermit Dave's FrequencyWords</a> / OpenSubtitles2018, revision <code>072bbed</code>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p>
   </dialog>
   <dialog id="restartDialog" aria-labelledby="restartTitle">
     <span class="eyebrow">BACK TO THE PLATFORM</span><h2 id="restartTitle">Take this journey again?</h2>
-    <p>Your track will clear and your restart count will increase by one. The starting word, target, and par stay the same. Your daily choice, used hints, and any claimed Coaling Station credit stay booked. An unclaimed free stop remains available.</p>
+    <p>This route's track will clear and its restart count will increase by one. Its starting word, target, par, used hints and any claimed Coaling Station credit stay the same. An unclaimed free stop remains available. Other difficulties keep their progress.</p>
     <div class="dialog-actions"><button id="confirmRestart" class="primary" type="button">Start over</button><button class="quiet" type="button" data-close autofocus>Keep playing</button></div>
   </dialog>
   <dialog id="welcomeDialog" class="splash" aria-labelledby="welcomeTitle">
@@ -166,7 +172,7 @@
     <p class="tagline">Find your route home.</p>
     <p>Each word is a train station along your path home. Change one letter, picking a new word and the next stop.</p>
     <p>Choose your route length: Local for a quick trip, Regional for a scenic, more intentional journey, or Long-haul for a tougher challenge.</p>
-    <p>Two hints are available if you need them. You may even find the Coaling station for a free stop.</p>
+    <p>Switch routes anytime; each keeps its own progress. Two hints and a free Coaling Station stop can help.</p>
     <button class="primary" type="button" data-close>All aboard &rarr;</button>
   </dialog>
   <dialog id="hintDialog" class="hint-dialog" aria-labelledby="hintTitle">
@@ -197,12 +203,12 @@
   </dialog>
   <dialog id="giveUpDialog" aria-labelledby="giveUpTitle">
     <span class="eyebrow">END OF THE LINE</span><h2 id="giveUpTitle">Finish this journey?</h2>
-    <p>This books the selected journey for today, reveals an optimal route, and ends your attempts. You won't be able to restart it or choose another length today in this browser.</p>
+    <p>This reveals an optimal route and ends your attempts on this route for today. You won't be able to restart it, but you can still play the other difficulties.</p>
     <div class="dialog-actions"><button id="confirmGiveUp" class="primary" type="button">Give up &amp; reveal</button><button class="quiet" type="button" data-close autofocus>Keep playing</button></div>
   </dialog>
   <dialog id="recoveryDialog" aria-labelledby="recoveryTitle">
     <span class="eyebrow">REPAIR THE TICKET</span><h2 id="recoveryTitle">Replace this invalid save?</h2>
-    <p>The unreadable saved ticket will be replaced with the valid journey currently on screen. If you haven't booked a journey, only the invalid record is cleared. This does not spend a move or count as a restart.</p>
+    <p>The invalid save will be replaced with the valid route currently on screen. Other routes are kept when their saved records can be read. If no route has started, only the invalid record is cleared. This does not spend a move or count as a restart.</p>
     <div class="dialog-actions"><button id="confirmRecovery" class="primary" type="button">Replace invalid save</button><button class="quiet" type="button" data-close autofocus>Keep in memory</button></div>
   </dialog>
 </body>

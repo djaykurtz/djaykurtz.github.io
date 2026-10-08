@@ -108,15 +108,21 @@ function renderSolution(path) {
   ui.retrySolution.hidden = true;
 }
 
+function readDailyTicket(key, date) {
+  const ticket = loadTicket(localStorage, key);
+  if (ticket && Object.entries(ticket.journeys).some(([modeLength, route]) =>
+    route.puzzleId !== selectPuzzle(catalog, +modeLength, date).id)) {
+    throw new Error("The saved ticket belongs to a different puzzle.");
+  }
+  return ticket;
+}
+
 function dailyTicket(date) {
   if (!tickets.has(date)) {
     const daily = { key: storageKey(catalog.edition, date), ticket: null, saved: null, canSave: true, needsRecovery: false };
     try {
       daily.saved = localStorage.getItem(daily.key);
-      daily.ticket = loadTicket(localStorage, daily.key);
-      if (daily.ticket && daily.ticket.puzzleId !== selectPuzzle(catalog, daily.ticket.length, date).id) {
-        throw new Error("The saved ticket belongs to a different puzzle.");
-      }
+      daily.ticket = readDailyTicket(daily.key, date);
     } catch (error) {
       daily.ticket = null;
       daily.canSave = false;
@@ -128,26 +134,25 @@ function dailyTicket(date) {
   return tickets.get(date);
 }
 
-function lockTicket() {
+function beginJourney() {
   const daily = context.daily;
-  if (daily.ticket && daily.ticket.length !== length) throw new Error("Another journey already holds today's ticket.");
-  daily.ticket = { version: 3, length, puzzleId: context.puzzle.id, state: structuredClone(context.state) };
+  daily.ticket ??= { version: 4, journeys: {} };
+  daily.ticket.journeys[length] = { puzzleId: context.puzzle.id, state: structuredClone(context.state) };
   renderTicket();
 }
 
 function renderTicket() {
-  const chosen = context?.daily.ticket?.length;
-  for (const button of modeButtons) button.disabled = actionPending || (chosen !== undefined && +button.dataset.length !== chosen);
-  ui.ticketStatus.textContent = chosen
-    ? `Ticket booked: ${chosen}-letter journey${context.state.gaveUp ? " \u00b7 ended" : ""}.`
-    : "Preview the routes. Your first move or hint locks in today's journey.";
+  for (const button of modeButtons) button.disabled = actionPending;
+  ui.ticketStatus.textContent = context?.state.gaveUp
+    ? "This route has ended. You can try another difficulty."
+    : "Switch routes anytime. Each difficulty keeps its own progress.";
 }
 
 function persist() {
   if (!context) return;
   memory.set(context.key, structuredClone(context.state));
-  if (!context.daily.ticket) return;
-  context.daily.ticket.state = structuredClone(context.state);
+  if (!context.daily.ticket?.journeys[length]) return;
+  context.daily.ticket.journeys[length].state = structuredClone(context.state);
   if (!context.daily.canSave) return;
   try {
     saveTicket(localStorage, context.daily.key, context.daily.ticket);
@@ -174,10 +179,18 @@ async function dailyAction(action) {
       if (owner.daily.canSave || owner.daily.needsRecovery) {
         const saved = localStorage.getItem(owner.daily.key);
         if (saved !== owner.daily.saved) {
-          tickets.delete(owner.date);
-          memory.delete(owner.key);
-          await loadMode(length, owner.date);
-          throw new Error("This ticket changed in another tab. The latest journey is loaded; no action spent.");
+          const latest = readDailyTicket(owner.daily.key, owner.date);
+          const previousRoute = owner.daily.ticket?.journeys[length] ?? null;
+          const latestRoute = latest?.journeys[length] ?? null;
+          if (!owner.daily.needsRecovery && JSON.stringify(previousRoute) === JSON.stringify(latestRoute)) {
+            owner.daily.ticket = latest;
+            owner.daily.saved = saved;
+          } else {
+            tickets.delete(owner.date);
+            memory.delete(owner.key);
+            await loadMode(length, owner.date);
+            throw new Error("This route changed in another tab. The latest journey is loaded; no action spent.");
+          }
         }
       }
       await action();
@@ -253,11 +266,11 @@ function renderTrack() {
   });
   ui.hintCount.textContent = `${left} of 2 hints left`;
   ui.requestHint.disabled = ended || left === 0 || actionPending;
-  ui.requestHint.textContent = context.hintError ? "Retry hint" : "Request a hint";
+  ui.requestHint.textContent = context.hintError ? "Try Again" : "Find a Clue";
   ui.trackNote.textContent = ended ? `${context.state.hints.length} hints used on this journey.`
-    : context.hintError ? "Ticket calculation failed. Retry without spending a hint."
+    : context.hintError ? "The ticket search failed. Try again without spending a hint."
     : !left ? "Both hints used. Reopen your pocketed tickets for free."
-    : "An oil-smudged ticket points to an unfamiliar, unvisited stop on a shortest route home.";
+    : "Look for a discarded ticket. The readable letters point to an unvisited word on a shortest route home.";
 }
 
 function showHint(index) {
@@ -314,13 +327,13 @@ async function requestHint() {
       const hint = await owner.routes.request({ type: "hint", word: current(), history: owner.state.seen, excluded });
       if (owner !== context) throw new Error("The journey changed before the ticket arrived.");
       const state = requestTicketHint(owner.state, owner.puzzle, hint);
-      lockTicket();
+      beginJourney();
       owner.state = state;
       owner.hintError = false;
       persist();
       renderTrack();
       showHint(state.hints.length - 1);
-      message(`A discarded ticket found. ${2 - state.hints.length} hints remain.`);
+      message(`Found a discarded ticket. ${2 - state.hints.length} of 2 hints left.`);
     } catch (error) {
       owner.hintError = Boolean(owner.routes.failure);
       throw error;
@@ -508,8 +521,8 @@ function render(animate = false) {
   ui.boardNote.textContent = `Marks compare the accepted word with ${context.puzzle.goal}, not route distance. Underlined letters can still change.`;
   ui.winPanel.hidden = !ended;
   ui.startOver.disabled = !canRestart();
-  ui.startOver.title = context.state.gaveUp ? "Today's journey has ended."
-    : canRestart() ? "Restart this journey. Your choice and hints used stay booked." : "Make a move before starting over.";
+  ui.startOver.title = context.state.gaveUp ? "This route has ended. Try another difficulty."
+    : canRestart() ? "Restart only this route. Used hints and a claimed free stop stay used." : "Make a move before starting over, or choose another difficulty.";
   ui.giveUp.disabled = ended;
   ui.giveUp.hidden = ended;
   ui.recoverSave.hidden = !context.daily.needsRecovery;
@@ -518,7 +531,7 @@ function render(animate = false) {
   if (ended) {
     ui.winTitle.textContent = won ? "You Made it Home!" : "End of the line.";
     ui.resultStatus.textContent = won ? "DESTINATION REACHED" : "JOURNEY ENDED";
-    ui.winSummary.textContent = `${moves} counted moves${won ? ` against par ${context.puzzle.par}` : ` played; home wasn't reached. Par is ${context.puzzle.par}`}. ${transforms} transforms${free ? ", including your free Coaling Station stop" : ""}. ${context.state.hints.length} hints used. ${context.state.restarts} restarts.${context.state.gaveUp ? " No more attempts today." : ""}`;
+    ui.winSummary.textContent = `${moves} counted moves${won ? ` against par ${context.puzzle.par}` : ` played; home wasn't reached. Par is ${context.puzzle.par}`}. ${transforms} transforms${free ? ", including your free Coaling Station stop" : ""}. ${context.state.hints.length} hints used. ${context.state.restarts} restarts.${context.state.gaveUp ? " This route is finished for today. You can try another difficulty." : ""}`;
     ui.solutionTitle.textContent = `An optimal route \u00b7 ${context.puzzle.par} transforms`;
     ui.solution.replaceChildren();
     if (context.solution) renderSolution(context.solution);
@@ -556,7 +569,7 @@ async function loadMode(modeLength, date = puzzleDate()) {
   editing = null;
   pendingLetter = "";
   const daily = dailyTicket(date);
-  length = daily.ticket?.length ?? modeLength;
+  length = modeLength;
   for (const button of modeButtons) button.setAttribute("aria-pressed", String(+button.dataset.length === length));
   ui.board.replaceChildren();
   journey.clear();
@@ -586,7 +599,15 @@ async function loadMode(modeLength, date = puzzleDate()) {
     const key = `${date}:${length}`;
     let state = freshState(puzzle);
     try {
-      if (daily.ticket) state = validateState(structuredClone(daily.ticket.state), puzzle, words);
+      if (daily.canSave) {
+        const saved = localStorage.getItem(daily.key);
+        if (saved !== daily.saved) {
+          daily.ticket = readDailyTicket(daily.key, date);
+          daily.saved = saved;
+        }
+      }
+      const route = daily.ticket?.journeys[length];
+      if (route) state = validateState(structuredClone(route.state), puzzle, words);
       else if (memory.has(key)) state = validateState(structuredClone(memory.get(key)), puzzle, words);
     } catch (error) {
       daily.canSave = false;
@@ -600,7 +621,7 @@ async function loadMode(modeLength, date = puzzleDate()) {
     ready = true;
     ui.board.dataset.ready = "true";
     render();
-    message(state.gaveUp ? "Today's journey ended. View results for the optimal route."
+    message(state.gaveUp ? "This route ended. View results or try another difficulty."
       : current() === puzzle.goal ? "You Made it Home!"
       : state.history.length > 1 ? `Continue from ${current()} toward ${puzzle.goal}. Tap a large tile to change one letter.`
       : "Tap a tile to replace one letter.");
@@ -629,7 +650,7 @@ ui.moveForm.addEventListener("submit", event => {
   dailyAction(() => {
     const state = advanceJourney(context.state, candidate, context.puzzle, context.words);
     const coal = state.coalTurn !== context.state.coalTurn;
-    lockTicket();
+    beginJourney();
     context.state = state;
     context.hintError = false;
     render(true);
@@ -688,21 +709,13 @@ ui.confirmRestart.addEventListener("click", () => {
   context.solution = null;
   context.daily.canSave = true;
   context.daily.needsRecovery = false;
-  if (context.daily.ticket) lockTicket();
-  else {
-    try { localStorage.removeItem(context.daily.key); }
-    catch (error) {
-      context.daily.canSave = false;
-      storageWarning(`The saved ticket could not be cleared: ${error.message}`);
-    }
-  }
+  beginJourney();
   context.hintError = false;
   ui.restartDialog.close();
   render();
   ui.storageWarning.hidden = context.daily.canSave;
   persist();
-  message(context.daily.ticket ? "A fresh start. Same daily ticket; hints used stay used."
-    : "A fresh preview. Your daily choice is still open.");
+  message("A fresh start on this route. Used hints stay used; other difficulties are unchanged.");
   });
 });
 ui.giveUp.addEventListener("click", () => {
@@ -712,7 +725,7 @@ ui.confirmGiveUp.addEventListener("click", () => {
   if (!ready || finished()) { ui.giveUpDialog.close(); return; }
   dailyAction(() => {
     const state = abandonJourney(context.state, context.puzzle);
-    lockTicket();
+    beginJourney();
     context.state = state;
     ui.giveUpDialog.close();
     render();
@@ -737,7 +750,7 @@ ui.confirmRecovery.addEventListener("click", () => {
   if (!ready || !context.daily.needsRecovery) { ui.recoveryDialog.close(); return; }
   dailyAction(() => {
     if (context.daily.ticket) {
-      context.daily.ticket.state = structuredClone(context.state);
+      if (context.daily.ticket.journeys[length]) context.daily.ticket.journeys[length].state = structuredClone(context.state);
       saveTicket(localStorage, context.daily.key, context.daily.ticket);
     } else localStorage.removeItem(context.daily.key);
     context.daily.saved = localStorage.getItem(context.daily.key);
@@ -760,8 +773,19 @@ motion.addEventListener("change", () => {
   }
 });
 window.addEventListener("storage", event => {
-  if (!context || event.key !== context.daily.key) return;
+  if (!context || event.key !== context.daily.key || actionPending) return;
   const date = context.date;
+  try {
+    const latest = readDailyTicket(context.daily.key, date);
+    if (!context.daily.needsRecovery && JSON.stringify(latest?.journeys[length] ?? null)
+        === JSON.stringify(context.daily.ticket?.journeys[length] ?? null)) {
+      context.daily.ticket = latest;
+      context.daily.saved = localStorage.getItem(context.daily.key);
+      return;
+    }
+  } catch (error) {
+    storageWarning(`The shared save could not be restored: ${error.message}`);
+  }
   tickets.delete(date);
   memory.delete(context.key);
   loadMode(length, date);
