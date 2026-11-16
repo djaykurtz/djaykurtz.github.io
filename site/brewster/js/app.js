@@ -1,4 +1,4 @@
-import { buildLedger, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js";
+import { buildLedger, curve, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js";
 import { renderAnalysis } from "./analysis.js";
 
 const $ = id => document.getElementById(id);
@@ -7,7 +7,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
 const ui = {
   form: $("timeForm"), minutes: $("minutes"), seconds: $("seconds"), slider: $("slider"),
-  play: $("play"), speed: $("speed"), total: $("total"), remaining: $("remaining"), percent: $("percent"),
+  play: $("play"), speed: $("speed"), total: $("total"), remaining: $("remaining"), percent: $("percent"), rate: $("rate"),
   barFill: $("barFill"), tape: $("tape"), latest: $("latest"), chart: $("chart"), tooltip: $("tooltip"),
   rows: $("ledgerRows"), marks: $("sliderMarks"), runtimeLabel: $("runtimeLabel"), draft: $("draftNote"),
 };
@@ -112,10 +112,13 @@ function setTime(seconds, { instant = false, quiet = false, editing = null } = {
   animateTotal(tab.total, instant || playing);
   ui.remaining.textContent = formatMoney(tab.remaining);
   ui.percent.textContent = `${(tab.progress * 100).toFixed(1).replace(/\.0$/, "")}%`;
+  ui.rate.textContent = tab.rate ? `${formatShort(tab.rate)} a day` : "None yet";
   ui.barFill.style.transform = `scaleX(${tab.progress})`;
   document.body.classList.toggle("paid", tab.remaining <= 0);
 
   if (tapeKey !== tab.seen) { tapeKey = tab.seen; renderTape(tab); renderLatest(tab); renderTableState(tab); }
+  const status = `TAB ${formatShort(tab.total)} \u00B7 LEFT ${formatShort(tab.remaining)}`;
+  ui.tape.querySelectorAll(".tape-total").forEach(node => { node.textContent = status; });
   paintChart(tab);
   if (!quiet && !playing) writeHash();
 }
@@ -153,7 +156,7 @@ function tapeItem(event) {
   const item = el("span", `tape-item tape-${event.kind}`);
   item.append(el("span", "tape-time", formatTime(event.t)));
   item.append(el("span", "tape-name", event.label.toUpperCase()));
-  if (event.kind === "spend") item.append(el("span", "tape-amt", `▲ ${formatShort(event.amount)}`));
+  if (event.kind === "spend") item.append(el("span", "tape-amt", `▲ ${formatShort(event.amount)}${event.days ? ` OVER ${event.days} DAYS` : ""}`));
   else if (event.kind === "windfall") item.append(el("span", "tape-amt", `▼ ${formatShort(-event.amount)} BACK`));
   else item.append(el("span", "tape-amt", "○"));
   return item;
@@ -177,7 +180,7 @@ function renderLatest(tab) {
   } else {
     const head = el("div", "latest-head");
     head.append(el("span", "latest-time", formatTime(event.t)), el("h2", "latest-title", event.label));
-    const amount = event.kind === "spend" ? `+${formatMoney(event.amount)}`
+    const amount = event.kind === "spend" ? `+${formatMoney(event.amount)}${event.days ? ` over ${event.days} days` : ""}`
       : event.kind === "windfall" ? `${formatMoney(event.amount)} (came back)` : "Story beat";
     head.append(el("span", `latest-amt amt-${event.kind}`, amount));
     ui.latest.append(head, el("p", "latest-detail", event.detail));
@@ -203,7 +206,7 @@ function buildTable() {
     const time = el("td"); time.append(jump);
     const what = el("td");
     what.append(el("span", "entry-label", event.label), el("span", "entry-detail", event.detail));
-    if (event.calc || event.plug) what.append(workings(event));
+    if (event.calc || event.daily || event.plug) what.append(workings(event));
     const amount = el("td", `num amt-${event.kind}`, event.kind === "milestone" ? "\u00B7" : formatShort(event.amount));
     const total = el("td", "num");
     total.append(el("span", "full", formatMoney(event.total)), el("span", "short", formatShort(event.total)));
@@ -219,9 +222,14 @@ function workings(event) {
   if (event.plug) {
     list.append(el("li", "", `$30,000,000 minus everything else = ${formatMoney(event.amount)}`));
   } else {
-    for (const [what, qty, each] of event.calc) {
+    for (const [what, qty, each] of event.calc ?? []) {
       list.append(el("li", "", qty === 1 ? `${what}: ${formatMoney(each)}` : `${what}: ${qty.toLocaleString("en-US")} \u00D7 ${formatMoney(each)}`));
     }
+    for (const [what, qty, each] of event.daily ?? []) {
+      const people = qty === 1 ? "" : `${qty.toLocaleString("en-US")} \u00D7 `;
+      list.append(el("li", "daily", `${what}: ${people}${formatMoney(each)} a day \u00D7 ${event.days} days`));
+    }
+    if (event.days) list.append(el("li", "daily", `Charged daily from ${formatTime(event.t)} to ${formatTime(event.until)}`));
   }
   list.append(el("li", "range", `Range ${formatShort(event.range[0])} to ${formatShort(event.range[1])}`));
   return list;
@@ -286,10 +294,8 @@ function buildChart() {
   svg("line", { x1: m.left, x2: m.left + iw, y1: y(ledger.budget), y2: y(ledger.budget) }, finish);
   svg("text", { x: m.left + 6, y: y(ledger.budget) - 7 }, finish).textContent = "$30M finish line";
 
-  // Step path: hold each total until the next event, then jump.
-  let d = `M${x(0)},${y(0)}`;
-  for (const event of ledger.events) d += `H${x(event.t)}V${y(event.total)}`;
-  d += `H${x(ledger.runtime)}`;
+  // Straight lines between breakpoints: one-off costs jump, daily costs slope.
+  const d = curve(ledger).map(([t, v], i) => `${i ? "L" : "M"}${x(t).toFixed(1)},${y(v).toFixed(1)}`).join("");
   const area = `${d}V${y(0)}H${x(0)}Z`;
 
   svg("path", { class: "line-future", d }, root);

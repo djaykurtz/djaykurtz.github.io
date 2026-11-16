@@ -26,7 +26,9 @@ Everything the page shows comes from `data/ledger.json`. Each event has:
 | `t` | Timestamp as `m:ss` in total minutes (e.g. `101:30`) |
 | `kind` | `spend`, `windfall` (money came back, so negative) or `milestone` (no money) |
 | `category` | Key into `categories`; groups the waterfall chart |
-| `calc` | Lines of `[description, quantity, unit price]`; the amount is their sum |
+| `calc` | One-off costs: lines of `[description, quantity, unit price]` |
+| `daily` | Running costs: lines of `[description, quantity, cost per day]` |
+| `until` | When daily costs stop (defaults to the end of `clock`) |
 | `range` | `[low, high]` guess around the amount |
 | `plug` | `true` on the one entry that balances the books (see below) |
 | `basis` | Set to `"stated"` once a price is confirmed from the dialogue |
@@ -38,8 +40,13 @@ Everything the page shows comes from `data/ledger.json`. Each event has:
 1. The will fixes the total: the tab ends at exactly `budget`.
 2. Each spend is priced with a formula in `calc`, in 1985 dollars. The unit
    prices are unsourced assumptions.
-3. Money that comes back is a `windfall` with a negative amount.
-4. The plug entry has no `calc`. Its amount is `budget` minus everything else,
+3. Running costs (salaries, rent, the suite, cars, guards, campaign staff) go
+   in `daily`. They're charged by the day from the event until `until`.
+   `clock` spreads the story's 30 days evenly over a stretch of the film, so
+   a day is about 2.6 minutes of screen time, and the day count for each
+   entry is rounded from that. Between events the tab rises in a straight line.
+4. Money that comes back is a `windfall` with a negative amount.
+5. The plug entry has no `calc`. Its amount is `budget` minus everything else,
    and its range is the budget minus the sum of all highs, up to the budget
    minus the sum of all lows. If the itemized estimates ever exceed the
    budget, the checks fail.

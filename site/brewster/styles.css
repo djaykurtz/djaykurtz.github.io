@@ -228,6 +228,7 @@ h1 span { color: var(--led); text-shadow: 0 0 24px var(--led-glow); }
 .panel .tooltip span { color: var(--ink-soft); }
 
 .workings { margin: .3rem 0 0; padding: 0; list-style: none; font-family: var(--mono); font-size: .78rem; color: var(--ink-dim); }
+.workings .daily { color: var(--ink-soft); }
 .workings .range { color: var(--ink-dim); opacity: .85; }
 .ledger tr.past .workings { color: var(--ink-soft); }
 

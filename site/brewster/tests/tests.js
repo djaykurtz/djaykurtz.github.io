@@ -1,4 +1,4 @@
-import { buildLedger, formatShort, formatTime, parseTime, summarize, tabAt, waterfall } from "../js/ledger.js";
+import { buildLedger, curve, formatShort, formatTime, parseTime, summarize, tabAt, valueAt, waterfall } from "../js/ledger.js";
 
 const results = [];
 function assert(value, message = "Assertion failed") { if (!value) throw new Error(message); }
@@ -103,15 +103,41 @@ await test("Waterfall steps chain end to start, with the plug last", () => {
   equal(s.spent, 50); equal(s.cameBack, -10); equal(s.plug.amount, 60);
 });
 
+await test("Daily costs accrue in a straight line from start to finish", () => {
+  // 10 story days over 1:00-11:00 of film: one day per minute.
+  const ledger = buildLedger({ runtime: "12:00", budget: 1000, clock: { start: "1:00", end: "11:00", days: 10 }, events: [
+    { t: "1:00", kind: "spend", calc: [["deposit", 1, 100]], daily: [["staff", 2, 10]] },
+    { t: "6:00", kind: "spend", daily: [["guards", 1, 30]], until: "8:00" },
+  ] });
+  const [staff, guards] = ledger.events;
+  equal(staff.days, 10); equal(staff.amount, 300); equal(staff.rate, 20);
+  equal(guards.days, 2); equal(guards.amount, 60);
+  equal(valueAt(ledger, 59), 0);
+  equal(valueAt(ledger, 60), 100);          // deposit lands, nothing accrued yet
+  equal(valueAt(ledger, 360), 200);         // 5 days of staff
+  equal(valueAt(ledger, 420), 100 + 120 + 30); // deposit, 6 days of staff, 1 of guards
+  equal(valueAt(ledger, 660), 360);         // everything charged
+  equal(tabAt(ledger, 420).rate, 50);
+  equal(tabAt(ledger, 600).rate, 20);
+  const pts = curve(ledger);
+  equal(pts[0].join(), "0,0");
+  equal(pts.at(-1).join(), "720,360");
+  assert(pts.some(([t, v]) => t === 60 && v === 0) && pts.some(([t, v]) => t === 60 && v === 100), "The deposit is a vertical jump");
+  throws(() => buildLedger({ runtime: "12:00", budget: 1000, events: [{ t: "1:00", kind: "spend", daily: [["x", 1, 1]] }] }));
+  throws(() => buildLedger({ runtime: "12:00", budget: 1000, clock: { start: "1:00", end: "11:00", days: 10 }, events: [{ t: "5:00", kind: "spend", daily: [["x", 1, 1]], until: "4:00" }] }));
+});
+
 await test("Published ledger is valid and ends with exactly $30M spent", async () => {
   const response = await fetch("../data/ledger.json", { cache: "no-cache" });
   const ledger = buildLedger(await response.json());
   equal(ledger.budget, 30000000);
   equal(ledger.final, ledger.budget);
   assert(ledger.events.every(e => e.label && e.detail), "Every event needs a label and detail");
-  assert(ledger.events.filter(e => e.kind !== "milestone").every(e => e.plug || e.calc), "Every priced event shows its working");
+  assert(ledger.events.filter(e => e.kind !== "milestone").every(e => e.plug || e.calc || e.daily), "Every priced event shows its working");
   assert(ledger.events.filter(e => e.kind !== "milestone").every(e => ledger.categories[e.category]), "Every priced event has a known category");
   equal(waterfall(ledger).at(-1).end, ledger.budget);
+  equal(Math.round(valueAt(ledger, ledger.runtime)), ledger.budget);
+  assert(ledger.events.some(e => e.daily), "Running costs are spread daily");
   assert(ledger.events.every(e => e.total <= ledger.budget * 1.1), "Running total strays far past the budget");
 });
 
