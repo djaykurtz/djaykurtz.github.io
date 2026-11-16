@@ -29,7 +29,11 @@ both new paths. The game has no backend server or build step. Its own styles
 and scripts are separate from the portfolio, and progress stays in the player's
 browser. See `site/leximotive/README.md` for game details.
 
-### Brewster's Tab
+## Brewster's Tab (unlisted)
+
+Hosted at [/brewster/](https://djaykurtz.github.io/brewster/) but not linked
+from the portfolio yet. It will get a "Something Informative" link under
+"Away from work" once it's approved.
 
 A one-page calculator for *Brewster's Millions* (1985): enter a timestamp and
 see how much of the $30 million Monty Brewster has spent by then, with a
