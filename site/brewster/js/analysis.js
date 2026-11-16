@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116i";
+import { formatMoney, formatShort, formatTime, rateAt, summarize, waterfall } from "./ledger.js?v=20261116j";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -58,6 +58,10 @@ function renderStats(ledger) {
   set("spikeBack", formatShort(spike));
   const campaign = waterfall(ledger).find(step => step.key === "campaign");
   if (campaign) set("campaign", `about ${formatShort(Math.round(campaign.amount / 1e6) * 1e6)}`);
+  const ads = ledger.events.find(event => event.label === "Ad blitz");
+  if (ads) set("adBlitz", formatShort(ads.amount));
+  // Daily costs only change at event times, so the peak is at one of them.
+  set("peakRate", formatShort(Math.max(...ledger.events.map(event => rateAt(ledger, event.t)))));
   const lastSpend = ledger.events.filter(event => event.kind === "spend").at(-1);
   if (lastSpend) { set("lastPayment", formatShort(lastSpend.amount)); set("lastPaymentTime", formatTime(lastSpend.t)); }
 
