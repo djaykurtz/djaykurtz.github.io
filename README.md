@@ -28,3 +28,13 @@ The existing Pages workflow publishes the entire `site/` directory, including
 both new paths. The game has no backend server or build step. Its own styles
 and scripts are separate from the portfolio, and progress stays in the player's
 browser. See `site/leximotive/README.md` for game details.
+
+### Brewster's Tab
+
+A one-page calculator for *Brewster's Millions* (1985): enter a timestamp and
+see how much of the $30 million Monty Brewster has spent by then, with a
+ticker, a running total and a line chart.
+
+- Play: [Brewster's Tab](https://djaykurtz.github.io/brewster/)
+- Page and ledger data: `site/brewster/` (see `site/brewster/README.md`)
+- Subtitle sync tool: `tools/brewster/sync_ledger.py` (not published)

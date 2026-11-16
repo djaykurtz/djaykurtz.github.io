@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pick a timestamp in Brewster's Millions (1985) and see how much of the $30 million Monty Brewster has spent so far.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b120e">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Brewster's Tab">
+  <meta property="og:description" content="How much had Monty blown by minute 54? A running tab for Brewster's Millions.">
+  <meta property="og:url" content="https://djaykurtz.github.io/brewster/">
+  <link rel="canonical" href="https://djaykurtz.github.io/brewster/">
+  <link rel="icon" href="./mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Brewster's Tab</title>
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/something-fun/"><span aria-hidden="true">&larr;</span> Something Fun</a>
+    <span class="tag">Unofficial fan ledger</span>
+  </header>
+
+  <main class="page">
+    <section class="masthead" aria-labelledby="title">
+      <p class="kicker">Brewster's Millions &middot; 1985 &middot; $30,000,000 in 30 days</p>
+      <h1 id="title">Brewster's <span>Tab</span></h1>
+      <p class="lede">Pick any moment in the movie. See how much of the thirty million Monty has burned through.</p>
+    </section>
+
+    <p id="draftNote" class="draft" hidden></p>
+    <noscript><p class="draft">Brewster's Tab needs JavaScript to run the numbers.</p></noscript>
+
+    <section class="console" aria-label="Pick a timestamp">
+      <form id="timeForm" class="clock" autocomplete="off">
+        <label class="clock-label" for="minutes">Timestamp</label>
+        <div class="clock-fields">
+          <input id="minutes" name="minutes" type="number" inputmode="numeric" min="0" max="102" value="0" aria-label="Minutes">
+          <span class="colon" aria-hidden="true">:</span>
+          <input id="seconds" name="seconds" type="number" inputmode="numeric" min="0" max="59" value="0" aria-label="Seconds">
+        </div>
+        <div class="clock-actions">
+          <button id="play" type="button" class="btn" aria-pressed="false">&#9654; Roll film</button>
+          <select id="speed" aria-label="Playback speed">
+            <option value="30">30&times;</option>
+            <option value="120" selected>120&times;</option>
+            <option value="480">480&times;</option>
+          </select>
+        </div>
+      </form>
+
+      <div class="meter" aria-live="polite">
+        <p class="meter-label">Spent so far</p>
+        <p id="total" class="led">$0</p>
+        <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
+        <dl class="stats">
+          <div><dt>Left to spend</dt><dd id="remaining">$30,000,000</dd></div>
+          <div><dt>Of the $30M</dt><dd id="percent">0%</dd></div>
+        </dl>
+      </div>
+
+      <div class="scrub">
+        <input id="slider" type="range" min="0" max="6120" step="1" value="0" aria-label="Film timeline">
+        <div id="sliderMarks" class="scrub-marks" aria-hidden="true"></div>
+        <div class="scrub-ends" aria-hidden="true"><span>0:00</span><span id="runtimeLabel">102:00</span></div>
+      </div>
+    </section>
+
+    <div class="tape" aria-hidden="true"><div id="tape" class="tape-track"></div></div>
+
+    <section id="latest" class="latest" aria-live="polite" aria-label="Latest ledger entry"></section>
+
+    <section class="panel" aria-labelledby="chartTitle">
+      <div class="panel-head">
+        <h2 id="chartTitle">The tab over the film</h2>
+        <ul class="legend">
+          <li><span class="key key-spend" aria-hidden="true">&#9650;</span>Spend</li>
+          <li><span class="key key-windfall" aria-hidden="true">&#9660;</span>Accidental profit</li>
+          <li><span class="key key-milestone" aria-hidden="true">&#9675;</span>Story beat</li>
+        </ul>
+      </div>
+      <div class="chart-wrap">
+        <svg id="chart" role="img" aria-label="Running total spent across the film's runtime"></svg>
+        <div id="tooltip" class="tooltip" hidden></div>
+      </div>
+      <p class="chart-note">Click or drag on the chart to jump. Money coming back makes the line dip.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="ledgerTitle">
+      <div class="panel-head"><h2 id="ledgerTitle">The ledger</h2></div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead><tr><th scope="col">Time</th><th scope="col">Entry</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Running tab</th></tr></thead>
+          <tbody id="ledgerRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p>A fan-made toy. Not affiliated with the film or its studio. Times assume the theatrical cut, starting at the first frame.</p>
+      <p><a href="/something-fun/">Back to Something Fun</a> &middot; <a href="https://github.com/djaykurtz/djaykurtz.github.io/tree/main/site/brewster">See the code</a></p>
+    </footer>
+  </main>
+</body>
+</html>
