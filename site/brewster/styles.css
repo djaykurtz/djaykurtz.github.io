@@ -290,7 +290,8 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 /* Each section opens from a gold bar: the title sits on a dark plate so it stays readable, and a gold "$" cufflink does the toggling. */
 .fold { margin-top: 1.25rem; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 .fold-bar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; padding: .45rem .55rem .45rem .5rem;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "link kicker hint" "link title hint";
+  align-items: center; column-gap: .85rem; padding: .45rem .9rem .45rem .45rem;
   border: 1px solid #4a2c00; border-radius: 6px; cursor: pointer; list-style: none; user-select: none;
   background: linear-gradient(180deg, #fff3bf 0%, #f7cf5f 16%, #d79b1c 42%, #8f5c05 55%, #e7b23a 72%, #fbe08a 88%, #b17a10 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), inset 0 -2px 0 rgba(60, 35, 0, .35), 0 2px 6px rgba(0, 0, 0, .35);
@@ -300,16 +301,16 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .fold[open] > .fold-bar { border-radius: 6px 6px 0 0; }
 .fold-bar:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .fold-kicker {
-  order: 0; flex-basis: 100%; padding-left: .35rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  grid-area: kicker; margin-bottom: .2rem; padding-left: .2rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
 }
 .fold-bar h2 {
-  order: 1; flex: 0 1 auto; min-width: 0; margin: 0 auto 0 0; padding: .35rem .85rem .4rem;
+  grid-area: title; justify-self: start; max-width: 100%; margin: 0; padding: .35rem .85rem .4rem;
   border-radius: 4px; background: rgba(9, 13, 11, .9); box-shadow: inset 0 0 0 1px rgba(255, 214, 92, .45), 0 1px 0 rgba(255, 240, 190, .5);
   font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; color: var(--ink);
 }
 .fold-bar::after {
-  order: 2; content: "Minimize"; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  grid-area: hint; content: "Minimize"; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
 }
 .fold:not([open]) > .fold-bar::after { content: "Open"; }
@@ -324,27 +325,34 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .method-lede a { color: var(--led); }
 
 /* The toggle: a gold cufflink. The bar behind the face swivels when the section closes. */
-.cufflink { order: 3; position: relative; flex: none; display: grid; place-items: center; width: 3.4rem; height: 2.5rem; }
+.cufflink { grid-area: link; position: relative; display: grid; place-items: center; width: 4.1rem; height: 3.3rem; }
 .cufflink::before {
-  content: ""; position: absolute; left: 50%; top: 50%; width: 3.2rem; height: .5rem; border-radius: .25rem;
+  content: ""; position: absolute; left: 50%; top: 50%; width: 4rem; height: .55rem; border-radius: .25rem;
   background: linear-gradient(180deg, #5a3a00, #2b1900); box-shadow: 0 1px 0 rgba(255, 240, 190, .5);
   transform: translate(-50%, -50%) rotate(0deg); transition: transform 320ms cubic-bezier(.3, 1.5, .5, 1);
 }
 .cufflink > span {
-  position: relative; display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 3.1rem; height: 3.1rem; border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #fffbe0 0 10%, #ffd65c 32%, #d39516 62%, #7a4b00 100%);
   box-shadow: 0 0 0 2px #2b1900, inset 0 0 0 2px rgba(74, 44, 0, .7), inset 0 0 0 4px rgba(255, 236, 170, .55), 0 3px 0 #2b1900, 0 6px 12px rgba(0, 0, 0, .55);
-  font-family: var(--slab); font-size: 1.15rem; line-height: 1; color: #4a2c00; text-shadow: 0 1px 0 rgba(255, 240, 190, .75);
+  font-family: var(--slab); font-size: 1.55rem; line-height: 1; color: #4a2c00; text-shadow: 0 1px 0 rgba(255, 240, 190, .75);
   transition: transform 320ms cubic-bezier(.3, 1.5, .5, 1);
 }
+/* A small engraved arrow under the "$": down when open, right when closed. */
+.cufflink > span::after {
+  content: ""; width: .32rem; height: .32rem; margin-top: .12rem; border-right: 2px solid #5a3a00; border-bottom: 2px solid #5a3a00;
+  opacity: .75; transform: rotate(45deg); transition: transform 240ms ease;
+}
+.fold:not([open]) > .fold-bar .cufflink > span::after { transform: rotate(-45deg); }
 .fold-bar:hover .cufflink > span { transform: translateY(-1px) scale(1.05); }
-.fold:not([open]) > .fold-bar .cufflink::before { transform: translate(-50%, -50%) rotate(90deg) scaleX(.82); }
+.fold:not([open]) > .fold-bar .cufflink::before { transform: translate(-50%, -50%) rotate(90deg) scaleX(.8); }
 .fold:not([open]) > .fold-bar .cufflink > span { filter: saturate(.75) brightness(.88); }
-@media (prefers-reduced-motion: reduce) { .cufflink::before, .cufflink > span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .cufflink::before, .cufflink > span, .cufflink > span::after { transition: none; } }
 @media (forced-colors: active) { .cufflink > span { border: 2px solid ButtonText; } }
 @media (max-width: 720px) {
   .fold-bar::after { display: none; }
-  .fold-bar h2 { flex: 1 1 0; font-size: 1.1rem; }
+  .fold-bar { grid-template-columns: auto minmax(0, 1fr); padding-right: .55rem; }
+  .fold-bar h2 { font-size: 1.1rem; }
   .fold-body { padding: 1rem .75rem; }
 }
 
