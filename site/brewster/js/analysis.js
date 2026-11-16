@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, formatTime, rateAt, summarize, waterfall } from "./ledger.js?v=20261116j";
+import { formatMoney, formatShort, formatTime, rateAt, summarize, waterfall } from "./ledger.js?v=20261116k";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -116,13 +116,21 @@ function frame(root, rows, rowHeight, labels = []) {
   root.setAttribute("viewBox", `0 0 ${width} ${height}`);
   root.setAttribute("width", width);
   root.setAttribute("height", height);
-  return { width, height, m, iw: width - m.left - m.right, narrow, labelH, rowH };
+  return { width, height, m, iw: width - m.left - m.right, narrow, labelH, rowH, rows };
+}
+
+// A vertical line across the plot. With stacked labels it skips each label line, so no text sits on a line.
+function vline(parent, f, at, attrs = {}) {
+  const spans = f.labelH
+    ? Array.from({ length: f.rows }, (_, i) => [f.m.top + i * f.rowH + f.labelH, f.m.top + (i + 1) * f.rowH])
+    : [[f.m.top, f.height - f.m.bottom]];
+  for (const [y1, y2] of spans) svg("line", { ...attrs, x1: at, x2: at, y1, y2 }, parent);
 }
 
 function axis(root, f, x, ticks, height) {
   const grid = svg("g", { class: "grid" }, root);
   for (const v of ticks) {
-    svg("line", { x1: x(v), x2: x(v), y1: f.m.top, y2: height - f.m.bottom }, grid);
+    vline(grid, f, x(v));
     svg("text", { x: x(v), y: height - f.m.bottom + 17, "text-anchor": "middle" }, grid).textContent = v === 0 ? "$0" : formatShort(v);
   }
 }
@@ -162,7 +170,7 @@ function drawWaterfall(ledger) {
     const left = x(Math.min(step.start, step.end)), right = x(Math.max(step.start, step.end));
     const kind = step.plug ? "plug" : step.amount < 0 ? "windfall" : "spend";
     rowLabel(root, f, rowTop, mid, step.label);
-    if (i > 0) svg("line", { class: "wf-link", x1: x(step.start), x2: x(step.start), y1: y - 6, y2: y + 6 }, root);
+    if (i > 0) svg("line", { class: "wf-link", x1: x(step.start), x2: x(step.start), y1: f.labelH ? y : y - 6, y2: y + 6 }, root);
     svg("rect", { class: `wf-bar wf-${kind}`, x: left, y: y + 6, width: Math.max(2, right - left), height: rowHeight - 12, rx: 3 }, root);
     svg("text", { class: "row-value", x: right + 6, y: mid, "dominant-baseline": "middle" }, root).textContent = formatShort(step.amount);
     const hit = svg("rect", { class: "hit", x: 0, y: rowTop, width: f.width, height: f.rowH }, root);
@@ -191,7 +199,7 @@ function drawRanges(ledger) {
   const min = Math.min(0, ...items.map(e => e.range[0])), max = Math.max(...items.map(e => e.range[1]));
   const x = v => f.m.left + ((v - min) / (max - min)) * f.iw;
   axis(root, f, x, ticksFor(min, max, f.narrow ? 3 : 6), f.height);
-  svg("line", { class: "zero", x1: x(0), x2: x(0), y1: f.m.top, y2: f.height - f.m.bottom }, root);
+  vline(root, f, x(0), { class: "zero" });
 
   const tips = [];
   items.forEach((event, i) => {
