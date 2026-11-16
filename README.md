@@ -31,8 +31,11 @@ browser. See `site/leximotive/README.md` for game details.
 
 ## Something Informative
 
-The sidebar's "Away from work" section links to Brewster's Tab as
-"Something Informative", next to Something Fun.
+The sidebar's "Away from work" section links to
+[Something Informative](https://djaykurtz.github.io/something-informative/),
+next to Something Fun: a short note on why Brewster's Tab was fun to build.
+
+- Story: `site/something-informative/index.html`
 
 ### Brewster's Tab
 

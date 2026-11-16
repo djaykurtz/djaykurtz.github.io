@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116g";
+import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116h";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -43,16 +43,19 @@ function renderStats(ledger) {
   set("spent", formatShort(s.spent));
   set("spentNote", `across ${plural(s.spendCount, "priced entry", "priced entries")}`);
   set("cameBack", formatShort(s.cameBack));
-  set("cameBackNote", `from ${plural(s.windfallCount, "deal", "deals")} that should have lost`);
+  set("cameBackNote", `${plural(s.windfallCount, "windfall", "windfalls")} that put cash back in his hands`);
   if (s.plug) {
     set("plug", formatShort(s.plug.amount));
     set("plugNote", `${percent(s.plug.amount, ledger.budget)} of the $30M, the balancing figure`);
     set("plugInline", formatMoney(s.plug.amount));
   }
-  set("stated", `${s.stated} of ${s.priced}`);
+  set("stated", `${s.fromPlot} of ${s.priced}`);
+  set("statedNote", s.stated === 1 ? "entries. One amount is stated outright: the $38K party." : `entries. ${s.stated} amounts are stated outright.`);
 
   // Figures quoted in the rules section, so they follow the ledger.
   set("cameBackAbs", formatShort(-s.cameBack));
+  const spike = ledger.events.filter(event => event.kind === "windfall" && event.category === "investments").reduce((t, e) => t - e.amount, 0);
+  set("spikeBack", formatShort(spike));
   const campaign = waterfall(ledger).find(step => step.key === "campaign");
   if (campaign) set("campaign", `about ${formatShort(Math.round(campaign.amount / 1e6) * 1e6)}`);
   const lastSpend = ledger.events.filter(event => event.kind === "spend").at(-1);
@@ -65,7 +68,7 @@ function renderStats(ledger) {
     const allHigh = ledger.budget - low, allLow = ledger.budget - high;
     const items = byUncertainty(ledger), top = items.slice(0, 2);
     const share = top.reduce((t, e) => t + width(e), 0) / items.reduce((t, e) => t + width(e), 0);
-    const leaders = `The ${top.map(e => e.label.toLowerCase()).join(" and the ")} account for ${percent(share, 1)} of that spread, so their prices are the first ones to check.`;
+    const leaders = `${top.map(e => `“${e.label}”`).join(" and ")} account for ${percent(share, 1)} of that spread, so their prices are the first ones to check.`;
     callout.textContent = low < 0
       ? `The ranges are too wide to pin the plug down. If every entry came in at its high guess, the itemized spending alone would reach ${formatShort(allHigh)}, and Monty would overshoot by ${formatShort(-low)}. If every entry came in low, it would total ${formatShort(allLow)} and leave ${formatShort(high)} unexplained. ${leaders}`
       : `If every entry came in at its high guess, the plug would shrink to ${formatShort(low)}. If every entry came in low, it would grow to ${formatShort(high)}. ${leaders}`;

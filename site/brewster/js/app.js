@@ -1,5 +1,5 @@
-import { buildLedger, curve, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js?v=20261116g";
-import { renderAnalysis } from "./analysis.js?v=20261116g";
+import { buildLedger, curve, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js?v=20261116h";
+import { renderAnalysis } from "./analysis.js?v=20261116h";
 
 const $ = id => document.getElementById(id);
 const SVG = "http://www.w3.org/2000/svg";
@@ -379,6 +379,9 @@ function workings(event) {
     if (event.days) list.append(el("li", "daily", `Charged daily from ${formatTime(event.t)} to ${formatTime(event.until)}`));
   }
   list.append(el("li", "range", `Range ${formatShort(event.range[0])} to ${formatShort(event.range[1])}`));
+  list.append(el("li", "range", event.source === "plot"
+    ? (event.basis === "stated" ? "Source: plot summary, amount included" : "Source: plot summary; amount estimated")
+    : "Assumed: not in the plot summary"));
   return list;
 }
 

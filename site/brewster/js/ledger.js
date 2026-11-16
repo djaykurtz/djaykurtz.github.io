@@ -181,6 +181,7 @@ export function summarize(ledger) {
     windfallCount: windfalls.length,
     plug,
     stated: priced.filter(event => event.basis === "stated").length,
+    fromPlot: priced.filter(event => event.source === "plot").length,
     priced: priced.length,
   };
 }

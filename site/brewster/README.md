@@ -36,7 +36,8 @@ Everything the page shows comes from `data/ledger.json`. Each event has:
 | `until` | When daily costs stop (defaults to the end of `clock`) |
 | `range` | `[low, high]` guess around the amount |
 | `plug` | `true` on the one entry that balances the books (see below) |
-| `basis` | Set to `"stated"` once a price is confirmed from the dialogue |
+| `source` | `"plot"` if the event is in Wikipedia's plot summary, `"assumed"` if not |
+| `basis` | `"stated"` when the amount itself comes from the plot or dialogue |
 | `label`, `detail` | What the page shows |
 | `cue` | A word or phrase from the dialogue near that moment, used by the sync tool |
 
