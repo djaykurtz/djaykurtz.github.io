@@ -287,19 +287,32 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .gotcha .in-tab::before { content: "\2192  "; color: var(--led); }
 
 /* ---------- collapsible sections ---------- */
+/* Each section opens from a gold bar: the title sits on a dark plate so it stays readable, and a gold "$" cufflink does the toggling. */
 .fold { margin-top: 1.25rem; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 .fold-bar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .9rem; padding: .65rem .8rem .65rem 1.25rem;
-  border-radius: 6px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); cursor: pointer; list-style: none; user-select: none;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; padding: .45rem .55rem .45rem .5rem;
+  border: 1px solid #4a2c00; border-radius: 6px; cursor: pointer; list-style: none; user-select: none;
+  background: linear-gradient(180deg, #fff3bf 0%, #f7cf5f 16%, #d79b1c 42%, #8f5c05 55%, #e7b23a 72%, #fbe08a 88%, #b17a10 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), inset 0 -2px 0 rgba(60, 35, 0, .35), 0 2px 6px rgba(0, 0, 0, .35);
 }
 .fold-bar::-webkit-details-marker { display: none; }
-.fold[open] > .fold-bar { border-bottom: 1px solid var(--line); border-radius: 6px 6px 0 0; }
-.fold-bar:focus-visible { outline: 2px solid var(--led); outline-offset: -2px; }
-.fold-kicker { order: 0; flex-basis: 100%; font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); }
-.fold-bar h2 { order: 1; flex: 1; min-width: 0; margin: 0; font-family: var(--serif); font-size: 1.35rem; }
-.fold-bar::after { order: 2; content: "Minimize"; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+.fold-bar::marker { content: ""; }
+.fold[open] > .fold-bar { border-radius: 6px 6px 0 0; }
+.fold-bar:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.fold-kicker {
+  order: 0; flex-basis: 100%; padding-left: .35rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
+}
+.fold-bar h2 {
+  order: 1; flex: 0 1 auto; min-width: 0; margin: 0 auto 0 0; padding: .35rem .85rem .4rem;
+  border-radius: 4px; background: rgba(9, 13, 11, .9); box-shadow: inset 0 0 0 1px rgba(255, 214, 92, .45), 0 1px 0 rgba(255, 240, 190, .5);
+  font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; color: var(--ink);
+}
+.fold-bar::after {
+  order: 2; content: "Minimize"; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
+}
 .fold:not([open]) > .fold-bar::after { content: "Open"; }
-.fold-bar:hover::after { color: var(--ink-soft); }
 .fold-body { padding: 1.1rem 1.25rem 1.25rem; }
 .fold-body > .legend { margin-bottom: .6rem; }
 .fold-body > .method-lede { margin-top: 0; }
@@ -314,13 +327,13 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .cufflink { order: 3; position: relative; flex: none; display: grid; place-items: center; width: 3.4rem; height: 2.5rem; }
 .cufflink::before {
   content: ""; position: absolute; left: 50%; top: 50%; width: 3.2rem; height: .5rem; border-radius: .25rem;
-  background: linear-gradient(180deg, #ffe9a0, #c98a12 55%, #6b4200); box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+  background: linear-gradient(180deg, #5a3a00, #2b1900); box-shadow: 0 1px 0 rgba(255, 240, 190, .5);
   transform: translate(-50%, -50%) rotate(0deg); transition: transform 320ms cubic-bezier(.3, 1.5, .5, 1);
 }
 .cufflink > span {
   position: relative; display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #fffbe0 0 10%, #ffd65c 32%, #d39516 62%, #7a4b00 100%);
-  box-shadow: inset 0 0 0 2px rgba(74, 44, 0, .7), inset 0 0 0 4px rgba(255, 236, 170, .55), 0 2px 0 #2b1900, 0 5px 12px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 0 2px #2b1900, inset 0 0 0 2px rgba(74, 44, 0, .7), inset 0 0 0 4px rgba(255, 236, 170, .55), 0 3px 0 #2b1900, 0 6px 12px rgba(0, 0, 0, .55);
   font-family: var(--slab); font-size: 1.15rem; line-height: 1; color: #4a2c00; text-shadow: 0 1px 0 rgba(255, 240, 190, .75);
   transition: transform 320ms cubic-bezier(.3, 1.5, .5, 1);
 }
@@ -329,7 +342,11 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .fold:not([open]) > .fold-bar .cufflink > span { filter: saturate(.75) brightness(.88); }
 @media (prefers-reduced-motion: reduce) { .cufflink::before, .cufflink > span { transition: none; } }
 @media (forced-colors: active) { .cufflink > span { border: 2px solid ButtonText; } }
-@media (max-width: 720px) { .fold-bar::after { display: none; } .fold-body { padding: 1rem .75rem; } }
+@media (max-width: 720px) {
+  .fold-bar::after { display: none; }
+  .fold-bar h2 { flex: 1 1 0; font-size: 1.1rem; }
+  .fold-body { padding: 1rem .75rem; }
+}
 
 .foot { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: .85rem; text-align: center; }
 .foot p + p { margin-top: .4rem; }

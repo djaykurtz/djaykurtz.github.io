@@ -17,6 +17,11 @@ the page fetches its ledger. Browser checks run at `/brewster/tests/`.
 
 Link straight to a moment with a hash, e.g. `/brewster/#t=54:10`.
 
+GitHub Pages lets browsers cache CSS and scripts for about ten minutes, so the
+page loads them with a version tag (`?v=...`) in `index.html`, `js/app.js`
+and `js/analysis.js`. Change that tag in all of them whenever CSS or JS
+changes, or visitors can get new HTML with an old stylesheet.
+
 ## The ledger
 
 Everything the page shows comes from `data/ledger.json`. Each event has:
