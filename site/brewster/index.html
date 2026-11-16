@@ -88,6 +88,68 @@
       <p class="chart-note">Click or drag on the chart to jump. Money coming back makes the line dip.</p>
     </section>
 
+    <section class="method" id="method" aria-labelledby="methodTitle">
+      <p class="kicker">Show your work</p>
+      <h2 id="methodTitle">How the numbers work</h2>
+      <p class="method-lede">The film fixes two numbers: $30 million to spend and 30 days to spend it. It shows plenty of spending but names few prices. So every amount here is a small model, a quantity times a unit price in 1985 dollars, with a low and a high guess around it.</p>
+
+      <dl class="tiles">
+        <div class="tile"><dt>Itemized estimates</dt><dd data-stat="spent"></dd><p data-stat="spentNote"></p></div>
+        <div class="tile"><dt>Came back</dt><dd data-stat="cameBack"></dd><p data-stat="cameBackNote"></p></div>
+        <div class="tile tile-plug"><dt>Unitemized</dt><dd data-stat="plug"></dd><p data-stat="plugNote"></p></div>
+        <div class="tile"><dt>Prices from the dialogue</dt><dd data-stat="stated"></dd><p>Waiting on the subtitle check</p></div>
+      </dl>
+
+      <ol class="steps">
+        <li>
+          <h3>Start from the will's terms</h3>
+          <p>The tab has to end at exactly $30,000,000, and Monty can't own anything when the month is up. That rules out buying things to keep, so most of the money goes on rent, wages, services and things that get used up. Charity and gambling losses are each capped at 5%, or $1.5 million.</p>
+        </li>
+        <li>
+          <h3>Price what's on screen</h3>
+          <p>Each spend gets a formula you can check in the ledger, like 30 nights at $12,000 for the hotel suite. The unit prices are unsourced assumptions about what things cost in New York in 1985.</p>
+        </li>
+        <li>
+          <h3>Subtract money that comes back</h3>
+          <p>When a deal picked to lose money pays off, it goes in as a negative amount. That's why the line dips, and it means Monty has to spend that money a second time.</p>
+        </li>
+        <li>
+          <h3>Let one entry balance the books</h3>
+          <p>The itemized estimates leave <span data-stat="plugInline"></span> unaccounted for. That gap goes into one entry, "Settling every bill," marked as a plug. It's the least supported number on the page.</p>
+        </li>
+        <li>
+          <h3>Check it against the dialogue</h3>
+          <p>For now, events are placed by story order. A small script reads a subtitle file, moves each event to the line where it happens, and lists every line that mentions money so prices said aloud can replace estimates.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="panel" aria-labelledby="waterfallTitle">
+      <div class="panel-head">
+        <h2 id="waterfallTitle">Where the $30 million went</h2>
+        <ul class="legend">
+          <li><span class="swatch swatch-spend" aria-hidden="true"></span>Spent</li>
+          <li><span class="swatch swatch-windfall" aria-hidden="true"></span>Came back</li>
+          <li><span class="swatch swatch-plug" aria-hidden="true"></span>Plug</li>
+        </ul>
+      </div>
+      <div class="chart-wrap"><svg id="waterfall" role="img" aria-label="Waterfall of spending by category, ending at $30 million"></svg><div class="tooltip" hidden></div></div>
+      <p class="chart-note">Each bar starts where the one above it ends. The bar that runs backwards is money that came back.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="rangeTitle">
+      <div class="panel-head">
+        <h2 id="rangeTitle">How sure is each number?</h2>
+        <ul class="legend">
+          <li><span class="key key-dot" aria-hidden="true">&#9679;</span>Estimate</li>
+          <li><span class="swatch swatch-range" aria-hidden="true"></span>Low to high guess</li>
+        </ul>
+      </div>
+      <div class="chart-wrap"><svg id="ranges" role="img" aria-label="Estimate and plausible range for each entry, widest range first"></svg><div class="tooltip" hidden></div></div>
+      <p class="chart-note" id="rangeNote">Widest spread at the top.</p>
+      <p class="callout" id="plugCallout"></p>
+    </section>
+
     <section class="panel" aria-labelledby="ledgerTitle">
       <div class="panel-head"><h2 id="ledgerTitle">The ledger</h2></div>
       <div class="table-wrap">

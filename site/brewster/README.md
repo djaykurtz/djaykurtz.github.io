@@ -24,12 +24,28 @@ Everything the page shows comes from `data/ledger.json`. Each event has:
 | Field | Meaning |
 |---|---|
 | `t` | Timestamp as `m:ss` in total minutes (e.g. `101:30`) |
-| `kind` | `spend` (positive amount), `windfall` (negative: money came back) or `milestone` (zero) |
-| `amount` | Dollars added to the tab |
+| `kind` | `spend`, `windfall` (money came back, so negative) or `milestone` (no money) |
+| `category` | Key into `categories`; groups the waterfall chart |
+| `calc` | Lines of `[description, quantity, unit price]`; the amount is their sum |
+| `range` | `[low, high]` guess around the amount |
+| `plug` | `true` on the one entry that balances the books (see below) |
+| `basis` | Set to `"stated"` once a price is confirmed from the dialogue |
 | `label`, `detail` | What the page shows |
 | `cue` | A word or phrase from the dialogue near that moment, used by the sync tool |
 
-The running total must finish at exactly `budget`; the checks fail otherwise.
+### How the estimates are built
+
+1. The will fixes the total: the tab ends at exactly `budget`.
+2. Each spend is priced with a formula in `calc`, in 1985 dollars. The unit
+   prices are unsourced assumptions.
+3. Money that comes back is a `windfall` with a negative amount.
+4. The plug entry has no `calc`. Its amount is `budget` minus everything else,
+   and its range is the budget minus the sum of all highs, up to the budget
+   minus the sum of all lows. If the itemized estimates ever exceed the
+   budget, the checks fail.
+
+The page computes the summary tiles, the waterfall and the range chart from
+this file, so editing a price updates every chart and sentence that uses it.
 While `status` is `"draft"` the page shows `statusNote` as a banner. Set it to
 `"synced"` once times and amounts have been checked.
 

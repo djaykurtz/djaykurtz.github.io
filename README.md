@@ -33,7 +33,9 @@ browser. See `site/leximotive/README.md` for game details.
 
 A one-page calculator for *Brewster's Millions* (1985): enter a timestamp and
 see how much of the $30 million Monty Brewster has spent by then, with a
-ticker, a running total and a line chart.
+ticker, a running total and a line chart. A "How the numbers work" section
+shows the formula behind each estimate, a waterfall of where the money went,
+and how wide each estimate's range is.
 
 - Play: [Brewster's Tab](https://djaykurtz.github.io/brewster/)
 - Page and ledger data: `site/brewster/` (see `site/brewster/README.md`)

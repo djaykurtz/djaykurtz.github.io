@@ -1,4 +1,5 @@
 import { buildLedger, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js";
+import { renderAnalysis } from "./analysis.js";
 
 const $ = id => document.getElementById(id);
 const SVG = "http://www.w3.org/2000/svg";
@@ -34,6 +35,7 @@ async function start() {
   chart = buildChart();
   new ResizeObserver(() => { chart = buildChart(); paintChart(); }).observe(ui.chart.parentElement);
   wireControls();
+  renderAnalysis(ledger);
 
   setTime(timeFromHash() ?? 0, { instant: true, quiet: true });
 }
@@ -201,13 +203,28 @@ function buildTable() {
     const time = el("td"); time.append(jump);
     const what = el("td");
     what.append(el("span", "entry-label", event.label), el("span", "entry-detail", event.detail));
-    const amount = el("td", `num amt-${event.kind}`, event.kind === "milestone" ? "—" : formatShort(event.amount));
+    if (event.calc || event.plug) what.append(workings(event));
+    const amount = el("td", `num amt-${event.kind}`, event.kind === "milestone" ? "\u00B7" : formatShort(event.amount));
     const total = el("td", "num");
     total.append(el("span", "full", formatMoney(event.total)), el("span", "short", formatShort(event.total)));
     row.append(time, what, amount, total);
     event.row = row;
     return row;
   }));
+}
+
+// The formula behind an amount, shown under its description.
+function workings(event) {
+  const list = el("ul", "workings");
+  if (event.plug) {
+    list.append(el("li", "", `$30,000,000 minus everything else = ${formatMoney(event.amount)}`));
+  } else {
+    for (const [what, qty, each] of event.calc) {
+      list.append(el("li", "", qty === 1 ? `${what}: ${formatMoney(each)}` : `${what}: ${qty.toLocaleString("en-US")} \u00D7 ${formatMoney(each)}`));
+    }
+  }
+  list.append(el("li", "range", `Range ${formatShort(event.range[0])} to ${formatShort(event.range[1])}`));
+  return list;
 }
 
 function renderTableState(tab) {

@@ -1,4 +1,4 @@
-import { buildLedger, formatShort, formatTime, parseTime, tabAt } from "../js/ledger.js";
+import { buildLedger, formatShort, formatTime, parseTime, summarize, tabAt, waterfall } from "../js/ledger.js";
 
 const results = [];
 function assert(value, message = "Assertion failed") { if (!value) throw new Error(message); }
@@ -70,12 +70,48 @@ await test("Malformed events are rejected", () => {
   throws(() => buildLedger({ ...tiny, events: [{ t: "1:00", kind: "lunch", amount: 5 }] }));
 });
 
+await test("Amounts come from calc lines; a mismatched amount is rejected", () => {
+  const ledger = buildLedger({ runtime: "10:00", budget: 100, events: [{ t: "1:00", kind: "spend", calc: [["a", 3, 10], ["b", 1, 5]], range: [20, 50] }] });
+  equal(ledger.events[0].amount, 35);
+  throws(() => buildLedger({ runtime: "10:00", budget: 100, events: [{ t: "1:00", kind: "spend", amount: 30, calc: [["a", 3, 10], ["b", 1, 5]] }] }));
+  throws(() => buildLedger({ runtime: "10:00", budget: 100, events: [{ t: "1:00", kind: "spend", calc: [["a", 3, 10]], range: [40, 50] }] }));
+});
+
+await test("The plug closes the gap to the budget and inherits the opposite range", () => {
+  const ledger = buildLedger({ runtime: "10:00", budget: 100, events: [
+    { t: "1:00", kind: "spend", calc: [["a", 1, 50]], range: [40, 70] },
+    { t: "2:00", kind: "windfall", calc: [["back", 1, -10]], range: [-20, -5] },
+    { t: "3:00", kind: "spend", plug: true },
+  ] });
+  const plug = ledger.events.find(e => e.plug);
+  equal(plug.amount, 60);
+  equal(plug.range.join(","), "35,80");
+  equal(ledger.final, 100);
+  throws(() => buildLedger({ runtime: "10:00", budget: 40, events: [{ t: "1:00", kind: "spend", calc: [["a", 1, 50]] }, { t: "2:00", kind: "spend", plug: true }] }));
+});
+
+await test("Waterfall steps chain end to start, with the plug last", () => {
+  const ledger = buildLedger({ runtime: "10:00", budget: 100, categories: { a: "A", plug: "Plug" }, events: [
+    { t: "3:00", kind: "spend", category: "plug", plug: true },
+    { t: "1:00", kind: "spend", category: "a", calc: [["x", 1, 50]], range: [40, 60] },
+    { t: "2:00", kind: "windfall", category: "a", calc: [["y", 1, -10]], range: [-20, -5] },
+  ] });
+  const steps = waterfall(ledger);
+  equal(steps.map(s => s.label).join(","), "A,Came back,Plug");
+  equal(steps.map(s => `${s.start}>${s.end}`).join(","), "0>50,50>40,40>100");
+  const s = summarize(ledger);
+  equal(s.spent, 50); equal(s.cameBack, -10); equal(s.plug.amount, 60);
+});
+
 await test("Published ledger is valid and ends with exactly $30M spent", async () => {
   const response = await fetch("../data/ledger.json", { cache: "no-cache" });
   const ledger = buildLedger(await response.json());
   equal(ledger.budget, 30000000);
   equal(ledger.final, ledger.budget);
   assert(ledger.events.every(e => e.label && e.detail), "Every event needs a label and detail");
+  assert(ledger.events.filter(e => e.kind !== "milestone").every(e => e.plug || e.calc), "Every priced event shows its working");
+  assert(ledger.events.filter(e => e.kind !== "milestone").every(e => ledger.categories[e.category]), "Every priced event has a known category");
+  equal(waterfall(ledger).at(-1).end, ledger.budget);
   assert(ledger.events.every(e => e.total <= ledger.budget * 1.1), "Running total strays far past the budget");
 });
 
