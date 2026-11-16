@@ -365,6 +365,22 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
   .fold-body { padding: 1rem .75rem; }
 }
 
+/* ---------- rules: the framed still ---------- */
+.rules-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 340px); gap: 1.5rem 2.25rem; align-items: start; }
+.rules-text .rule-list { max-width: none; }
+.still { margin: 0; justify-self: center; width: 100%; }
+/* A thin gold rail, a dark mat, then the picture: framed, not gilded. */
+.still-frame {
+  padding: .7rem; border-radius: 3px; background: #090d0b;
+  box-shadow: 0 0 0 1px #b8841c, 0 0 0 4px #1a120a, 0 0 0 5px rgba(255, 214, 92, .55), 0 14px 32px rgba(0, 0, 0, .55);
+}
+.still-frame img { display: block; width: 100%; height: auto; border-radius: 1px; box-shadow: 0 0 0 1px rgba(255, 214, 92, .25); }
+.still figcaption { margin-top: .9rem; text-align: center; font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+@media (max-width: 720px) {
+  .rules-layout { grid-template-columns: minmax(0, 1fr); }
+  .still { max-width: 300px; }
+}
+
 .foot { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: .85rem; text-align: center; }
 .foot p + p { margin-top: .4rem; }
 

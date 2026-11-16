@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116f";
+import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116g";
 
 const SVG = "http://www.w3.org/2000/svg";
 
