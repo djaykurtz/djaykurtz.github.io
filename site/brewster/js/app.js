@@ -12,6 +12,35 @@ const ui = {
   rows: $("ledgerRows"), marks: $("sliderMarks"), runtimeLabel: $("runtimeLabel"), draft: $("draftNote"),
 };
 
+/* ---------- collapsible sections ---------- */
+
+// Which sections are open is a per-visitor convenience; the page works without storage.
+const FOLD_KEY = "brewster-folds";
+function readFolds() {
+  try { return JSON.parse(localStorage.getItem(FOLD_KEY)) ?? {}; } catch { return {}; }
+}
+function setupFolds() {
+  const saved = readFolds();
+  for (const fold of document.querySelectorAll("details.fold")) {
+    if (typeof saved[fold.id] === "boolean") fold.open = saved[fold.id];
+    fold.addEventListener("toggle", () => {
+      const state = readFolds();
+      state[fold.id] = fold.open;
+      try { localStorage.setItem(FOLD_KEY, JSON.stringify(state)); } catch { /* storage unavailable */ }
+    });
+  }
+  // Links to a section open it first, without touching the #t= timestamp in the URL.
+  document.addEventListener("click", event => {
+    const link = event.target.closest('a[href^="#"]');
+    const fold = link && document.getElementById(link.getAttribute("href").slice(1));
+    if (!fold || fold.tagName !== "DETAILS") return;
+    event.preventDefault();
+    fold.open = true;
+    fold.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "start" });
+  });
+}
+setupFolds();
+
 let ledger, now = 0, playing = false, lastFrame = 0, shownTotal = 0, counterFrame = 0, tapeKey = -1;
 let chart = null;
 

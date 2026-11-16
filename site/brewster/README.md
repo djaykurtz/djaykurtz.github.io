@@ -58,10 +58,15 @@ While `status` is `"draft"` the page shows `statusNote` as a banner. Set it to
 
 ## The rules section
 
-"The rules of the game" lists the will's terms, paraphrased from the film,
-then the places they get tricky (prepaid costs count as assets, long shots
-sometimes win, idle money earns interest, and so on). Each card ends with how
-the tab handles that case. The figures in those notes come from the ledger.
+"The rules of the game" lists the will's terms, paraphrased from the film.
+"How it gets tricky with examples" (just above the ledger, closed by default)
+covers where they bite: prepaid costs count as assets, long shots sometimes
+win, idle money earns interest, and so on. Each card ends with how the tab
+handles that case, using figures from the ledger.
+
+Every section below the console is a `<details>` element with a gold "$"
+cufflink in its bar. Which sections a visitor has open is remembered in
+`localStorage` when available; the page works the same without it.
 
 ## Reactions and quotes
 

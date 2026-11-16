@@ -26,7 +26,7 @@
   <main class="page">
     <section class="masthead" aria-labelledby="title">
       <h1 id="title" class="poster"><span class="script">Brewster's</span> <span class="chrome">Tab</span></h1>
-      <p class="kicker">$30,000,000 &middot; 30 days &middot; pick any minute of the 1985 film</p>
+      <p class="kicker">Brewster's Millions &middot; 1985 &middot; $30,000,000 in 30 days! &ndash; A thought exercise and analysis.</p>
     </section>
 
     <noscript><p class="draft">Brewster's Tab needs JavaScript to run the numbers.</p></noscript>
@@ -74,159 +74,146 @@
     <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 
-    <section class="panel" aria-labelledby="chartTitle">
-      <div class="panel-head">
-        <h2 id="chartTitle">The tab over the film</h2>
+    <details class="fold" id="fold-chart" open>
+      <summary class="fold-bar"><h2 id="chartTitle">The tab over the film</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
         <ul class="legend">
-          <li><span class="key key-spend" aria-hidden="true">&#9650;</span>Spend</li>
-          <li><span class="key key-windfall" aria-hidden="true">&#9660;</span>Accidental profit</li>
-          <li><span class="key key-milestone" aria-hidden="true">&#9675;</span>Story beat</li>
+        <li><span class="key key-spend" aria-hidden="true">&#9650;</span>Spend</li>
+        <li><span class="key key-windfall" aria-hidden="true">&#9660;</span>Accidental profit</li>
+        <li><span class="key key-milestone" aria-hidden="true">&#9675;</span>Story beat</li>
         </ul>
-      </div>
-      <div class="chart-wrap">
+        <div class="chart-wrap">
         <svg id="chart" role="img" aria-label="Running total spent across the film's runtime"></svg>
         <div id="tooltip" class="tooltip" hidden></div>
+        </div>
+        <p class="chart-note">Click or drag on the chart to jump. Money coming back makes the line dip.</p>
       </div>
-      <p class="chart-note">Click or drag on the chart to jump. Money coming back makes the line dip.</p>
-    </section>
+    </details>
 
     <section id="latest" class="latest" aria-live="polite" aria-label="Latest ledger entry"></section>
 
-    <section class="method rules" id="rules" aria-labelledby="rulesTitle">
-      <p class="kicker">A thought exercise</p>
-      <h2 id="rulesTitle">The rules of the game</h2>
-      <p class="method-lede">The will's terms are short, and each one closes off an easy way to spend. Here they are, paraphrased from the film; the exact wording gets checked along with the prices. Try planning the month yourself before reading where they get tricky.</p>
-
-      <ol class="rule-list">
+    <details class="fold" id="rules" open>
+      <summary class="fold-bar"><span class="fold-kicker">A thought exercise</span><h2 id="rulesTitle">The rules of the game</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
+        <p class="method-lede">The will's terms are short, and each one closes off an easy way to spend. Here they are, paraphrased from the film; the exact wording gets checked along with the prices. Try planning the month yourself, then open <a href="#tricky">How it gets tricky</a> further down.</p>
+        <ol class="rule-list">
         <li>Spend $30 million in 30 days.</li>
         <li>Own nothing at the end. Whatever he buys has to be used up or gone.</li>
         <li>Give no more than 5% to charity and lose no more than 5% gambling. That's $1.5 million each.</li>
         <li>Don't destroy anything of value just to get rid of it.</li>
         <li>Tell no one why.</li>
         <li>Or skip all of it and take $1 million now.</li>
-      </ol>
-
-      <h3 class="gotcha-title">Where it gets tricky</h3>
-      <div class="gotchas">
-        <article class="gotcha">
-          <h4>Buying things backfires</h4>
-          <p>Anything he buys is still his on day 30, and selling it brings money back. So the money has to go on things that disappear: rent, wages, services, meals and events.</p>
-          <p class="in-tab">In the tab: almost every entry is a rental, a wage, a service or an event.</p>
-        </article>
-        <article class="gotcha">
-          <h4>Paying ahead counts as owning</h4>
-          <p>Pay a year's rent up front and he's holding eleven months of prepaid rent, which an accountant would list as an asset. Deposits and refundable tickets have the same problem.</p>
-          <p class="in-tab">In the tab: running costs are charged by the day, not up front.</p>
-        </article>
-        <article class="gotcha">
-          <h4>Losing on purpose is hard</h4>
-          <p>Gambling losses stop counting at $1.5 million, and every win adds to the pile. Long-shot investments look like a way out, but spread enough of them and one comes in. If ten long shots each have a 1-in-10 chance of paying off, the chance that at least one does is about 65%.</p>
-          <p class="in-tab">In the tab: two investments pay off and <span data-stat="cameBackAbs"></span> comes back.</p>
-        </article>
-        <article class="gotcha">
-          <h4>Help makes it worse</h4>
-          <p>He can't explain himself, so anyone trying to help him would try to save him money. A negotiated discount, a returned deposit or a smart tip on a stock all put cash back in his hands.</p>
-          <p class="in-tab">In the tab: not modelled. Every favour would add to the plug.</p>
-        </article>
-        <article class="gotcha">
-          <h4>The money earns money</h4>
-          <p>Thirty million dollars in a bank account earns interest while it waits. At 8% a year, an assumption for 1985, that's about $6,600 a day and roughly $197,000 over the month, which also has to go.</p>
-          <p class="in-tab">In the tab: not modelled. It would add to the plug too.</p>
-        </article>
-        <article class="gotcha">
-          <h4>A million a day</h4>
-          <p>Thirty million in thirty days is $1 million a day, $41,667 an hour, or $11.57 a second, through every night he sleeps. Few purchases move money that fast, so a handful of big items carry most of the load.</p>
-          <p class="in-tab">In the tab: the campaign alone is <span data-stat="campaign"></span>.</p>
-        </article>
-        <article class="gotcha">
-          <h4>Midnight means paid</h4>
-          <p>A bill that hasn't been paid by the deadline is cash still sitting in his account. On the last day, every payment has to clear before the clock runs out.</p>
-          <p class="in-tab">In the tab: the last <span data-stat="lastPayment"></span> goes out at <span data-stat="lastPaymentTime"></span>.</p>
-        </article>
-        <article class="gotcha">
-          <h4>Walking away is a bet too</h4>
-          <p>The wimp clause pays $1 million for certain. Going for $300 million is worse on paper only if his chance of pulling it off is below 1 in 300.</p>
-          <p class="in-tab">In the tab: he goes for it at 17:30.</p>
-        </article>
+        </ol>
       </div>
-    </section>
+    </details>
 
-    <section class="method" id="method" aria-labelledby="methodTitle">
-      <p class="kicker">Show your work</p>
-      <h2 id="methodTitle">How the numbers work</h2>
-      <p id="draftNote" class="draft" hidden></p>
-      <p class="method-lede">The film fixes two numbers: $30 million to spend and 30 days to spend it. It shows plenty of spending but names few prices. So every amount here is a small model, a quantity times a unit price in 1985 dollars, with a low and a high guess around it.</p>
-
-      <dl class="tiles">
+    <details class="fold" id="method" open>
+      <summary class="fold-bar"><span class="fold-kicker">Show your work</span><h2 id="methodTitle">How the numbers work</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
+        <p id="draftNote" class="draft" hidden></p>
+        <p class="method-lede">Every amount is a small model: a quantity times a unit price in 1985 dollars, with a low and a high guess.</p>
+        <dl class="tiles">
         <div class="tile"><dt>Itemized estimates</dt><dd data-stat="spent"></dd><p data-stat="spentNote"></p></div>
         <div class="tile"><dt>Came back</dt><dd data-stat="cameBack"></dd><p data-stat="cameBackNote"></p></div>
         <div class="tile tile-plug"><dt>Unitemized</dt><dd data-stat="plug"></dd><p data-stat="plugNote"></p></div>
         <div class="tile"><dt>Prices from the dialogue</dt><dd data-stat="stated"></dd><p>Waiting on the subtitle check</p></div>
-      </dl>
-
-      <ol class="steps">
-        <li>
-          <h3>Start from the will's terms</h3>
-          <p>The tab has to end at exactly $30,000,000, and Monty can't own anything when the month is up. That rules out buying things to keep, so most of the money goes on rent, wages, services and things that get used up. Charity and gambling losses are each capped at 5%, or $1.5 million.</p>
-        </li>
-        <li>
-          <h3>Price what's on screen</h3>
-          <p>Each spend gets a formula you can check in the ledger, like 40 staff at $900 a day for 28 days. The unit prices are unsourced assumptions about what things cost in New York in 1985.</p>
-        </li>
-        <li>
-          <h3>Spread running costs over the month</h3>
-          <p>Salaries, rent, the suite, the cars and the guards are promised by the day, so they're charged by the day from when they start until the deadline. Campaign staff stop when he drops out. To place days on screen, the story's 30 days are spread evenly over the film from 20:30 to 99:30, one day about every 2.6 minutes. That's why the line climbs between big purchases.</p>
-        </li>
-        <li>
-          <h3>Subtract money that comes back</h3>
-          <p>When a deal picked to lose money pays off, it goes in as a negative amount. That's why the line dips, and it means Monty has to spend that money a second time.</p>
-        </li>
-        <li>
-          <h3>Let one entry balance the books</h3>
-          <p>The itemized estimates leave <span data-stat="plugInline"></span> unaccounted for. That gap goes into one entry, "Settling every bill," marked as a plug. It's the least supported number on the page.</p>
-        </li>
-        <li>
-          <h3>Check it against the dialogue</h3>
-          <p>For now, events are placed by story order. A small script reads a subtitle file, moves each event to the line where it happens, and lists every line that mentions money so prices said aloud can replace estimates.</p>
-        </li>
-      </ol>
-    </section>
-
-    <section class="panel" aria-labelledby="waterfallTitle">
-      <div class="panel-head">
-        <h2 id="waterfallTitle">Where the $30 million went</h2>
-        <ul class="legend">
-          <li><span class="swatch swatch-spend" aria-hidden="true"></span>Spent</li>
-          <li><span class="swatch swatch-windfall" aria-hidden="true"></span>Came back</li>
-          <li><span class="swatch swatch-plug" aria-hidden="true"></span>Plug</li>
-        </ul>
+        </dl>
+        <ol class="steps">
+        <li><h3>Start from the will</h3><p>The tab must end at exactly $30 million, with nothing left to own.</p></li>
+        <li><h3>Price what's on screen</h3><p>Each spend is a formula in the ledger, like 40 staff at $900 a day for 28 days. Unit prices are unsourced guesses for 1985.</p></li>
+        <li><h3>Charge running costs daily</h3><p>Wages, rent, the suite and the cars accrue from when they start until the deadline, one story day per 2.6 minutes of film.</p></li>
+        <li><h3>Subtract money that comes back</h3><p>Deals that pay off by accident go in as negative amounts, so the line dips.</p></li>
+        <li><h3>Keep the gap in one entry</h3><p>The <span data-stat="plugInline"></span> the estimates can't explain sits in one entry, marked as a plug.</p></li>
+        <li><h3>Check against the dialogue</h3><p>A script lines events up with a subtitle file, so prices said aloud can replace guesses.</p></li>
+        </ol>
       </div>
-      <div class="chart-wrap"><svg id="waterfall" role="img" aria-label="Waterfall of spending by category, ending at $30 million"></svg><div class="tooltip" hidden></div></div>
-      <p class="chart-note">Each bar starts where the one above it ends. The bar that runs backwards is money that came back.</p>
-    </section>
+    </details>
 
-    <section class="panel" aria-labelledby="rangeTitle">
-      <div class="panel-head">
-        <h2 id="rangeTitle">How sure is each number?</h2>
+    <details class="fold" id="fold-waterfall" open>
+      <summary class="fold-bar"><h2 id="waterfallTitle">Where the $30 million went</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
         <ul class="legend">
-          <li><span class="key key-dot" aria-hidden="true">&#9679;</span>Estimate</li>
-          <li><span class="swatch swatch-range" aria-hidden="true"></span>Low to high guess</li>
+        <li><span class="swatch swatch-spend" aria-hidden="true"></span>Spent</li>
+        <li><span class="swatch swatch-windfall" aria-hidden="true"></span>Came back</li>
+        <li><span class="swatch swatch-plug" aria-hidden="true"></span>Plug</li>
         </ul>
+        <div class="chart-wrap"><svg id="waterfall" role="img" aria-label="Waterfall of spending by category, ending at $30 million"></svg><div class="tooltip" hidden></div></div>
+        <p class="chart-note">Each bar starts where the one above it ends. The bar that runs backwards is money that came back.</p>
       </div>
-      <div class="chart-wrap"><svg id="ranges" role="img" aria-label="Estimate and plausible range for each entry, widest range first"></svg><div class="tooltip" hidden></div></div>
-      <p class="chart-note" id="rangeNote">Widest spread at the top.</p>
-      <p class="callout" id="plugCallout"></p>
-    </section>
+    </details>
 
-    <section class="panel" aria-labelledby="ledgerTitle">
-      <div class="panel-head"><h2 id="ledgerTitle">The ledger</h2></div>
-      <div class="table-wrap">
+    <details class="fold" id="fold-ranges" open>
+      <summary class="fold-bar"><h2 id="rangeTitle">How sure is each number?</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
+        <ul class="legend">
+        <li><span class="key key-dot" aria-hidden="true">&#9679;</span>Estimate</li>
+        <li><span class="swatch swatch-range" aria-hidden="true"></span>Low to high guess</li>
+        </ul>
+        <div class="chart-wrap"><svg id="ranges" role="img" aria-label="Estimate and plausible range for each entry, widest range first"></svg><div class="tooltip" hidden></div></div>
+        <p class="chart-note" id="rangeNote">Widest spread at the top.</p>
+        <p class="callout" id="plugCallout"></p>
+      </div>
+    </details>
+
+    <details class="fold" id="tricky">
+      <summary class="fold-bar"><h2 id="trickyTitle">How it gets tricky with examples…</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
+        <div class="gotchas">
+        <article class="gotcha">
+        <h4>Buying things backfires</h4>
+        <p>Anything he buys is still his on day 30, and selling it brings money back. So the money has to go on things that disappear: rent, wages, services, meals and events.</p>
+        <p class="in-tab">In the tab: almost every entry is a rental, a wage, a service or an event.</p>
+        </article>
+        <article class="gotcha">
+        <h4>Paying ahead counts as owning</h4>
+        <p>Pay a year's rent up front and he's holding eleven months of prepaid rent, which an accountant would list as an asset. Deposits and refundable tickets have the same problem.</p>
+        <p class="in-tab">In the tab: running costs are charged by the day, not up front.</p>
+        </article>
+        <article class="gotcha">
+        <h4>Losing on purpose is hard</h4>
+        <p>Gambling losses stop counting at $1.5 million, and every win adds to the pile. Long-shot investments look like a way out, but spread enough of them and one comes in. If ten long shots each have a 1-in-10 chance of paying off, the chance that at least one does is about 65%.</p>
+        <p class="in-tab">In the tab: two investments pay off and <span data-stat="cameBackAbs"></span> comes back.</p>
+        </article>
+        <article class="gotcha">
+        <h4>Help makes it worse</h4>
+        <p>He can't explain himself, so anyone trying to help him would try to save him money. A negotiated discount, a returned deposit or a smart tip on a stock all put cash back in his hands.</p>
+        <p class="in-tab">In the tab: not modelled. Every favour would add to the plug.</p>
+        </article>
+        <article class="gotcha">
+        <h4>The money earns money</h4>
+        <p>Thirty million dollars in a bank account earns interest while it waits. At 8% a year, an assumption for 1985, that's about $6,600 a day and roughly $197,000 over the month, which also has to go.</p>
+        <p class="in-tab">In the tab: not modelled. It would add to the plug too.</p>
+        </article>
+        <article class="gotcha">
+        <h4>A million a day</h4>
+        <p>Thirty million in thirty days is $1 million a day, $41,667 an hour, or $11.57 a second, through every night he sleeps. Few purchases move money that fast, so a handful of big items carry most of the load.</p>
+        <p class="in-tab">In the tab: the campaign alone is <span data-stat="campaign"></span>.</p>
+        </article>
+        <article class="gotcha">
+        <h4>Midnight means paid</h4>
+        <p>A bill that hasn't been paid by the deadline is cash still sitting in his account. On the last day, every payment has to clear before the clock runs out.</p>
+        <p class="in-tab">In the tab: the last <span data-stat="lastPayment"></span> goes out at <span data-stat="lastPaymentTime"></span>.</p>
+        </article>
+        <article class="gotcha">
+        <h4>Walking away is a bet too</h4>
+        <p>The wimp clause pays $1 million for certain. Going for $300 million is worse on paper only if his chance of pulling it off is below 1 in 300.</p>
+        <p class="in-tab">In the tab: he goes for it at 17:30.</p>
+        </article>
+        </div>
+      </div>
+    </details>
+
+    <details class="fold" id="fold-ledger" open>
+      <summary class="fold-bar"><h2 id="ledgerTitle">The ledger</h2><span class="cufflink" aria-hidden="true"><span>$</span></span></summary>
+      <div class="fold-body">
+        <div class="table-wrap">
         <table class="ledger">
-          <thead><tr><th scope="col">Time</th><th scope="col">Entry</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Running tab</th></tr></thead>
-          <tbody id="ledgerRows"></tbody>
+        <thead><tr><th scope="col">Time</th><th scope="col">Entry</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Running tab</th></tr></thead>
+        <tbody id="ledgerRows"></tbody>
         </table>
+        </div>
       </div>
-    </section>
+    </details>
 
     <footer class="foot">
       <p>A fan-made toy. Not affiliated with the film or its studio. Times assume the theatrical cut, starting at the first frame. Reactions from "the floor" and "the bookkeeper" are this page's own jokes, not lines from the film.</p>

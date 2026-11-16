@@ -5,7 +5,7 @@
   "budget": 30000000,
   "clock": { "start": "20:30", "end": "99:30", "days": 30 },
   "status": "draft",
-  "statusNote": "Timestamps follow the story's order and have not been checked against a subtitle file. Every dollar figure is a modelled estimate in 1985 dollars, built from the formulas in the ledger below.",
+  "statusNote": "Timestamps follow story order and haven't been checked against subtitles yet. Dollar figures are modelled estimates in 1985 dollars.",
   "categories": {
     "lifestyle": "Living large",
     "office": "Office",
