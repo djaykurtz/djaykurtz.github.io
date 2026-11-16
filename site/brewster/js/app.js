@@ -1,5 +1,5 @@
-import { buildLedger, curve, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js?v=20261116h";
-import { renderAnalysis } from "./analysis.js?v=20261116h";
+import { buildLedger, curve, formatMoney, formatShort, formatTime, parseTime, peak, tabAt } from "./ledger.js?v=20261116i";
+import { renderAnalysis } from "./analysis.js?v=20261116i";
 
 const $ = id => document.getElementById(id);
 const SVG = "http://www.w3.org/2000/svg";

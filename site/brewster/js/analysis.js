@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116h";
+import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js?v=20261116i";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -93,16 +93,26 @@ function attachTooltip(root, rows, width) {
   }
 }
 
-function frame(root, rows, rowHeight) {
+// Width of the widest label, so the label column fits the text instead of a guess.
+function labelWidth(labels) {
+  const ctx = document.createElement("canvas").getContext("2d");
+  ctx.font = `12px ${getComputedStyle(document.body).fontFamily}`;
+  return Math.max(0, ...labels.map(label => ctx.measureText(label).width));
+}
+
+function frame(root, rows, rowHeight, labels = []) {
   const width = Math.max(280, root.parentElement.clientWidth);
   const narrow = width < 560;
-  const m = { top: 8, right: narrow ? 52 : 70, bottom: 26, left: narrow ? 104 : 168 };
-  const height = m.top + m.bottom + rows * rowHeight;
+  // On narrow screens each label gets its own line above its row, so long names never get cut off.
+  const labelH = narrow ? 17 : 0;
+  const rowH = rowHeight + labelH;
+  const m = { top: 8, right: narrow ? 52 : 70, bottom: 26, left: narrow ? 8 : Math.min(width * 0.4, Math.max(120, Math.ceil(labelWidth(labels)) + 18)) };
+  const height = m.top + m.bottom + rows * rowH;
   root.replaceChildren();
   root.setAttribute("viewBox", `0 0 ${width} ${height}`);
   root.setAttribute("width", width);
   root.setAttribute("height", height);
-  return { width, height, m, iw: width - m.left - m.right, narrow };
+  return { width, height, m, iw: width - m.left - m.right, narrow, labelH, rowH };
 }
 
 function axis(root, f, x, ticks, height) {
@@ -124,8 +134,11 @@ function ticksFor(min, max, target) {
   return out;
 }
 
-function rowLabel(root, f, y, label) {
-  svg("text", { class: "row-label", x: f.m.left - 10, y, "text-anchor": "end", "dominant-baseline": "middle" }, root).textContent = label;
+function rowLabel(root, f, rowTop, mid, label) {
+  const at = f.labelH
+    ? { x: f.m.left, y: rowTop + 12, "text-anchor": "start" }
+    : { x: f.m.left - 10, y: mid, "text-anchor": "end", "dominant-baseline": "middle" };
+  svg("text", { class: "row-label", ...at }, root).textContent = label;
 }
 
 /* ---------- waterfall ---------- */
@@ -134,21 +147,21 @@ function drawWaterfall(ledger) {
   const root = document.getElementById("waterfall");
   const steps = waterfall(ledger);
   const rowHeight = 34;
-  const f = frame(root, steps.length + 1, rowHeight);
+  const f = frame(root, steps.length + 1, rowHeight, [...steps.map(step => step.label), "Total"]);
   const top = Math.max(ledger.budget, ...steps.map(step => Math.max(step.start, step.end)));
   const x = v => f.m.left + (v / top) * f.iw;
   axis(root, f, x, ticksFor(0, top, f.narrow ? 3 : 6), f.height);
 
   const tips = [];
   steps.forEach((step, i) => {
-    const y = f.m.top + i * rowHeight, mid = y + rowHeight / 2;
+    const rowTop = f.m.top + i * f.rowH, y = rowTop + f.labelH, mid = y + rowHeight / 2;
     const left = x(Math.min(step.start, step.end)), right = x(Math.max(step.start, step.end));
     const kind = step.plug ? "plug" : step.amount < 0 ? "windfall" : "spend";
-    rowLabel(root, f, mid, step.label);
+    rowLabel(root, f, rowTop, mid, step.label);
     if (i > 0) svg("line", { class: "wf-link", x1: x(step.start), x2: x(step.start), y1: y - 6, y2: y + 6 }, root);
     svg("rect", { class: `wf-bar wf-${kind}`, x: left, y: y + 6, width: Math.max(2, right - left), height: rowHeight - 12, rx: 3 }, root);
     svg("text", { class: "row-value", x: right + 6, y: mid, "dominant-baseline": "middle" }, root).textContent = formatShort(step.amount);
-    const hit = svg("rect", { class: "hit", x: 0, y, width: f.width, height: rowHeight }, root);
+    const hit = svg("rect", { class: "hit", x: 0, y: rowTop, width: f.width, height: f.rowH }, root);
     tips.push({ node: hit, x: (left + right) / 2, y: y + 6, lines: [
       step.label,
       `${formatMoney(step.amount)} (${plural(step.items.length, "entry", "entries")})`,
@@ -156,9 +169,9 @@ function drawWaterfall(ledger) {
     ] });
   });
 
-  const y = f.m.top + steps.length * rowHeight, mid = y + rowHeight / 2;
+  const totalTop = f.m.top + steps.length * f.rowH, y = totalTop + f.labelH, mid = y + rowHeight / 2;
   const final = steps.at(-1)?.end ?? 0;
-  rowLabel(root, f, mid, "Total");
+  rowLabel(root, f, totalTop, mid, "Total");
   svg("rect", { class: "wf-bar wf-total", x: x(0), y: y + 6, width: Math.max(2, x(final) - x(0)), height: rowHeight - 12, rx: 3 }, root);
   svg("text", { class: "row-value row-total", x: x(final) + 6, y: mid, "dominant-baseline": "middle" }, root).textContent = formatShort(final);
   attachTooltip(root, tips, f.width);
@@ -170,7 +183,7 @@ function drawRanges(ledger) {
   const root = document.getElementById("ranges");
   const items = byUncertainty(ledger);
   const rowHeight = 28;
-  const f = frame(root, items.length, rowHeight);
+  const f = frame(root, items.length, rowHeight, items.map(event => event.label));
   const min = Math.min(0, ...items.map(e => e.range[0])), max = Math.max(...items.map(e => e.range[1]));
   const x = v => f.m.left + ((v - min) / (max - min)) * f.iw;
   axis(root, f, x, ticksFor(min, max, f.narrow ? 3 : 6), f.height);
@@ -178,13 +191,13 @@ function drawRanges(ledger) {
 
   const tips = [];
   items.forEach((event, i) => {
-    const y = f.m.top + i * rowHeight + rowHeight / 2;
+    const rowTop = f.m.top + i * f.rowH, y = rowTop + f.labelH + rowHeight / 2;
     const kind = event.kind === "windfall" ? "windfall" : "spend";
-    rowLabel(root, f, y, event.label);
+    rowLabel(root, f, rowTop, y, event.label);
     svg("rect", { class: `rg-bar rg-${kind}`, x: x(event.range[0]), y: y - 4, width: Math.max(2, x(event.range[1]) - x(event.range[0])), height: 8, rx: 4 }, root);
     svg("circle", { class: `rg-dot rg-dot-${kind}`, cx: x(event.amount), cy: y, r: 5 }, root);
     svg("text", { class: "row-value", x: f.width - f.m.right + 8, y, "dominant-baseline": "middle" }, root).textContent = formatShort(event.range[1] - event.range[0]);
-    const hit = svg("rect", { class: "hit", x: 0, y: y - rowHeight / 2, width: f.width, height: rowHeight }, root);
+    const hit = svg("rect", { class: "hit", x: 0, y: rowTop, width: f.width, height: f.rowH }, root);
     tips.push({ node: hit, x: x(event.amount), y: y - 6, lines: [event.label, `Estimate ${formatMoney(event.amount)}`, `Range ${span(event.range)}`] });
   });
   attachTooltip(root, tips, f.width);

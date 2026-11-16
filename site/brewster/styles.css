@@ -250,7 +250,7 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .swatch-range { background: rgba(34, 168, 93, .45); height: .45rem; border-radius: 4px; }
 .key-dot { color: var(--ink); }
 
-.row-label { fill: var(--ink-soft); font-size: 12px; }
+.row-label { fill: var(--ink-soft); font-size: 12px; paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
 .row-value { fill: var(--ink); font-family: var(--mono); font-size: 11px; }
 .row-total { font-weight: 700; }
 .hit { fill: transparent; }
