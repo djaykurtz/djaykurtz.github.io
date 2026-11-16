@@ -56,6 +56,13 @@ this file, so editing a price updates every chart and sentence that uses it.
 While `status` is `"draft"` the page shows `statusNote` as a banner. Set it to
 `"synced"` once times and amounts have been checked.
 
+## The rules section
+
+"The rules of the game" lists the will's terms, paraphrased from the film,
+then the places they get tricky (prepaid costs count as assets, long shots
+sometimes win, idle money earns interest, and so on). Each card ends with how
+the tab handles that case. The figures in those notes come from the ledger.
+
 ## Syncing with subtitles
 
 The first draft was estimated from the story, not from timed dialogue. To

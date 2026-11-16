@@ -232,6 +232,19 @@ h1 span { color: var(--led); text-shadow: 0 0 24px var(--led-glow); }
 .workings .range { color: var(--ink-dim); opacity: .85; }
 .ledger tr.past .workings { color: var(--ink-soft); }
 
+/* ---------- rules (thought exercise) ---------- */
+.rule-list { counter-reset: rule; display: grid; gap: .5rem; max-width: 70ch; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.rule-list li { counter-increment: rule; position: relative; padding: .55rem .8rem .55rem 2.8rem; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); }
+.rule-list li::before { content: counter(rule); position: absolute; left: .9rem; top: .55rem; font-family: var(--mono); color: var(--led); }
+.rule-list li:last-child { border-style: dashed; color: var(--ink-soft); }
+.gotcha-title { margin: 2.25rem 0 0; font-family: var(--serif); font-size: 1.35rem; }
+.gotchas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: .9rem; margin-top: 1rem; }
+.gotcha { display: flex; flex-direction: column; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+.gotcha h4 { margin: 0 0 .4rem; font-size: 1.02rem; }
+.gotcha p { margin: 0; color: var(--ink-soft); font-size: .93rem; }
+.gotcha .in-tab { margin-top: auto; padding-top: .75rem; color: var(--ink-dim); font-family: var(--mono); font-size: .78rem; }
+.gotcha .in-tab::before { content: "\2192  "; color: var(--led); }
+
 .foot { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: .85rem; text-align: center; }
 .foot p + p { margin-top: .4rem; }
 

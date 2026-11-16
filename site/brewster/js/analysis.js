@@ -1,5 +1,5 @@
 // The "show your work" section: summary tiles, the waterfall and the range chart.
-import { formatMoney, formatShort, summarize, waterfall } from "./ledger.js";
+import { formatMoney, formatShort, formatTime, summarize, waterfall } from "./ledger.js";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -50,6 +50,13 @@ function renderStats(ledger) {
     set("plugInline", formatMoney(s.plug.amount));
   }
   set("stated", `${s.stated} of ${s.priced}`);
+
+  // Figures quoted in the rules section, so they follow the ledger.
+  set("cameBackAbs", formatShort(-s.cameBack));
+  const campaign = waterfall(ledger).find(step => step.key === "campaign");
+  if (campaign) set("campaign", `about ${formatShort(Math.round(campaign.amount / 1e6) * 1e6)}`);
+  const lastSpend = ledger.events.filter(event => event.kind === "spend").at(-1);
+  if (lastSpend) { set("lastPayment", formatShort(lastSpend.amount)); set("lastPaymentTime", formatTime(lastSpend.t)); }
 
 
   const callout = document.getElementById("plugCallout");
