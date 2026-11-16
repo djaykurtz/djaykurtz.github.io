@@ -290,8 +290,8 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 /* Each section opens from a gold bar: the title sits on a dark plate so it stays readable, and a gold "$" cufflink does the toggling. */
 .fold { margin-top: 1.25rem; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 .fold-bar {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "link kicker hint" "link title hint";
-  align-items: center; column-gap: .85rem; padding: .45rem .9rem .45rem .45rem;
+  display: grid; grid-template-columns: 5.6rem minmax(0, 1fr) 5.6rem; grid-template-areas: "link kicker hint" "link title hint";
+  align-items: center; column-gap: .75rem; min-height: 4.2rem; padding: .45rem .6rem;
   border: 1px solid #4a2c00; border-radius: 6px; cursor: pointer; list-style: none; user-select: none;
   background: linear-gradient(180deg, #fff3bf 0%, #f7cf5f 16%, #d79b1c 42%, #8f5c05 55%, #e7b23a 72%, #fbe08a 88%, #b17a10 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), inset 0 -2px 0 rgba(60, 35, 0, .35), 0 2px 6px rgba(0, 0, 0, .35);
@@ -301,16 +301,20 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .fold[open] > .fold-bar { border-radius: 6px 6px 0 0; }
 .fold-bar:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .fold-kicker {
-  grid-area: kicker; margin-bottom: .2rem; padding-left: .2rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  grid-area: kicker; justify-self: center; margin-bottom: .25rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
 }
 .fold-bar h2 {
-  grid-area: title; justify-self: start; max-width: 100%; margin: 0; padding: .35rem .85rem .4rem;
+  grid-area: title; justify-self: center; max-width: 100%; margin: 0; padding: .4rem 1rem .45rem;
+  text-align: center; text-wrap: balance;
   border-radius: 4px; background: rgba(9, 13, 11, .9); box-shadow: inset 0 0 0 1px rgba(255, 214, 92, .45), 0 1px 0 rgba(255, 240, 190, .5);
-  font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; color: var(--ink);
+  font-family: var(--serif); font-size: clamp(1rem, 2.4vw, 1.3rem); line-height: 1.2; color: var(--ink);
 }
+.fold-bar h2.caps { text-transform: uppercase; letter-spacing: .06em; }
+/* With no kicker, the title takes the whole bar height. */
+.fold-bar:not(:has(.fold-kicker)) { grid-template-areas: "link title hint" "link title hint"; }
 .fold-bar::after {
-  grid-area: hint; content: "Minimize"; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  grid-area: hint; justify-self: end; content: "Minimize"; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: #3a2400; text-shadow: 0 1px 0 rgba(255, 240, 190, .6);
 }
 .fold:not([open]) > .fold-bar::after { content: "Open"; }
@@ -325,7 +329,7 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 .method-lede a { color: var(--led); }
 
 /* The toggle: a gold cufflink. The bar behind the face swivels when the section closes. */
-.cufflink { grid-area: link; position: relative; display: grid; place-items: center; width: 4.1rem; height: 3.3rem; }
+.cufflink { grid-area: link; justify-self: start; position: relative; display: grid; place-items: center; width: 4.1rem; height: 3.3rem; }
 .cufflink::before {
   content: ""; position: absolute; left: 50%; top: 50%; width: 4rem; height: .55rem; border-radius: .25rem;
   background: linear-gradient(180deg, #5a3a00, #2b1900); box-shadow: 0 1px 0 rgba(255, 240, 190, .5);
@@ -351,8 +355,13 @@ h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 
 @media (forced-colors: active) { .cufflink > span { border: 2px solid ButtonText; } }
 @media (max-width: 720px) {
   .fold-bar::after { display: none; }
-  .fold-bar { grid-template-columns: auto minmax(0, 1fr); padding-right: .55rem; }
-  .fold-bar h2 { font-size: 1.1rem; }
+  /* Phones: the right column matches the coin so the title stays centred. */
+  .fold-bar { grid-template-columns: 3.2rem minmax(0, 1fr) 3.2rem; column-gap: .3rem; min-height: 3.6rem; padding: .35rem .4rem; }
+  .fold-bar h2 { padding: .3rem .55rem .35rem; font-size: clamp(.85rem, 3.9vw, 1.02rem); }
+  .cufflink { width: 3.2rem; height: 2.7rem; }
+  .cufflink::before { width: 3.1rem; height: .45rem; }
+  .cufflink > span { width: 2.5rem; height: 2.5rem; font-size: 1.25rem; }
+  .fold-bar h2.caps { letter-spacing: .03em; }
   .fold-body { padding: 1rem .75rem; }
 }
 
