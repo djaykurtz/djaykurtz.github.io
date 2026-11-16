@@ -14,6 +14,12 @@ Usage, from the repository root:
       containing that phrase nearest the event's current estimate and show
       the proposed time.
 
+  python tools/brewster/sync_ledger.py film.srt --quotes
+      For each ledger event, print the dialogue within 45 seconds of it.
+      Copy a line you want into that event as
+      "quote": {"text": "...", "who": "Monty", "t": "32:05"}. The page shows
+      film quotes only from this field, so nothing is quoted unchecked.
+
   python tools/brewster/sync_ledger.py film.srt --write [--offset -2.5]
       Apply those times to site/brewster/data/ledger.json. --offset shifts
       every subtitle time (seconds) if your file is out of step with the cut.
@@ -71,6 +77,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("srt", type=Path)
     parser.add_argument("--money", action="store_true", help="list money-related dialogue and exit")
+    parser.add_argument("--quotes", action="store_true", help="print dialogue near each event, to pick quotes from")
     parser.add_argument("--write", action="store_true", help="save matched times into ledger.json")
     parser.add_argument("--offset", type=float, default=0.0, help="seconds to add to every subtitle time")
     args = parser.parse_args()
@@ -85,6 +92,15 @@ def main() -> None:
         return
 
     ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
+    if args.quotes:
+        for event in ledger["events"]:
+            at = parse_time(event["t"])
+            print(f"\n{event['t']:>7}  {event['label']}")
+            for start, words in cues:
+                if abs(start - at) <= 45:
+                    print(f"         {fmt(start):>7}  {words}")
+        return
+
     matched = 0
     for event in ledger["events"]:
         cue = event.get("cue")

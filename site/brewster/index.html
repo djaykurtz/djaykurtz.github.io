@@ -6,7 +6,7 @@
   <meta name="description" content="Pick a timestamp in Brewster's Millions (1985) and see how much of the $30 million Monty Brewster has spent so far.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0b120e">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Brewster's Tab">
   <meta property="og:description" content="How much had Monty blown by minute 54? A running tab for Brewster's Millions.">
@@ -20,17 +20,15 @@
 <body>
   <header class="topbar">
     <a class="back" href="/"><span aria-hidden="true">&larr;</span> Portfolio</a>
-    <span class="tag">Unofficial fan ledger</span>
+    <span class="tag">Unofficial &middot; draft estimates</span>
   </header>
 
   <main class="page">
     <section class="masthead" aria-labelledby="title">
-      <p class="kicker">Brewster's Millions &middot; 1985 &middot; $30,000,000 in 30 days</p>
-      <h1 id="title">Brewster's <span>Tab</span></h1>
-      <p class="lede">Pick any moment in the movie. See how much of the thirty million Monty has burned through.</p>
+      <h1 id="title" class="poster"><span class="script">Brewster's</span> <span class="chrome">Tab</span></h1>
+      <p class="kicker">$30,000,000 &middot; 30 days &middot; pick any minute of the 1985 film</p>
     </section>
 
-    <p id="draftNote" class="draft" hidden></p>
     <noscript><p class="draft">Brewster's Tab needs JavaScript to run the numbers.</p></noscript>
 
     <section class="console" aria-label="Pick a timestamp">
@@ -69,9 +67,12 @@
       </div>
     </section>
 
-    <div class="tape" aria-hidden="true"><div id="tape" class="tape-track"></div></div>
+    <div class="tape" aria-hidden="true">
+      <div id="tapeStatus" class="tape-status"></div>
+      <div id="tapeWindow" class="tape-window"><div id="tape" class="tape-track"></div></div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-    <section id="latest" class="latest" aria-live="polite" aria-label="Latest ledger entry"></section>
 
     <section class="panel" aria-labelledby="chartTitle">
       <div class="panel-head">
@@ -88,6 +89,8 @@
       </div>
       <p class="chart-note">Click or drag on the chart to jump. Money coming back makes the line dip.</p>
     </section>
+
+    <section id="latest" class="latest" aria-live="polite" aria-label="Latest ledger entry"></section>
 
     <section class="method rules" id="rules" aria-labelledby="rulesTitle">
       <p class="kicker">A thought exercise</p>
@@ -151,6 +154,7 @@
     <section class="method" id="method" aria-labelledby="methodTitle">
       <p class="kicker">Show your work</p>
       <h2 id="methodTitle">How the numbers work</h2>
+      <p id="draftNote" class="draft" hidden></p>
       <p class="method-lede">The film fixes two numbers: $30 million to spend and 30 days to spend it. It shows plenty of spending but names few prices. So every amount here is a small model, a quantity times a unit price in 1985 dollars, with a low and a high guess around it.</p>
 
       <dl class="tiles">
@@ -225,7 +229,7 @@
     </section>
 
     <footer class="foot">
-      <p>A fan-made toy. Not affiliated with the film or its studio. Times assume the theatrical cut, starting at the first frame.</p>
+      <p>A fan-made toy. Not affiliated with the film or its studio. Times assume the theatrical cut, starting at the first frame. Reactions from "the floor" and "the bookkeeper" are this page's own jokes, not lines from the film.</p>
       <p><a href="/">Back to portfolio</a> &middot; <a href="https://github.com/djaykurtz/djaykurtz.github.io/tree/main/site/brewster">See the code</a></p>
     </footer>
   </main>

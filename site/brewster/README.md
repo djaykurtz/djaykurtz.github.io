@@ -63,6 +63,16 @@ then the places they get tricky (prepaid costs count as assets, long shots
 sometimes win, idle money earns interest, and so on). Each card ends with how
 the tab handles that case. The figures in those notes come from the ledger.
 
+## Reactions and quotes
+
+Each event can carry `react`, a list of `[voice, line]` pairs. These are the
+page's own jokes from "the floor" and "the bookkeeper". They show in the
+ticker, on the event card, and as a pop-up when playback reaches the event.
+
+Lines from the film go in a separate `quote` field (`text`, `who`, `t`) and
+only once they've been checked against subtitles. `sync_ledger.py --quotes`
+prints the dialogue around each event to choose from.
+
 ## Syncing with subtitles
 
 The first draft was estimated from the story, not from timed dialogue. To

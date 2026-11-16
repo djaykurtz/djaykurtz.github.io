@@ -1,3 +1,7 @@
+/* Self-hosted poster fonts (Apache 2.0, see fonts/README.txt). */
+@font-face { font-family: "Yellowtail"; src: url("fonts/yellowtail.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Ultra"; src: url("fonts/ultra.woff2") format("woff2"); font-display: swap; }
+
 :root {
   color-scheme: dark;
   --bg: #0b120e;
@@ -17,6 +21,8 @@
   --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --serif: "Rockwell", "Roboto Slab", "Courier New", Georgia, serif;
+  --script: "Yellowtail", "Brush Script MT", cursive;
+  --slab: "Ultra", "Rockwell Extra Bold", "Rockwell", Georgia, serif;
   font-family: var(--sans);
   line-height: 1.55;
 }
@@ -42,13 +48,28 @@ button, input, select { font: inherit; color: inherit; }
 
 .page { max-width: 1120px; margin: 0 auto; padding: 0 1rem 3rem; }
 
-.masthead { text-align: center; padding: 1.5rem 0 1.75rem; }
+.masthead { text-align: center; padding: .25rem 0 1.25rem; }
 .kicker { font-family: var(--mono); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); }
 h1 { margin: .4rem 0 .6rem; font-family: var(--serif); font-size: clamp(2.6rem, 8vw, 5rem); font-weight: 800; letter-spacing: -.02em; line-height: 1; }
-h1 span { color: var(--led); text-shadow: 0 0 24px var(--led-glow); }
+/* Poster-style title: green brush script over a gold chrome slab. */
+.poster { display: flex; flex-direction: column; align-items: center; margin: 0 0 .5rem; line-height: .9; letter-spacing: 0; }
+.poster .script {
+  position: relative; z-index: 1; margin-bottom: -.16em; transform: rotate(-5deg);
+  font-family: var(--script); font-size: clamp(3.2rem, 10vw, 5.6rem); font-weight: 400;
+  background: linear-gradient(180deg, #7cf08f 0%, #2fbf55 45%, #0f7a34 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 2px 0 #04210f) drop-shadow(0 0 1px #04210f);
+}
+.poster .chrome {
+  font-family: var(--slab); font-size: clamp(3.6rem, 12vw, 6.8rem); font-weight: 400; text-transform: uppercase; letter-spacing: .04em;
+  background: linear-gradient(180deg, #fffbe0 0%, #ffe07a 22%, #f2b01e 44%, #8a5300 50%, #ffd65c 58%, #fff1b3 74%, #d18f12 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 1.5px #4a2c00;
+  filter: drop-shadow(0 3px 0 #2b1900) drop-shadow(0 10px 24px rgba(255, 182, 39, .28));
+}
+@media (forced-colors: active) { .poster .script, .poster .chrome { color: CanvasText; background: none; -webkit-text-stroke: 0; } }
 .lede { max-width: 46ch; margin: 0 auto; color: var(--ink-soft); font-size: 1.1rem; text-wrap: balance; }
 
-.draft { margin: 0 auto 1.25rem; max-width: 70ch; padding: .6rem .9rem; border: 1px dashed var(--line-strong); border-radius: 2px; color: var(--ink-soft); font-size: .9rem; text-align: center; }
+.draft { margin: 1rem 0 0; max-width: 70ch; padding: .6rem .9rem; border: 1px dashed var(--line-strong); border-radius: 2px; color: var(--ink-soft); font-size: .9rem; text-align: left; }
 .draft::before { content: "DRAFT \00B7 "; font-family: var(--mono); color: var(--led); letter-spacing: .08em; }
 
 /* ---------- the console ---------- */
@@ -101,8 +122,13 @@ h1 span { color: var(--led); text-shadow: 0 0 24px var(--led-glow); }
 .scrub-ends { display: flex; justify-content: space-between; margin-top: .25rem; font-family: var(--mono); font-size: .8rem; color: var(--ink-dim); }
 
 /* ---------- ticker tape ---------- */
-.tape { margin: 1.25rem 0; overflow: hidden; border-block: 1px solid var(--line-strong); background: #050806; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.tape-track { display: flex; width: max-content; animation: tape linear infinite; animation-duration: 30s; }
+.tape { display: flex; margin: 1.25rem 0; border-block: 1px solid var(--line-strong); background: #050806; }
+/* Fixed width: a status that changes size would shove the scrolling strip sideways. */
+.tape-status { flex: none; box-sizing: content-box; width: 13ch; display: grid; align-content: center; padding: .35rem .9rem; border-right: 1px solid var(--line-strong); background: #0b100d; font-family: var(--mono); font-size: .78rem; line-height: 1.35; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; color: var(--ink); }
+.tape-status b { display: flex; justify-content: space-between; gap: .6ch; font-weight: 700; }
+.tape-status b span { color: var(--ink-dim); font-weight: 400; }
+.tape-window { flex: 1; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 3%, #000 96%, transparent); }
+.tape-track { display: flex; width: max-content; will-change: transform; }
 .tape-run { display: flex; flex: none; }
 .tape-item { display: inline-flex; align-items: baseline; gap: .6rem; padding: .7rem 1.6rem; font-family: var(--mono); font-size: .95rem; white-space: nowrap; color: var(--led); letter-spacing: .04em; }
 .tape-item + .tape-item, .tape-run + .tape-run .tape-item:first-child { border-left: 1px solid var(--line); }
@@ -110,16 +136,31 @@ h1 span { color: var(--led); text-shadow: 0 0 24px var(--led-glow); }
 .tape-spend .tape-amt { color: #3cd27f; }
 .tape-windfall .tape-amt { color: #b39cff; }
 .tape-milestone .tape-amt { color: var(--ink-dim); }
-.tape-total { color: var(--ink); font-weight: 700; }
-@keyframes tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.tape-quip { color: var(--ink-soft); font-style: italic; letter-spacing: 0; }
+.tape-quip .tape-who { font-style: normal; color: var(--ink-dim); text-transform: uppercase; letter-spacing: .06em; font-size: .8rem; }
 @media (prefers-reduced-motion: reduce) {
-  .tape-track { animation: none; }
-  .tape { overflow-x: auto; }
+  .tape-window { overflow-x: auto; mask-image: none; }
+  .toast { transition: none; }
   .bar span, .meter::after { transition: none; }
 }
 
+/* ---------- reactions ---------- */
+.toast {
+  position: fixed; z-index: 10; left: 50%; bottom: 1.25rem; max-width: min(92vw, 34rem); padding: .75rem 1rem .8rem;
+  border: 1px solid var(--line-strong); border-left: 4px solid var(--led); border-radius: 6px; background: #070b09; box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  transform: translate(-50%, 0); opacity: 1; transition: opacity 250ms ease, transform 250ms ease;
+}
+.toast.leaving { opacity: 0; transform: translate(-50%, 12px); }
+.toast-who { display: block; font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+.toast-line { display: block; margin-top: .15rem; font-size: 1.05rem; }
+.reactions { margin: .75rem 0 0; padding: 0; list-style: none; display: grid; gap: .35rem; }
+.reactions li { font-size: .95rem; color: var(--ink); }
+.reactions .who { margin-right: .5rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+.film-quote { margin: .75rem 0 0; padding-left: .9rem; border-left: 2px solid var(--line-strong); font-family: var(--serif); font-size: 1.05rem; }
+.film-quote cite { display: block; margin-top: .2rem; font-family: var(--mono); font-size: .75rem; font-style: normal; color: var(--ink-dim); }
+
 /* ---------- latest entry ---------- */
-.latest { min-height: 7.5rem; padding: 1.1rem 1.25rem; border-left: 4px solid var(--led); background: var(--panel); border-radius: 0 6px 6px 0; }
+.latest { margin-top: 1.25rem; min-height: 7.5rem; padding: 1.1rem 1.25rem; border-left: 4px solid var(--led); background: var(--panel); border-radius: 0 6px 6px 0; }
 .latest-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; }
 .latest-time { font-family: var(--mono); color: var(--led); }
 .latest-title { font-family: var(--serif); font-size: 1.5rem; }

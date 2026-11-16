@@ -138,6 +138,10 @@ await test("Published ledger is valid and ends with exactly $30M spent", async (
   equal(waterfall(ledger).at(-1).end, ledger.budget);
   equal(Math.round(valueAt(ledger, ledger.runtime)), ledger.budget);
   assert(ledger.events.some(e => e.daily), "Running costs are spread daily");
+  for (const e of ledger.events) {
+    for (const r of e.react ?? []) assert(Array.isArray(r) && r.length === 2 && r[0] && r[1], `Bad reaction on ${e.label}`);
+    if (e.quote) assert(e.quote.text && e.quote.who, `A film quote on ${e.label} needs text and who`);
+  }
   assert(ledger.events.every(e => e.total <= ledger.budget * 1.1), "Running total strays far past the budget");
 });
 

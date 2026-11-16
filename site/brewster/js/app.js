@@ -8,7 +8,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const ui = {
   form: $("timeForm"), minutes: $("minutes"), seconds: $("seconds"), slider: $("slider"),
   play: $("play"), speed: $("speed"), total: $("total"), remaining: $("remaining"), percent: $("percent"), rate: $("rate"),
-  barFill: $("barFill"), tape: $("tape"), latest: $("latest"), chart: $("chart"), tooltip: $("tooltip"),
+  barFill: $("barFill"), tape: $("tape"), tapeStatus: $("tapeStatus"), tapeWindow: $("tapeWindow"), toast: $("toast"), latest: $("latest"), chart: $("chart"), tooltip: $("tooltip"),
   rows: $("ledgerRows"), marks: $("sliderMarks"), runtimeLabel: $("runtimeLabel"), draft: $("draftNote"),
 };
 
@@ -36,6 +36,8 @@ async function start() {
   new ResizeObserver(() => { chart = buildChart(); paintChart(); }).observe(ui.chart.parentElement);
   wireControls();
   renderAnalysis(ledger);
+  new ResizeObserver(() => { if (tape.items.length) layoutTape(); }).observe(ui.tapeWindow);
+  requestAnimationFrame(tapeTick);
 
   setTime(timeFromHash() ?? 0, { instant: true, quiet: true });
 }
@@ -116,9 +118,21 @@ function setTime(seconds, { instant = false, quiet = false, editing = null } = {
   ui.barFill.style.transform = `scaleX(${tab.progress})`;
   document.body.classList.toggle("paid", tab.remaining <= 0);
 
-  if (tapeKey !== tab.seen) { tapeKey = tab.seen; renderTape(tab); renderLatest(tab); renderTableState(tab); }
-  const status = `TAB ${formatShort(tab.total)} \u00B7 LEFT ${formatShort(tab.remaining)}`;
-  ui.tape.querySelectorAll(".tape-total").forEach(node => { node.textContent = status; });
+  if (tapeKey !== tab.seen) {
+    const previous = tapeKey;
+    tapeKey = tab.seen;
+    updateTape(tab, previous);
+    renderLatest(tab);
+    renderTableState(tab);
+    // Pop a reaction when the film rolls forward onto an event, not while scrubbing around.
+    if (tab.latest && previous >= 0 && tab.seen > previous && (playing || tab.seen - previous === 1)) showReaction(tab.latest);
+  }
+  const tabText = formatShort(tab.total), leftText = formatShort(tab.remaining);
+  if (ui.tapeStatus.dataset.key !== tabText + leftText) {
+    ui.tapeStatus.dataset.key = tabText + leftText;
+    const line = (name, value) => { const b = el("b"); b.append(el("span", "", name), document.createTextNode(value)); return b; };
+    ui.tapeStatus.replaceChildren(line("TAB", tabText), line("LEFT", leftText));
+  }
   paintChart(tab);
   if (!quiet && !playing) writeHash();
 }
@@ -162,14 +176,103 @@ function tapeItem(event) {
   return item;
 }
 
-function renderTape(tab) {
+/** An event's ticker items: the entry, then its first reaction. */
+function tapeEntries(event) {
+  const items = [tapeItem(event)];
+  const quip = event.react?.[0];
+  if (quip) {
+    const item = el("span", "tape-item tape-quip");
+    item.append(el("span", "tape-who", quip[0]), el("span", "", `“${quip[1]}”`));
+    items.push(item);
+  }
+  return items;
+}
+
+/*
+ * The ticker is one run of items, repeated enough times to cover the window,
+ * scrolled at a steady speed from script. New items are slotted in just past
+ * the right edge, so the strip never restarts or jumps.
+ */
+const TAPE_SPEED = 70; // pixels per second
+const tape = { items: [], offset: 0, width: 0, last: 0 };
+
+function updateTape(tab, previous) {
+  if (previous >= 1 && tab.seen === previous + 1 && tape.width) insertNewest(tab.latest);
+  else rebuildTape(tab);
+}
+
+function rebuildTape(tab) {
   const seen = ledger.events.slice(0, tab.seen).reverse();
-  const items = seen.length ? seen.map(tapeItem) : [el("span", "tape-item tape-idle", "MARKET CLOSED · MONTY IS STILL BROKE · ROLL THE FILM")];
-  const status = el("span", "tape-item tape-total", `TAB ${formatShort(tab.total)} · LEFT ${formatShort(tab.remaining)}`);
+  tape.items = seen.length ? seen.flatMap(tapeEntries) : [el("span", "tape-item tape-idle", "MARKET CLOSED · MONTY IS STILL BROKE · ROLL THE FILM")];
+  tape.offset = 0;
+  layoutTape();
+}
+
+function layoutTape() {
   const run = el("span", "tape-run");
-  run.append(status, ...items);
-  ui.tape.replaceChildren(run, run.cloneNode(true));
-  ui.tape.style.animationDuration = `${Math.max(18, (items.length + 1) * 6)}s`;
+  run.append(...tape.items.map(node => node.cloneNode(true)));
+  ui.tape.replaceChildren(run);
+  tape.width = run.getBoundingClientRect().width;
+  if (!reducedMotion.matches && tape.width) {
+    const copies = Math.max(2, Math.ceil(ui.tapeWindow.clientWidth / tape.width) + 1);
+    for (let i = 1; i < copies; i++) ui.tape.append(run.cloneNode(true));
+    tape.offset %= tape.width;
+  } else {
+    tape.offset = 0;
+  }
+  paintTape();
+}
+
+function insertNewest(event) {
+  const view = ui.tapeWindow.getBoundingClientRect();
+  const nodes = [...ui.tape.querySelectorAll(".tape-item")];
+  const per = tape.items.length;
+  // Hold the leftmost visible item where it is while the strip is rebuilt.
+  const anchor = Math.max(0, nodes.findIndex(node => node.getBoundingClientRect().right > view.left));
+  const anchorX = nodes[anchor].getBoundingClientRect().left;
+  // Slot the new items in front of the first item that hasn't reached the screen yet.
+  const hidden = nodes.findIndex(node => node.getBoundingClientRect().left >= view.right);
+  const at = (hidden < 0 ? nodes.length : hidden) % per;
+  const fresh = tapeEntries(event);
+  tape.items.splice(at, 0, ...fresh);
+  layoutTape();
+  const copy = Math.floor(anchor / per), pos = anchor % per;
+  const moved = copy * tape.items.length + pos + (at <= pos ? fresh.length : 0);
+  const after = ui.tape.querySelectorAll(".tape-item")[moved];
+  if (after) {
+    tape.offset = ((tape.offset + after.getBoundingClientRect().left - anchorX) % tape.width + tape.width) % tape.width;
+    paintTape();
+  }
+}
+
+function paintTape() {
+  ui.tape.style.transform = `translate3d(${-tape.offset.toFixed(2)}px, 0, 0)`;
+}
+
+function tapeTick(frame) {
+  const dt = tape.last ? Math.min(0.1, (frame - tape.last) / 1000) : 0;
+  tape.last = frame;
+  if (tape.width && !reducedMotion.matches) {
+    tape.offset = (tape.offset + TAPE_SPEED * dt) % tape.width;
+    paintTape();
+  }
+  requestAnimationFrame(tapeTick);
+}
+
+/* ---------- reactions ---------- */
+
+let toastTimer = 0;
+function showReaction(event) {
+  const quip = event.react?.[0];
+  if (!quip) return;
+  ui.toast.replaceChildren(el("span", "toast-who", quip[0]), el("span", "toast-line", quip[1]));
+  ui.toast.classList.remove("leaving");
+  ui.toast.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    ui.toast.classList.add("leaving");
+    toastTimer = setTimeout(() => { ui.toast.hidden = true; }, 260);
+  }, playing ? 2600 : 3800);
 }
 
 function renderLatest(tab) {
@@ -184,6 +287,21 @@ function renderLatest(tab) {
       : event.kind === "windfall" ? `${formatMoney(event.amount)} (came back)` : "Story beat";
     head.append(el("span", `latest-amt amt-${event.kind}`, amount));
     ui.latest.append(head, el("p", "latest-detail", event.detail));
+    // Film quotes appear only once they've been checked against the subtitles.
+    if (event.quote?.text) {
+      const quote = el("blockquote", "film-quote");
+      quote.append(el("p", "", `“${event.quote.text}”`), el("cite", "", `${event.quote.who}, at ${event.quote.t ?? formatTime(event.t)}`));
+      ui.latest.append(quote);
+    }
+    if (event.react?.length) {
+      const list = el("ul", "reactions");
+      for (const [who, line] of event.react) {
+        const item = el("li");
+        item.append(el("span", "who", who), document.createTextNode(line));
+        list.append(item);
+      }
+      ui.latest.append(list);
+    }
   }
   if (tab.next) {
     const next = el("button", "latest-next");
